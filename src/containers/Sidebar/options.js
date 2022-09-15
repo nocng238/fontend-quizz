@@ -5,11 +5,11 @@ const options = [
     leftIcon: 'ion-ios-people',
     children: [
       {
-        key: 'user',
+        key: 'users',
         label: 'sidebar.user',
       },
       {
-        key: 'campaign',
+        key: 'campaigns',
         label: 'sidebar.campaign',
       },
     ],
@@ -20,17 +20,17 @@ const options = [
     leftIcon: 'ion-clipboard',
     children: [
       {
-        key: 'checkpoint',
+        key: 'checkpoints',
         label: 'sidebar.checkpoint',
       },
       {
-        key: 'block',
+        key: 'blocks',
         label: 'sidebar.block',
       },
     ],
   },
   {
-    key: 'setting',
+    key: 'settings',
     label: 'sidebar.setting',
     leftIcon: 'ion-ios-cog',
   },

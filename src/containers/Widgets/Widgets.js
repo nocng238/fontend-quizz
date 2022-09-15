@@ -1,6 +1,7 @@
 import React from 'react';
 import clone from 'clone';
 import { Row, Col } from 'antd';
+
 import LayoutWrapper from '@iso/components/utility/layoutWrapper';
 import basicStyle from '@iso/assets/styles/constants';
 import IsoWidgetsWrapper from './WidgetsWrapper';
@@ -11,20 +12,11 @@ import SingleProgressWidget from './Progress/ProgressSingle';
 import ReportsWidget from './Report/ReportWidget';
 import StickerWidget from './Sticker/StickerWidget';
 import SaleWidget from './Sale/SaleWidget';
-import VCardWidget from './vCard/vCardWidget';
-import SocialWidget from './SocialWidget/SocialWidget';
-import SocialProfile from './SocialWidget/SocialProfileIcon';
-import userpic from '@iso/assets/images/user1.png';
-import { isServer } from '@iso/lib/helpers/isServer';
 import {
   TableViews,
   tableinfos,
   dataList,
 } from '../Tables/AntTables/AntTables';
-import * as rechartConfigs from '../Charts/Recharts/config';
-import StackedAreaChart from '../Charts/Recharts/Charts/StackedAreaChart';
-import GoogleChart from 'react-google-charts';
-import * as googleChartConfigs from '../Charts/GoogleChart/config';
 import IntlMessages from '@iso/components/utility/intlMessages';
 
 const tableDataList = clone(dataList);
@@ -177,57 +169,18 @@ const PROGRESS_WIDGET = [
   },
 ];
 
-const SOCIAL_PROFILE = [
-  {
-    url: '#',
-    icon: 'ion-social-facebook',
-    iconcolor: '#3b5998',
-  },
-  {
-    url: '#',
-    icon: 'ion-social-twitter',
-    iconcolor: '#00aced',
-  },
-  {
-    url: '#',
-    icon: 'ion-social-googleplus',
-    iconcolor: '#dd4b39',
-  },
-  {
-    url: '#',
-    icon: 'ion-social-linkedin-outline',
-    iconcolor: '#007bb6',
-  },
-  {
-    url: '#',
-    icon: 'ion-social-dribbble-outline',
-    iconcolor: '#ea4c89',
-  },
-];
-export default function() {
+export default function () {
   const { rowStyle, colStyle } = basicStyle;
 
-  const chartEvents = [
-    {
-      eventName: 'select',
-      callback(Chart) {},
-    },
-  ];
-
-  const stackConfig = {
-    ...rechartConfigs.StackedAreaChart,
-    width: !isServer && window.innerWidth < 450 ? 300 : 500,
-  };
   return (
     <LayoutWrapper>
       <div style={styles.wisgetPageStyle}>
-        <Row style={rowStyle} gutter={0} justify="start">
+        <Row style={rowStyle} gutter={0} justify='start'>
           <Col lg={8} md={12} sm={24} xs={24} style={colStyle}>
             <IsoWidgetsWrapper>
-              {/* Report Widget */}
               <ReportsWidget
-                label={<IntlMessages id="widget.reportswidget.label" />}
-                details={<IntlMessages id="widget.reportswidget.details" />}
+                label={<IntlMessages id='widget.reportswidget.label' />}
+                details={<IntlMessages id='widget.reportswidget.details' />}
               >
                 {SIGNLE_PROGRESS_WIDGET.map((widget, idx) => (
                   <SingleProgressWidget
@@ -236,7 +189,7 @@ export default function() {
                     percent={widget.percent}
                     barHeight={widget.barHeight}
                     status={widget.status}
-                    info={widget.info} // Boolean: true, false
+                    info={widget.info}
                   />
                 ))}
               </ReportsWidget>
@@ -256,7 +209,7 @@ export default function() {
           </Col>
         </Row>
 
-        <Row style={rowStyle} gutter={0} justify="start">
+        <Row style={rowStyle} gutter={0} justify='start'>
           {STICKER_WIDGET.map((widget, idx) => (
             <Col lg={6} md={12} sm={12} xs={24} style={colStyle} key={idx}>
               <IsoWidgetsWrapper>
@@ -273,7 +226,7 @@ export default function() {
           ))}
         </Row>
 
-        <Row style={rowStyle} gutter={0} justify="start">
+        <Row style={rowStyle} gutter={0} justify='start'>
           {SALE_WIDGET.map((widget, idx) => (
             <Col lg={6} md={12} sm={12} xs={24} style={colStyle} key={idx}>
               <IsoWidgetsWrapper>
@@ -289,7 +242,7 @@ export default function() {
           ))}
         </Row>
 
-        <Row style={rowStyle} gutter={0} justify="start">
+        <Row style={rowStyle} gutter={0} justify='start'>
           <Col lg={6} md={12} sm={12} xs={24} style={colStyle}>
             {CARD_WIDGET.map((widget, idx) => (
               <IsoWidgetsWrapper key={idx} gutterBottom={20}>
@@ -319,82 +272,6 @@ export default function() {
                 />
               </IsoWidgetsWrapper>
             ))}
-          </Col>
-
-          <Col lg={12} md={24} sm={24} xs={24} style={colStyle}>
-            <IsoWidgetsWrapper>
-              <IsoWidgetBox height={448} style={{ overflow: 'hidden' }}>
-                <StackedAreaChart {...stackConfig} />
-              </IsoWidgetBox>
-            </IsoWidgetsWrapper>
-          </Col>
-        </Row>
-
-        <Row style={rowStyle} gutter={0} justify="start">
-          <Col md={12} sm={24} xs={24} style={colStyle}>
-            <IsoWidgetsWrapper>
-              <IsoWidgetBox height={470} style={{ overflow: 'hidden' }}>
-                <GoogleChart
-                  {...googleChartConfigs.BarChart}
-                  chartEvents={chartEvents}
-                />
-              </IsoWidgetBox>
-            </IsoWidgetsWrapper>
-          </Col>
-
-          <Col md={12} sm={24} xs={24} style={colStyle}>
-            <IsoWidgetsWrapper>
-              <IsoWidgetBox height={470} style={{ overflow: 'hidden' }}>
-                <GoogleChart {...googleChartConfigs.Histogram} />
-              </IsoWidgetBox>
-            </IsoWidgetsWrapper>
-          </Col>
-        </Row>
-
-        <Row style={rowStyle} gutter={0} justify="start">
-          <Col lg={8} md={12} sm={12} xs={24} style={colStyle}>
-            <IsoWidgetsWrapper>
-              {/* VCard Widget */}
-              <VCardWidget
-                style={{ height: '450px' }}
-                src={userpic}
-                alt="Jhon"
-                name={<IntlMessages id="widget.vcardwidget.name" />}
-                title={<IntlMessages id="widget.vcardwidget.title" />}
-                description={
-                  <IntlMessages id="widget.vcardwidget.description" />
-                }
-              >
-                <SocialWidget>
-                  {SOCIAL_PROFILE.map((profile, idx) => (
-                    <SocialProfile
-                      key={idx}
-                      url={profile.url}
-                      icon={profile.icon}
-                      iconcolor={profile.iconcolor}
-                    />
-                  ))}
-                </SocialWidget>
-              </VCardWidget>
-            </IsoWidgetsWrapper>
-          </Col>
-
-          <Col lg={8} md={12} sm={12} xs={24} style={colStyle}>
-            <IsoWidgetsWrapper>
-              {/* Chart */}
-              <IsoWidgetBox height={450} style={{ overflow: 'hidden' }}>
-                <GoogleChart {...googleChartConfigs.TrendLines} />
-              </IsoWidgetBox>
-            </IsoWidgetsWrapper>
-          </Col>
-
-          <Col lg={8} md={24} sm={24} xs={24} style={colStyle}>
-            <IsoWidgetsWrapper>
-              <IsoWidgetBox height={450} style={{ overflow: 'hidden' }}>
-                {/* Google Bar Chart */}
-                <GoogleChart {...googleChartConfigs.ComboChart} />
-              </IsoWidgetBox>
-            </IsoWidgetsWrapper>
           </Col>
         </Row>
       </div>

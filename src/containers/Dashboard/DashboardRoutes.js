@@ -10,10 +10,6 @@ const routes = [
     exact: true,
   },
   {
-    path: 'inbox',
-    component: lazy(() => import('@iso/containers/Mail/Mail')),
-  },
-  {
     path: 'my-profile',
     component: lazy(() => import('@iso/containers/Profile/Profile')),
   },
@@ -31,10 +27,6 @@ const routes = [
     path: 'scrum-board',
     component: lazy(() => import('@iso/containers/ScrumBoard')),
     exact: false,
-  },
-  {
-    path: 'mailbox',
-    component: lazy(() => import('@iso/containers/Mail/Mail')),
   },
   {
     path: 'calendar',
@@ -280,28 +272,6 @@ const routes = [
     path: 'shop',
     component: lazy(() =>
       import('@iso/containers/Ecommerce/Algolia/InstantSearch')
-    ),
-  },
-  {
-    path: 'reactDates',
-    component: lazy(() =>
-      import('@iso/containers/AdvancedUI/ReactDates/ReactDates')
-    ),
-  },
-  {
-    path: 'codeMirror',
-    component: lazy(() =>
-      import('@iso/containers/AdvancedUI/CodeMirror/CodeMirror')
-    ),
-  },
-  {
-    path: 'uppy',
-    component: lazy(() => import('@iso/containers/AdvancedUI/Uppy/Uppy')),
-  },
-  {
-    path: 'dropzone',
-    component: lazy(() =>
-      import('@iso/containers/AdvancedUI/Dropzone/Dropzone')
     ),
   },
   {

@@ -3,14 +3,16 @@ import { Link, useRouteMatch } from 'react-router-dom';
 
 import Menu from '@iso/components/uielements/menu';
 import IntlMessages from '@iso/components/utility/intlMessages';
+
 const SubMenu = Menu.SubMenu;
 
-const stripTrailingSlash = str => {
+const stripTrailingSlash = (str) => {
   if (str.substr(-1) === '/') {
     return str.substr(0, str.length - 1);
   }
   return str;
 };
+
 export default React.memo(function SidebarMenu({
   singleOption,
   submenuStyle,
@@ -27,16 +29,16 @@ export default React.memo(function SidebarMenu({
       <SubMenu
         key={key}
         title={
-          <span className="isoMenuHolder" style={submenuColor}>
+          <span className='isoMenuHolder' style={submenuColor}>
             <i className={leftIcon} />
-            <span className="nav-text">
+            <span className='nav-text'>
               <IntlMessages id={label} />
             </span>
           </span>
         }
         {...rest}
       >
-        {children.map(child => {
+        {children.map((child) => {
           const linkTo = child.withoutDashboard
             ? `/${child.key}`
             : `${url}/${child.key}`;
@@ -55,9 +57,9 @@ export default React.memo(function SidebarMenu({
   return (
     <Menu.Item key={key} {...rest}>
       <Link to={`${url}/${key}`}>
-        <span className="isoMenuHolder" style={submenuColor}>
+        <span className='isoMenuHolder' style={submenuColor}>
           <i className={leftIcon} />
-          <span className="nav-text">
+          <span className='nav-text'>
             <IntlMessages id={label} />
           </span>
         </span>

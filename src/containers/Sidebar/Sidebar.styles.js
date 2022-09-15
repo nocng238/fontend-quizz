@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { palette } from 'styled-theme';
+
 import { transition, borderRadius } from '@iso/lib/helpers/style_utils';
 import WithDirection from '@iso/lib/helpers/rtl';
 
@@ -172,16 +173,6 @@ const SidebarWrapper = styled.div`
           &:after {
             transform: rotate(45deg) translateX(-3px);
           }
-
-          ${'' /* &:after {
-            content: '\f123';
-            font-family: 'Ionicons' !important;
-            font-size: 16px;
-            color: inherit;
-            left: ${props => (props['data-rtl'] === 'rtl' ? '16px' : 'auto')};
-            right: ${props => (props['data-rtl'] === 'rtl' ? 'auto' : '16px')};
-            ${transition()};
-          } */};
         }
 
         &:hover {
