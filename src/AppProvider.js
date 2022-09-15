@@ -3,6 +3,7 @@ import { ConfigProvider } from 'antd';
 import { IntlProvider } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
+
 import themes from '@iso/config/theme/theme.config';
 import AppLocale from '@iso/config/translation';
 

@@ -1,6 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
+
 import siteConfig from '@iso/config/site.config';
+import logo from '@iso/assets/images/logo.png'
 
 export default function({ collapsed }) {
   return (
@@ -8,13 +10,13 @@ export default function({ collapsed }) {
       {collapsed ? (
         <div>
           <h3>
-            <i className={siteConfig.siteIcon} />
+            <img src={logo} alt='Logo' className='logo' />
           </h3>
         </div>
       ) : (
         <h3>
-          <Link href="/dashboard">
-            <a>{siteConfig.siteName}</a>
+          <Link href="/">
+            <p>{siteConfig.siteName}</p>
           </Link>
         </h3>
       )}

@@ -1,6 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
 import { palette, font } from 'styled-theme';
-// import 'antd/dist/antd.css';
 
 const GlobalStyles = createGlobalStyle`
   .ant-btn{
@@ -14,9 +13,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   .logo {
-    font-size: 32px;
-    font-weight: 700;
-    color: #fff;
+    width: 80%;
   }
 
   .ant-table-thead > tr.ant-table-row-hover:not(.ant-table-expanded-row) > td, .ant-table-tbody > tr.ant-table-row-hover:not(.ant-table-expanded-row) > td, .ant-table-thead > tr:hover:not(.ant-table-expanded-row) > td, .ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td {

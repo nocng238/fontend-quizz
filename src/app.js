@@ -1,5 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
+
 import GlobalStyles from '@iso/assets/styles/globalStyle';
 import { store } from './redux/store';
 import Boot from './redux/boot';
@@ -18,6 +19,6 @@ const App = () => (
 );
 Boot()
   .then(() => App())
-  .catch(error => console.error(error));
+  .catch((error) => console.error(error));
 
 export default App;

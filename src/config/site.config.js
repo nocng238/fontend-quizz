@@ -1,11 +1,10 @@
 export default {
-  siteName: 'DEVPLUS',
-  siteIcon: 'ion-flash',
-  footerText: `DevPlus @ ${new Date().getFullYear()} Created by PhuTQ, Inc`,
+  siteName: 'DEV PLUS',
+  footerText: `Dev Plus @ ${new Date().getFullYear()}`,
   enableAnimatedRoute: false,
   apiUrl: 'http://yoursite.com/api/',
   google: {
     analyticsKey: 'UA-xxxxxxxxx-1',
   },
-  dashboard: '/dashboard',
+  dashboard: '/',
 };

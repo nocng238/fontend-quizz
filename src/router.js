@@ -7,9 +7,9 @@ import {
 } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
+import Loader from '@iso/components/utility/loader';
 import ErrorBoundary from './ErrorBoundary';
 import { PUBLIC_ROUTE } from './route.constants';
-import Loader from '@iso/components/utility/loader';
 
 const Dashboard = lazy(() => import('./containers/Dashboard/Dashboard'));
 
@@ -30,10 +30,6 @@ const publicRoutes = [
   {
     path: PUBLIC_ROUTE.SIGN_IN,
     component: lazy(() => import('@iso/containers/Pages/SignIn/SignIn')),
-  },
-  {
-    path: PUBLIC_ROUTE.SIGN_UP,
-    component: lazy(() => import('@iso/containers/Pages/SignUp/SignUp')),
   },
   {
     path: PUBLIC_ROUTE.FORGET_PASSWORD,
@@ -87,7 +83,7 @@ export default function Routes() {
                 <route.component />
               </Route>
             ))}
-            <PrivateRoute path="/dashboard">
+            <PrivateRoute>
               <Dashboard />
             </PrivateRoute>
           </Switch>

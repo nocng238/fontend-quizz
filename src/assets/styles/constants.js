@@ -19,6 +19,7 @@ export const colors = {
   purple: 'rebeccapurple',
   orange: '#FF991F',
 };
+
 export const grid = 8;
 
 export const borderRadius = 2;
@@ -37,4 +38,5 @@ const basicStyle = {
   colStyle,
   gutter,
 };
+
 export default basicStyle;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+
 import Searchbar from '@iso/components/Topbar/SearchBox';
 import TopbarSearchModal from './TopbarSearchModal.styles';
 

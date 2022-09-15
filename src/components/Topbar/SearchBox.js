@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { InputSearch } from '../uielements/input';
+
 export default function (props) {
   React.useEffect(() => {
     const timer = setTimeout(() => {
