@@ -94,6 +94,16 @@
   "sidebar.quiz": "Quiz",
   "sidebar.authCheck": "Check Auth Status",
   "sidebar.swiperSlider": "Swiper Slider",
+
+  "user.listUsers": "List Users",
+  "user.btnCreateUser": "Create User",
+
+  "commons.actions": "Actions",
+  "commons.detail": "Detail",
+  "commons.edit": "Edit",
+  "commons.delete": "Delete",
+  "commons.resetPassword": "Reset Password",
+
   "languageSwitcher.label": "Change Language",
   "themeSwitcher": "Theme Switcher",
   "themeSwitcher.Sidebar": "Sidebar",

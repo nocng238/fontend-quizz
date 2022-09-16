@@ -11,7 +11,7 @@ import Loader from '@iso/components/utility/loader';
 import ErrorBoundary from './ErrorBoundary';
 import { PUBLIC_ROUTE } from './route.constants';
 
-const Dashboard = lazy(() => import('./containers/Dashboard/Dashboard'));
+const AdminLayout = lazy(() => import('./components/AdminLayout/AdminLayout'));
 
 const publicRoutes = [
   {
@@ -84,7 +84,7 @@ export default function Routes() {
               </Route>
             ))}
             <PrivateRoute>
-              <Dashboard />
+              <AdminLayout />
             </PrivateRoute>
           </Switch>
         </Router>

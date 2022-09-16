@@ -10,6 +10,10 @@ const routes = [
     exact: true,
   },
   {
+    path: 'users',
+    component: lazy(() => import('@iso/containers/User/User')),
+  },
+  {
     path: 'my-profile',
     component: lazy(() => import('@iso/containers/Profile/Profile')),
   },
@@ -302,7 +306,7 @@ const routes = [
   },
 ];
 
-export default function AppRouter() {
+export default function AdminRouter() {
   return (
     <Suspense fallback={<Loader />}>
       <Switch>
