@@ -97,12 +97,15 @@
 
   "user.listUsers": "List Users",
   "user.btnCreateUser": "Create User",
+  "user.createUser": "Create User",
+  "user.resetPassword": "Reset Password",
 
   "commons.actions": "Actions",
   "commons.detail": "Detail",
   "commons.edit": "Edit",
   "commons.delete": "Delete",
-  "commons.resetPassword": "Reset Password",
+  "commons.back": "Back",
+  "commons.save": "Save",
 
   "languageSwitcher.label": "Change Language",
   "themeSwitcher": "Theme Switcher",

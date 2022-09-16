@@ -11,7 +11,22 @@ const routes = [
   },
   {
     path: 'users',
-    component: lazy(() => import('@iso/containers/User/User')),
+    component: lazy(() => import('@iso/containers/User/List')),
+    exact: true,
+  },
+  {
+    path: 'users/create',
+    component: lazy(() => import('@iso/containers/User/Create')),
+    exact: true,
+  },
+  {
+    path: 'users/edit/:id',
+    component: lazy(() => import('@iso/containers/User/Edit')),
+    exact: true,
+  },
+  {
+    path: 'users/:id',
+    component: lazy(() => import('@iso/containers/User/Detail')),
   },
   {
     path: 'my-profile',

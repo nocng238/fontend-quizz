@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useRouteMatch } from 'react-router-dom';
+import { Link, useHistory, useRouteMatch } from 'react-router-dom';
 import { Button, Menu, Dropdown, Popover, Checkbox } from 'antd';
 import { DownOutlined, CaretDownOutlined } from '@ant-design/icons';
 
-import notification from '@iso/components/Notification';
 import HelperText from '@iso/components/utility/helper-text';
 import LayoutWrapper from '@iso/components/utility/layoutWrapper';
 import PageHeader from '@iso/components/utility/pageHeader';
@@ -20,7 +19,7 @@ import CardWrapper, {
   StatusTag,
 } from './User.styles';
 
-const { initData, deleteInvoice } = invoiceActions;
+const { initData } = invoiceActions;
 
 const STATUSES = [
   { label: 'Active', value: 'active' },
@@ -51,7 +50,7 @@ const columns = [
     dataIndex: 'status',
     rowKey: 'status',
     sorter: true,
-    render: (text, status) => {
+    render: (text) => {
       let className;
       if (text === 'shipped' || text === 'Shipped' || text === 'SHIPPED') {
         className = 'shipped';
@@ -84,7 +83,9 @@ for (let i = 0; i < 100; i++) {
   });
 }
 
-export default function User() {
+export default function UserList() {
+  const history = useHistory();
+
   const [selected, setSelected] = useState([]);
   const { initialInvoices, invoices } = useSelector((state) => state.Invoices);
   const dispatch = useDispatch();
@@ -104,8 +105,26 @@ export default function User() {
     onChange: (selected) => setSelected(selected),
   };
 
+  const handleActions = ({ key }) => {
+    switch (key) {
+      case 'detail':
+        history.push('/users/1');
+        break;
+      case 'edit':
+        history.push('/users/edit/1');
+        break;
+      case 'reset':
+        break;
+      case 'delete':
+        break;
+
+      default:
+        break;
+    }
+  };
+
   const actions = (
-    <Menu>
+    <Menu onClick={handleActions}>
       <Menu.Item key='detail'>
         <IntlMessages id='commons.detail' />
       </Menu.Item>
@@ -113,7 +132,7 @@ export default function User() {
         <IntlMessages id='commons.edit' />
       </Menu.Item>
       <Menu.Item key='reset'>
-        <IntlMessages id='commons.resetPassword' />
+        <IntlMessages id='user.resetPassword' />
       </Menu.Item>
       <Menu.Item key='delete'>
         <IntlMessages id='commons.delete' />
@@ -172,6 +191,10 @@ export default function User() {
               showSorterTooltip={false}
               pagination={{
                 pageSize: 10,
+                total: 100,
+                defaultPageSize: 20,
+                defaultCurrent: 1,
+                showTotal: (total) => `Total ${total} items`,
               }}
               scroll={{ y: 'calc(100vh - 435px)' }}
             />
