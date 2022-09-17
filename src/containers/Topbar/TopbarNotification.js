@@ -43,7 +43,7 @@ export default function TopbarNotification() {
     <TopbarDropdownWrapper className="topbarNotification">
       <div className="isoDropdownHeader">
         <h3>
-          <IntlMessages id="sidebar.notification" />
+          <IntlMessages id="topbar.notification" />
         </h3>
       </div>
       <div className="isoDropdownBody">

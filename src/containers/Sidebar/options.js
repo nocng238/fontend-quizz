@@ -15,24 +15,10 @@ const options = [
     ],
   },
   {
-    key: 'examination',
-    label: 'sidebar.examination',
-    leftIcon: 'ion-clipboard',
-    children: [
-      {
-        key: 'checkpoints',
-        label: 'sidebar.checkpoint',
-      },
-      {
-        key: 'blocks',
-        label: 'sidebar.block',
-      },
-    ],
-  },
-  {
     key: 'settings',
-    label: 'sidebar.setting',
+    label: 'sidebar.settings',
     leftIcon: 'ion-ios-cog',
   },
 ];
+
 export default options;

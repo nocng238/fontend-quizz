@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+
 import App from '@iso/redux/app/reducer';
 import Auth from '@iso/redux/auth/reducer';
 import Mails from '@iso/redux/mail/reducer';

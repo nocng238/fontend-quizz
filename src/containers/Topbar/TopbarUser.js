@@ -25,7 +25,7 @@ export default function TopbarUser() {
         <IntlMessages id="themeSwitcher.settings" />
       </a>
       <a className="isoDropdownLink" href="# ">
-        <IntlMessages id="sidebar.feedback" />
+        <IntlMessages id="topbar.feedback" />
       </a>
       <a className="isoDropdownLink" href="# ">
         <IntlMessages id="topbar.help" />

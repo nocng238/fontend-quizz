@@ -5,7 +5,6 @@ import { Layout } from 'antd';
 import appActions from '@iso/redux/app/actions';
 import TopbarNotification from './TopbarNotification';
 import TopbarMessage from './TopbarMessage';
-import TopbarSearch from './TopbarSearch';
 import TopbarUser from './TopbarUser';
 import TopbarWrapper from './Topbar.styles';
 
@@ -46,10 +45,6 @@ export default function Topbar() {
         </div>
 
         <ul className="isoRight">
-          <li className="isoSearch">
-            <TopbarSearch />
-          </li>
-
           <li
             onClick={() => setSelectedItem('notification')}
             className={selectedItem ? 'isoNotify active' : 'isoNotify'}

@@ -49,7 +49,7 @@ export default function TopbarMessage() {
     <TopbarDropdownWrapper className="topbarMessage withImg">
       <div className="isoDropdownHeader">
         <h3>
-          <IntlMessages id="sidebar.message" />
+          <IntlMessages id="topbar.message" />
         </h3>
       </div>
       <div className="isoDropdownBody">
