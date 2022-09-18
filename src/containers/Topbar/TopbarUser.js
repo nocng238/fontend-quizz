@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+
 import Popover from '@iso/components/uielements/popover';
 import IntlMessages from '@iso/components/utility/intlMessages';
 import userpic from '@iso/assets/images/user1.png';
@@ -13,25 +14,25 @@ export default function TopbarUser() {
   const [visible, setVisibility] = React.useState(false);
   const dispatch = useDispatch();
   function handleVisibleChange() {
-    setVisibility(visible => !visible);
+    setVisibility((visible) => !visible);
   }
 
   const content = (
-    <TopbarDropdownWrapper className="isoUserDropdown">
-      <Link className="isoDropdownLink" to={'/dashboard/my-profile'}>
-        <IntlMessages id="topbar.myprofile" />
+    <TopbarDropdownWrapper className='isoUserDropdown'>
+      <Link className='isoDropdownLink' to={'/profile'}>
+        <IntlMessages id='topbar.myprofile' />
       </Link>
-      <a className="isoDropdownLink" href="# ">
-        <IntlMessages id="themeSwitcher.settings" />
+      <a className='isoDropdownLink' href='# '>
+        <IntlMessages id='themeSwitcher.settings' />
       </a>
-      <a className="isoDropdownLink" href="# ">
-        <IntlMessages id="topbar.feedback" />
+      <a className='isoDropdownLink' href='# '>
+        <IntlMessages id='topbar.feedback' />
       </a>
-      <a className="isoDropdownLink" href="# ">
-        <IntlMessages id="topbar.help" />
+      <a className='isoDropdownLink' href='# '>
+        <IntlMessages id='topbar.help' />
       </a>
-      <div className="isoDropdownLink" onClick={() => dispatch(logout())}>
-        <IntlMessages id="topbar.logout" />
+      <div className='isoDropdownLink' onClick={() => dispatch(logout())}>
+        <IntlMessages id='topbar.logout' />
       </div>
     </TopbarDropdownWrapper>
   );
@@ -39,15 +40,15 @@ export default function TopbarUser() {
   return (
     <Popover
       content={content}
-      trigger="click"
+      trigger='click'
       visible={visible}
       onVisibleChange={handleVisibleChange}
       arrowPointAtCenter={true}
-      placement="bottomLeft"
+      placement='bottomLeft'
     >
-      <div className="isoImgWrapper">
-        <img alt="user" src={userpic} />
-        <span className="userActivity online" />
+      <div className='isoImgWrapper'>
+        <img alt='user' src={userpic} />
+        <span className='userActivity online' />
       </div>
     </Popover>
   );
