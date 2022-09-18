@@ -9,42 +9,36 @@ import { useSelector } from 'react-redux';
 
 import Loader from '@iso/components/utility/loader';
 import ErrorBoundary from './ErrorBoundary';
-import { PUBLIC_ROUTE } from './route.constants';
 
 const AdminLayout = lazy(() => import('./components/AdminLayout/AdminLayout'));
 
 const publicRoutes = [
   {
-    path: PUBLIC_ROUTE.LANDING,
-    exact: true,
-    component: lazy(() => import('@iso/containers/Pages/SignIn/SignIn')),
-  },
-  {
-    path: PUBLIC_ROUTE.PAGE_404,
+    path: '/404',
     component: lazy(() => import('@iso/containers/Pages/404/404')),
   },
   {
-    path: PUBLIC_ROUTE.PAGE_500,
+    path: '/500',
     component: lazy(() => import('@iso/containers/Pages/500/500')),
   },
   {
-    path: PUBLIC_ROUTE.SIGN_IN,
+    path: '/signin',
     component: lazy(() => import('@iso/containers/Pages/SignIn/SignIn')),
   },
   {
-    path: PUBLIC_ROUTE.FORGET_PASSWORD,
+    path: '/forgot-password',
     component: lazy(() =>
       import('@iso/containers/Pages/ForgotPassword/ForgotPassword')
     ),
   },
   {
-    path: PUBLIC_ROUTE.RESET_PASSWORD,
+    path: '/reset-password',
     component: lazy(() =>
       import('@iso/containers/Pages/ResetPassword/ResetPassword')
     ),
   },
   {
-    path: PUBLIC_ROUTE.AUTH0_CALLBACK,
+    path: '/auth0loginCallback',
     component: lazy(() =>
       import('@iso/containers/Authentication/Auth0/Auth0Callback')
     ),

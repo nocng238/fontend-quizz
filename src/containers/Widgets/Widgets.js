@@ -1,26 +1,17 @@
 import React from 'react';
-import clone from 'clone';
 import { Row, Col } from 'antd';
 
 import LayoutWrapper from '@iso/components/utility/layoutWrapper';
 import basicStyle from '@iso/assets/styles/constants';
 import IsoWidgetsWrapper from './WidgetsWrapper';
-import IsoWidgetBox from './WidgetBox';
 import CardWidget from './Card/CardWidget';
 import ProgressWidget from './Progress/ProgressWidget';
 import SingleProgressWidget from './Progress/ProgressSingle';
 import ReportsWidget from './Report/ReportWidget';
 import StickerWidget from './Sticker/StickerWidget';
 import SaleWidget from './Sale/SaleWidget';
-import {
-  TableViews,
-  tableinfos,
-  dataList,
-} from '../Tables/AntTables/AntTables';
 import IntlMessages from '@iso/components/utility/intlMessages';
 
-const tableDataList = clone(dataList);
-tableDataList.size = 5;
 const styles = {
   wisgetPageStyle: {
     display: 'flex',
@@ -193,18 +184,6 @@ export default function () {
                   />
                 ))}
               </ReportsWidget>
-            </IsoWidgetsWrapper>
-          </Col>
-
-          <Col lg={16} md={12} sm={24} xs={24} style={colStyle}>
-            <IsoWidgetsWrapper>
-              <IsoWidgetBox>
-                {/* TABLE */}
-                <TableViews.SimpleView
-                  tableInfo={tableinfos[0]}
-                  dataList={tableDataList}
-                />
-              </IsoWidgetBox>
             </IsoWidgetsWrapper>
           </Col>
         </Row>

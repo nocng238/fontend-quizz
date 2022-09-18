@@ -14,6 +14,10 @@ const SignInStyleWrapper = styled.div`
   background: url(${bgImage}) no-repeat center center;
   background-size: cover;
 
+  .mt-10 {
+    margin-top: 10px;
+  }
+
   &:before {
     content: '';
     width: 100%;
@@ -23,8 +27,8 @@ const SignInStyleWrapper = styled.div`
     position: absolute;
     z-index: 1;
     top: 0;
-    left: ${props => (props['data-rtl'] === 'rtl' ? 'inherit' : '0')};
-    right: ${props => (props['data-rtl'] === 'rtl' ? '0' : 'inherit')};
+    left: ${(props) => (props['data-rtl'] === 'rtl' ? 'inherit' : '0')};
+    right: ${(props) => (props['data-rtl'] === 'rtl' ? '0' : 'inherit')};
   }
 
   .isoLoginContentWrapper {
@@ -100,9 +104,9 @@ const SignInStyleWrapper = styled.div`
         font-weight: 400;
         line-height: 1.2;
         color: ${palette('grayscale', 1)};
-        padding-left: ${props =>
+        padding-left: ${(props) =>
           props['data-rtl'] === 'rtl' ? 'inherit' : '13px'};
-        padding-right: ${props =>
+        padding-right: ${(props) =>
           props['data-rtl'] === 'rtl' ? '13px' : 'inherit'};
         margin: 15px 0;
         position: relative;
@@ -117,80 +121,14 @@ const SignInStyleWrapper = styled.div`
           line-height: 1;
           position: absolute;
           top: 2px;
-          left: ${props => (props['data-rtl'] === 'rtl' ? 'inherit' : '0')};
-          right: ${props => (props['data-rtl'] === 'rtl' ? '0' : 'inherit')};
+          left: ${(props) => (props['data-rtl'] === 'rtl' ? 'inherit' : '0')};
+          right: ${(props) => (props['data-rtl'] === 'rtl' ? '0' : 'inherit')};
         }
       }
 
       .isoHelperWrapper {
         margin-top: 35px;
         flex-direction: column;
-      }
-
-      .isoOtherLogin {
-        padding-top: 40px;
-        margin-top: 35px;
-        border-top: 1px dashed ${palette('grayscale', 2)};
-
-        > a {
-          display: flex;
-          margin-bottom: 10px;
-
-          &:last-child {
-            margin-bottom: 0;
-          }
-        }
-
-        button {
-          width: 100%;
-          height: 42px;
-          border: 0;
-          font-weight: 500;
-
-          &.btnFacebook {
-            background-color: #3b5998;
-
-            &:hover {
-              background-color: darken(#3b5998, 5%);
-            }
-          }
-
-          &.btnGooglePlus {
-            background-color: #dd4b39;
-            margin-top: 15px;
-
-            &:hover {
-              background-color: darken(#dd4b39, 5%);
-            }
-          }
-
-          &.btnAuthZero {
-            background-color: #e14615;
-            margin-top: 15px;
-
-            &:hover {
-              background-color: darken(#e14615, 5%);
-            }
-          }
-
-          &.btnFirebase {
-            background-color: ${palette('color', 5)};
-            margin-top: 15px;
-
-            &:hover {
-              background-color: ${palette('color', 6)};
-            }
-          }
-
-          &.btnAccountKit {
-            ${'' /* background-color: rgb(150, 189, 235); */}
-            margin-top: 15px;
-
-            &:hover {
-              ${'' /* background-color: ${palette('color', 6)}; */}
-            }
-          }
-        }
       }
 
       .isoForgotPass {
@@ -205,7 +143,10 @@ const SignInStyleWrapper = styled.div`
       }
 
       button {
+        height: 42px;
+        width: 100%;
         font-weight: 500;
+        font-size: 13px;
       }
     }
   }
