@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory, useRouteMatch } from 'react-router-dom';
-import { Button, Menu, Dropdown, Popover, Checkbox } from 'antd';
-import { DownOutlined, CaretDownOutlined } from '@ant-design/icons';
+import { Button, Menu, Dropdown } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
 
 import HelperText from '@iso/components/utility/helper-text';
 import LayoutWrapper from '@iso/components/utility/layoutWrapper';
@@ -15,16 +15,11 @@ import CardWrapper, {
   BoxWrapper,
   BoxHeader,
   FiltersBar,
-  Filters,
   StatusTag,
-} from './User.styles';
+} from './UserList.styles';
+import UserFilter from './UserFilter';
 
 const { initData } = invoiceActions;
-
-const STATUSES = [
-  { label: 'Active', value: 'active' },
-  { label: 'Inactive', value: 'inactive' },
-];
 
 const columns = [
   {
@@ -155,23 +150,7 @@ export default function UserList() {
         <BoxHeader>
           <FiltersBar>
             <SearchInput onChange={(value) => setSearchText(value)} />
-            <Filters>
-              <Popover
-                placement='bottom'
-                content={
-                  <Checkbox.Group
-                    options={STATUSES}
-                    defaultValue={['All']}
-                    onChange={(value) => console.log(value)}
-                  />
-                }
-                trigger='click'
-              >
-                <span>
-                  Status <CaretDownOutlined />
-                </span>
-              </Popover>
-            </Filters>
+            <UserFilter />
           </FiltersBar>
           <Dropdown overlay={actions}>
             <Button>

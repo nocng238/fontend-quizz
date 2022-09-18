@@ -1,134 +1,143 @@
 import styled from 'styled-components';
 import { palette } from 'styled-theme';
+import { transition, borderRadius } from '@iso/lib/helpers/style_utils';
+import WithDirection from '@iso/lib/helpers/rtl';
 
-import BoxComponent from '@iso/components/utility/box';
-
-export const BoxWrapper = styled(BoxComponent)`
-  .isoInvoiceTableBtn {
-    display: flex;
-    margin-bottom: 20px;
-    a {
-      margin-left: auto;
-    }
+const WDContactsWrapper = styled.div`
+  padding: 50px 35px;
+  display: flex;
+  ${'' /* max-height: calc(100vh - 130px); */} @media only screen and (max-width: 767px) {
+    padding: 50px 20px;
+    flex-direction: column;
+    height: auto;
   }
-`;
 
-export const BoxHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-`;
+  @media only screen and (min-width: 767px) and (max-width: 990px) {
+    padding: 40px 30px;
+  }
 
-export const FiltersBar = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-`;
-
-export const Filters = styled.h2`
-  font-size: 14px;
-  color: #788195;
-  font-family: 'Roboto';
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  > span {
-    padding: 0.5rem 1rem;
-    cursor: pointer;
+  .isoContactListBar {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    background: #ffffff;
+    border: 1px solid ${palette('border', 0)};
+    width: 320px;
+    overflow: hidden;
+    overflow-y: auto;
 
     @media only screen and (max-width: 767px) {
-      padding: 0.5rem;
+      width: auto !important;
+      margin-bottom: 20px;
+      min-width: 0 !important;
+      max-width: 100% !important;
+      flex: 0 !important;
+    }
+
+    @media only screen and (min-width: 767px) and (max-width: 990px) {
+      width: 270px !important;
+      flex: 0 0 270px !important;
     }
   }
-  .ant-checkbox-group-item {
-    display: block;
-  }
-  i.anticon {
-    color: #aeb0c1;
-    margin-left: 8px;
-  }
 
-  @media only screen and (max-width: 767px) {
-    flex-shrink: 0;
-  }
-`;
+  .isoContactBoxWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    background-color: #ffffff;
+    border: 1px solid ${palette('border', 0)};
+    border-left: ${(props) => (props['data-rtl'] === 'rtl' ? 'inherit' : '0')};
+    border-right: ${(props) => (props['data-rtl'] === 'rtl' ? '0' : 'inherit')};
+    position: relative;
 
-export const StatusTag = styled.span`
-  padding: 0 5px;
-  height: 20px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 2px;
-  background-color: ${palette('primary', 0)};
-  font-size: 12px;
-  color: #ffffff;
-  text-transform: capitalize;
+    .isoContactBox {
+      width: 100%;
+      height: 100%;
+    }
 
-  &.pending {
-    background-color: ${palette('error', 0)};
-  }
+    .contactBoxScrollbar {
+      height: calc(100vh - 225px) !important;
+    }
 
-  &.shipped {
-    background-color: ${palette('warning', 0)};
-  }
+    .isoContactControl {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      flex-shrink: 0;
+      padding: 30px;
+      background-color: #ffffff;
 
-  &.delivered {
-    background-color: ${palette('success', 0)};
-  }
-`;
+      @media only screen and (max-width: 767px) {
+        padding: 30px 20px;
+      }
 
-const CardWrapper = styled.div`
-  width: auto;
-  overflow: inherit;
-  position: relative;
-  .isoInvoiceTable {
-    table {
-      tbody {
-        tr {
-          td {
-            .isoInvoiceBtnView {
-              display: flex;
-              flex-direction: row;
-              > a {
-                margin: ${(props) =>
-                  props['data-rtl'] === 'rtl' ? '0 0 0 15px' : '0 15px 0 0'};
-              }
-            }
-          }
+      button:not(.isoAddContactBtn) {
+        font-size: 16px;
+        color: ${palette('secondary', 0)};
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+        background-color: #ffffff;
+        outline: 0;
+        padding: 0;
+        border: 1px solid ${palette('border', 0)};
+        margin-left: ${(props) =>
+          props['data-rtl'] === 'rtl' ? 'inherit' : '-1px'};
+        margin-right: ${(props) =>
+          props['data-rtl'] === 'rtl' ? '-1px' : 'inherit'};
+        cursor: pointer;
+        ${borderRadius()};
+        ${transition()};
+
+        i {
+          width: 100%;
+        }
+
+        &:first-child {
+          margin-left: ${(props) =>
+            props['data-rtl'] === 'rtl' ? 'inherit' : '0'};
+          margin-right: ${(props) =>
+            props['data-rtl'] === 'rtl' ? '0' : 'inherit'};
+        }
+
+        &:hover {
+          color: ${palette('primary', 0)};
+          background-color: ${palette('grayscale', 7)};
+        }
+      }
+
+      .isoAddContactBtn {
+        background-color: ${palette('primary', 0)};
+        border: 0;
+        height: 30px;
+        padding: 0 15px;
+        margin-left: ${(props) =>
+          props['data-rtl'] === 'rtl' ? 'inherit' : 'auto'};
+        margin-right: ${(props) =>
+          props['data-rtl'] === 'rtl' ? 'auto' : 'inherit'};
+        ${borderRadius('3px')};
+        ${transition()};
+
+        span {
+          font-size: 12px;
+          font-weight: 400;
+          padding: 0;
+          text-transform: uppercase;
+          color: #ffffff;
+        }
+
+        &:hover {
+          background-color: ${palette('primary', 1)};
         }
       }
     }
   }
-
-  .invoiceListTable {
-    .ant-dropdown-menu-item,
-    .ant-dropdown-menu-submenu-title {
-      &:hover {
-        background-color: ${palette('secondary', 1)};
-      }
-    }
-
-    .invoiceViewBtn {
-      color: ${palette('text', 3)};
-
-      &:hover {
-        color: ${palette('primary', 0)};
-      }
-    }
-
-    .invoiceDltBtn {
-      font-size: 18px;
-      border: 0;
-      color: ${palette('error', 0)};
-
-      &:hover {
-        border: 0;
-        color: ${palette('error', 2)};
-      }
-    }
-  }
 `;
 
-export default CardWrapper;
+const ContactsWrapper = WithDirection(WDContactsWrapper);
+
+export { ContactsWrapper };

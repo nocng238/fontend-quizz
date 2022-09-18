@@ -1,136 +1,53 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Button, Input, Form } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { Layout, Button } from 'antd';
 
-import LayoutWrapper from '@iso/components/utility/layoutWrapper';
-import PageHeader from '@iso/components/utility/pageHeader';
+import contactActions from '@iso/redux/contacts/actions';
+import SingleContactView from '@iso/components/Contacts/SingleView';
+import EditContactView from '@iso/components/Contacts/EditView';
+import { otherAttributes } from './data';
 import IntlMessages from '@iso/components/utility/intlMessages';
-import { BoxWrapper, BoxHeader } from './User.styles';
+import { ContactsWrapper } from './User.styles';
+import Scrollbar from '@iso/components/utility/customScrollBar';
+import { Link } from 'react-router-dom';
 
-const formItemLayout = {
-  labelCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 8,
-    },
-    lg: {
-      span: 6,
-    },
-  },
-  wrapperCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 16,
-    },
-    lg: {
-      span: 14,
-    },
-  },
-};
-const tailFormItemLayout = {
-  wrapperCol: {
-    xs: {
-      span: 24,
-      offset: 0,
-    },
-    sm: {
-      span: 16,
-      offset: 8,
-    },
-    lg: {
-      span: 14,
-      offset: 6,
-    },
-  },
-};
+const { editContact, viewChange } = contactActions;
 
-export default function UserCreate() {
-  const [form] = Form.useForm();
+const { Content } = Layout;
 
-  const onFinish = (values) => {
-    console.log('Received values of form: ', values);
-  };
+export default function Contacts() {
+  const { contacts, selectedId, editView } = useSelector(
+    (state) => state.Contacts
+  );
+  const dispatch = useDispatch();
+
+  const selectedContact = selectedId
+    ? contacts.filter((contact) => contact.id === selectedId)[0]
+    : null;
 
   return (
-    <LayoutWrapper>
-      <PageHeader>
-        <IntlMessages id='user.createUser' />
-      </PageHeader>
-
-      <BoxWrapper>
-        <BoxHeader>
-          <Link to='/users'>
-            <Button color='primary'>
-              <IntlMessages id='commons.back' />
+    <ContactsWrapper
+      className='isomorphicContacts'
+      style={{ background: 'none' }}
+    >
+      <Layout className='isoContactBoxWrapper'>
+        <Content className='isoContactBox'>
+          <div className='isoContactControl'>
+            <Button type='primary' className='isoAddContactBtn'>
+              <Link to='/users/edit/1'>
+                <IntlMessages id='commons.edit' />
+              </Link>
             </Button>
-          </Link>
-        </BoxHeader>
+          </div>
 
-        <Form
-          {...formItemLayout}
-          form={form}
-          name='register'
-          onFinish={onFinish}
-          initialValues={{
-            residence: ['zhejiang', 'hangzhou', 'xihu'],
-            prefix: '86',
-          }}
-          scrollToFirstError
-        >
-          <Form.Item
-            name='name'
-            label='Name'
-            rules={[
-              {
-                required: true,
-                message: 'Please input your name!',
-                whitespace: true,
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            name='email'
-            label='E-mail'
-            rules={[
-              {
-                type: 'email',
-                message: 'The input is not valid E-mail!',
-              },
-              {
-                required: true,
-                message: 'Please input your E-mail!',
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            name='phone'
-            label='Phone Number'
-            rules={[
-              {
-                required: true,
-                message: 'Please input your phone number!',
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item {...tailFormItemLayout}>
-            <Button type='primary' htmlType='submit'>
-              <IntlMessages id='commons.save' />
-            </Button>
-          </Form.Item>
-        </Form>
-      </BoxWrapper>
-    </LayoutWrapper>
+          <Scrollbar className='contactBoxScrollbar'>
+            <SingleContactView
+              contact={selectedContact}
+              otherAttributes={otherAttributes}
+            />
+          </Scrollbar>
+        </Content>
+      </Layout>
+    </ContactsWrapper>
   );
 }

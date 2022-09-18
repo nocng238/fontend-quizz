@@ -19,6 +19,7 @@
   "commons.delete": "Delete",
   "commons.back": "Back",
   "commons.save": "Save",
+  "commons.filter": "Filter",
 
   "languageSwitcher.label": "Change Language",
   "themeSwitcher": "Theme Switcher",

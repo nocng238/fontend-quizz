@@ -1,5 +1,6 @@
 import qs from 'qs';
-import options from './options';
+
+import options from '@iso/containers/Sidebar/options';
 import { isServer } from './isServer';
 
 export function getInitData() {
@@ -23,13 +24,13 @@ export function setUrl(searchState) {
 }
 
 export function getDefaultPath() {
-  const getParent = lastRoute => {
+  const getParent = (lastRoute) => {
     const parent = [];
     if (!lastRoute) return parent;
     parent.push(lastRoute);
-    options.forEach(option => {
+    options.forEach((option) => {
       if (option.children) {
-        option.children.forEach(child => {
+        option.children.forEach((child) => {
           if (child.key === lastRoute) {
             parent.push(option.key);
           }
