@@ -6,7 +6,8 @@ import Contacts from '@iso/redux/contacts/reducer';
 import ThemeSwitcher from '@iso/redux/themeSwitcher/reducer';
 import Invoices from '@iso/redux/invoice/reducer';
 import LanguageSwitcher from '@iso/redux/languageSwitcher/reducer';
-import profile from '@iso/redux/profile/reducer';
+import Profile from '@iso/redux/profile/reducer';
+import User from '@iso/redux/user/reducer';
 
 export default combineReducers({
   Auth,
@@ -15,5 +16,6 @@ export default combineReducers({
   LanguageSwitcher,
   Contacts,
   Invoices,
-  profile,
+  Profile,
+  User,
 });
