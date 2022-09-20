@@ -8,7 +8,7 @@ import HelperText from '@iso/components/utility/helper-text';
 import LayoutWrapper from '@iso/components/utility/layoutWrapper';
 import PageHeader from '@iso/components/utility/pageHeader';
 import IntlMessages from '@iso/components/utility/intlMessages';
-import invoiceActions from '@iso/redux/invoice/actions';
+import userActions from '@iso/redux/user/actions';
 import TableWrapper from '@iso/components/Table/Table.styles';
 import SearchInput from '@iso/components/ScrumBoard/SearchInput/SearchInput';
 import CardWrapper, {
@@ -19,7 +19,7 @@ import CardWrapper, {
 } from './UserList.styles';
 import UserFilter from './UserFilter';
 
-const { initData } = invoiceActions;
+const { getUsersAction } = userActions;
 
 const columns = [
   {
@@ -82,17 +82,17 @@ export default function UserList() {
   const history = useHistory();
 
   const [selected, setSelected] = useState([]);
-  const { initialInvoices, invoices } = useSelector((state) => state.Invoices);
+  const { users, total, page, limit } = useSelector((state) => state.User);
   const dispatch = useDispatch();
   const match = useRouteMatch();
 
   const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
-    if (!initialInvoices) {
-      dispatch(initData());
+    if (!users.length) {
+      dispatch(getUsersAction());
     }
-  }, [dispatch, initialInvoices]);
+  }, [dispatch, users]);
 
   const rowSelection = {
     hideDefaultSelections: true,
@@ -160,17 +160,19 @@ export default function UserList() {
         </BoxHeader>
 
         <CardWrapper>
-          {invoices.length === 0 ? (
-            <HelperText text='No Invoices' />
+          {users.length === 0 ? (
+            <HelperText text='No User' />
           ) : (
             <TableWrapper
               columns={columns}
-              dataSource={data}
+              dataSource={users}
               rowSelection={rowSelection}
               showSorterTooltip={false}
+              rowKey='_id'
               pagination={{
-                pageSize: 10,
-                total: 100,
+                pageSize: limit,
+                page: page,
+                total: total,
                 defaultPageSize: 20,
                 defaultCurrent: 1,
                 showTotal: (total) => `Total ${total} items`,

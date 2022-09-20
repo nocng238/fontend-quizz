@@ -30,8 +30,8 @@ const routes = [
     exact: true,
   },
   {
-    path: 'users/:id',
-    component: lazy(() => import('@iso/containers/User/Detail')),
+    path: 'users/:userId',
+    component: lazy(() => import('@iso/containers/User/Detail/UserDetail')),
   },
   {
     path: 'profile',
