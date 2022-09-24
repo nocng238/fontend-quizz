@@ -25,35 +25,6 @@ export const FiltersBar = styled.div`
   width: 100%;
 `;
 
-export const Filters = styled.h2`
-  font-size: 14px;
-  color: #788195;
-  font-family: 'Roboto';
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  > span {
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-
-    @media only screen and (max-width: 767px) {
-      padding: 0.5rem;
-    }
-  }
-  .ant-checkbox-group-item {
-    display: block;
-  }
-  i.anticon {
-    color: #aeb0c1;
-    margin-left: 8px;
-  }
-
-  @media only screen and (max-width: 767px) {
-    flex-shrink: 0;
-  }
-`;
-
 export const StatusTag = styled.span`
   padding: 0 5px;
   height: 20px;
@@ -66,15 +37,11 @@ export const StatusTag = styled.span`
   color: #ffffff;
   text-transform: capitalize;
 
-  &.pending {
+  &.inactive {
     background-color: ${palette('error', 0)};
   }
 
-  &.shipped {
-    background-color: ${palette('warning', 0)};
-  }
-
-  &.delivered {
+  &.active {
     background-color: ${palette('success', 0)};
   }
 `;

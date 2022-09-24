@@ -16,10 +16,10 @@ import CardWrapper, {
   BoxHeader,
   FiltersBar,
   StatusTag,
-} from './UserList.styles';
+} from '../User.styles';
 import UserFilter from './UserFilter';
 
-const { getUsersAction } = userActions;
+const { getUsersAction, getUserAction } = userActions;
 
 const columns = [
   {
@@ -46,37 +46,10 @@ const columns = [
     rowKey: 'status',
     sorter: true,
     render: (text) => {
-      let className;
-      if (text === 'shipped' || text === 'Shipped' || text === 'SHIPPED') {
-        className = 'shipped';
-      } else if (
-        text === 'delivered' ||
-        text === 'Delivered' ||
-        text === 'DELIVERED'
-      ) {
-        className = 'delivered';
-      } else if (
-        text === 'pending' ||
-        text === 'Pending' ||
-        text === 'PENDING'
-      ) {
-        className = 'pending';
-      }
-      return <StatusTag className={className}>{text}</StatusTag>;
+      return <StatusTag className={text}>{text}</StatusTag>;
     },
   },
 ];
-const data = [];
-
-for (let i = 0; i < 100; i++) {
-  data.push({
-    key: i,
-    name: `Edward King ${i}`,
-    email: `edward.king${i}@gmail.com`,
-    phone: `0123456789`,
-    status: 'pending',
-  });
-}
 
 export default function UserList() {
   const history = useHistory();
@@ -103,10 +76,12 @@ export default function UserList() {
   const handleActions = ({ key }) => {
     switch (key) {
       case 'detail':
-        history.push('/users/1');
+        history.push(`/users/${selected[0]}`);
+        dispatch(getUserAction(selected[0]));
         break;
       case 'edit':
-        history.push('/users/edit/1');
+        history.push(`/users/edit/${selected[0]}`);
+        dispatch(getUserAction(selected[0]));
         break;
       case 'reset':
         break;

@@ -8,8 +8,12 @@ export const getUserApi = async (userId) => {
   return await axios.get(`/users/${userId}`);
 };
 
-export const createUserApi = () => {};
+export const createUserApi = async (user) => {
+  return await axios.post(`/users`, user);
+};
 
-export const updateUserApi = () => {};
+export const updateUserApi = async ({ userId, user }) => {
+  return await axios.put(`/users/${userId}`, user);
+};
 
 export const deleteUserApi = () => {};

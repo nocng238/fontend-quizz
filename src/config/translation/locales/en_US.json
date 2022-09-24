@@ -12,6 +12,7 @@
   "user.btnCreateUser": "Create User",
   "user.createUser": "Create User",
   "user.resetPassword": "Reset Password",
+  "user.updateUser": "Update User",
 
   "commons.actions": "Actions",
   "commons.detail": "Detail",

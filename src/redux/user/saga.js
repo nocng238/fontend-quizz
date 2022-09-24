@@ -1,6 +1,6 @@
 import { all, call, put, takeEvery } from 'redux-saga/effects';
 
-import { getUsersApi, getUserApi } from './api';
+import { getUsersApi, createUserApi, getUserApi, updateUserApi } from './api';
 
 import types from './types';
 
@@ -34,9 +34,57 @@ export function* getUserSaga({ payload: { userId } }) {
   }
 }
 
-export function* createUserSaga() {}
+export function* createUserSaga({ payload: { user } }) {
+  try {
+    const { data } = yield call(createUserApi, user);
 
-export function* updateUserSaga() {}
+    yield put({
+      type: types.CREATE_USER_SUCCESS,
+      payload: {
+        message: data.message,
+      },
+    });
+
+    yield put({
+      type: types.GET_USERS,
+      payload: {
+        options: {},
+      },
+    });
+  } catch (error) {
+    const { data } = error.response;
+    yield put({
+      type: types.CREATE_USER_ERROR,
+      payload: { message: data.message },
+    });
+  }
+}
+
+export function* updateUserSaga({ payload }) {
+  try {
+    const { data } = yield call(updateUserApi, payload);
+
+    yield put({
+      type: types.UPDATE_USER_SUCCESS,
+      payload: {
+        message: data.message,
+      },
+    });
+
+    yield put({
+      type: types.GET_USERS,
+      payload: {
+        options: {},
+      },
+    });
+  } catch (error) {
+    const { data } = error.response;
+    yield put({
+      type: types.UPDATE_USER_ERROR,
+      payload: { message: data.message },
+    });
+  }
+}
 
 export function* deleteUserSaga() {}
 

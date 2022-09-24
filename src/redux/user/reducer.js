@@ -7,6 +7,8 @@ const initState = {
   limit: 10,
   total: 0,
   status: 'all',
+  isSuccess: false,
+  message: null,
 };
 
 export default function userReducer(state = initState, { type, payload }) {
@@ -35,11 +37,27 @@ export default function userReducer(state = initState, { type, payload }) {
         user: {},
       };
 
-    case types.CREATE_USER:
-      return state;
+    case types.CREATE_USER_SUCCESS:
+    case types.UPDATE_USER_SUCCESS:
+      return {
+        ...state,
+        message: payload.message,
+        isSuccess: true,
+      };
 
-    case types.UPDATE_USER:
-      return state;
+    case types.CREATE_USER_ERROR:
+    case types.UPDATE_USER_ERROR:
+      return {
+        ...state,
+        message: payload.message,
+      };
+
+    case types.CLEAR_NOTIFICATION:
+      return {
+        ...state,
+        message: null,
+        isSuccess: false,
+      };
 
     case types.DELETE_USER:
       return state;

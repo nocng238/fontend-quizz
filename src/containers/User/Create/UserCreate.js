@@ -1,59 +1,63 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Button, Input, Form } from 'antd';
+import React, { useEffect } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { Button, Input, Form, notification } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
 
 import LayoutWrapper from '@iso/components/utility/layoutWrapper';
 import PageHeader from '@iso/components/utility/pageHeader';
 import IntlMessages from '@iso/components/utility/intlMessages';
-import { BoxWrapper, BoxHeader } from './User.styles';
+import userActions from '@iso/redux/user/actions';
+import { BoxWrapper, BoxHeader } from '../User.styles';
 
 const formItemLayout = {
   labelCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 8,
-    },
-    lg: {
-      span: 6,
-    },
+    xs: { span: 24 },
+    sm: { span: 8 },
+    lg: { span: 6 },
   },
   wrapperCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 16,
-    },
-    lg: {
-      span: 14,
-    },
+    xs: { span: 24 },
+    sm: { span: 16 },
+    lg: { span: 14 },
   },
 };
+
 const tailFormItemLayout = {
   wrapperCol: {
-    xs: {
-      span: 24,
-      offset: 0,
-    },
-    sm: {
-      span: 16,
-      offset: 8,
-    },
-    lg: {
-      span: 14,
-      offset: 6,
-    },
+    xs: { span: 24, offset: 0 },
+    sm: { span: 16, offset: 8 },
+    lg: { span: 14, offset: 6 },
   },
 };
+
+const { createUserAction, clearNotificationAction } = userActions;
 
 export default function UserCreate() {
   const [form] = Form.useForm();
 
-  const onFinish = (values) => {
-    console.log('Received values of form: ', values);
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const { message, isSuccess } = useSelector((state) => state.User);
+
+  const onFinish = async (values) => {
+    dispatch(createUserAction(values));
   };
+
+  useEffect(() => {
+    if (message) {
+      const notiType = isSuccess ? 'success' : 'error';
+      const messageType = isSuccess ? 'Success' : 'Error';
+
+      notification[notiType]({
+        message: messageType,
+        description: message,
+      });
+      dispatch(clearNotificationAction());
+    }
+    if (isSuccess) {
+      history.push('/users');
+    }
+  }, [message]);
 
   return (
     <LayoutWrapper>
@@ -73,13 +77,8 @@ export default function UserCreate() {
         <Form
           {...formItemLayout}
           form={form}
-          name='register'
+          name='createUser'
           onFinish={onFinish}
-          initialValues={{
-            residence: ['zhejiang', 'hangzhou', 'xihu'],
-            prefix: '86',
-          }}
-          scrollToFirstError
         >
           <Form.Item
             name='name'
@@ -109,20 +108,11 @@ export default function UserCreate() {
               },
             ]}
           >
-            <Input />
+            <Input autoComplete='true' />
           </Form.Item>
 
-          <Form.Item
-            name='phone'
-            label='Phone Number'
-            rules={[
-              {
-                required: true,
-                message: 'Please input your phone number!',
-              },
-            ]}
-          >
-            <Input />
+          <Form.Item name='phone' label='Phone Number' default=''>
+            <Input autoComplete='true' />
           </Form.Item>
           <Form.Item {...tailFormItemLayout}>
             <Button type='primary' htmlType='submit'>

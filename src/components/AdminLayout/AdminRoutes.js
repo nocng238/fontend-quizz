@@ -21,12 +21,12 @@ const routes = [
   },
   {
     path: 'users/create',
-    component: lazy(() => import('@iso/containers/User/Create')),
+    component: lazy(() => import('@iso/containers/User/Create/UserCreate')),
     exact: true,
   },
   {
-    path: 'users/edit/:id',
-    component: lazy(() => import('@iso/containers/User/Edit')),
+    path: 'users/edit/:userId',
+    component: lazy(() => import('@iso/containers/User/Edit/UserEdit')),
     exact: true,
   },
   {
