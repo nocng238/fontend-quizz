@@ -16,4 +16,10 @@ export const updateUserApi = async ({ userId, user }) => {
   return await axios.put(`/users/${userId}`, user);
 };
 
-export const deleteUserApi = () => {};
+export const deleteUserApi = async (userId) => {
+  return await axios.delete(`/users/${userId}`);
+};
+
+export const resetPasswordApi = async (userId) => {
+  return await axios.post(`/users/reset-password/${userId}`);
+};

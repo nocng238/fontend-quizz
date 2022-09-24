@@ -39,6 +39,8 @@ export default function userReducer(state = initState, { type, payload }) {
 
     case types.CREATE_USER_SUCCESS:
     case types.UPDATE_USER_SUCCESS:
+    case types.DELETE_USER_SUCCESS:
+    case types.RESET_PASSWORD_SUCCESS:
       return {
         ...state,
         message: payload.message,
@@ -47,6 +49,8 @@ export default function userReducer(state = initState, { type, payload }) {
 
     case types.CREATE_USER_ERROR:
     case types.UPDATE_USER_ERROR:
+    case types.DELETE_USER_ERROR:
+    case types.RESET_PASSWORD_ERROR:
       return {
         ...state,
         message: payload.message,

@@ -18,5 +18,9 @@ export default {
     type: types.DELETE_USER,
     payload: { userId },
   }),
+  resetPasswordAction: (userId) => ({
+    type: types.RESET_PASSWORD,
+    payload: { userId },
+  }),
   clearNotificationAction: () => ({ type: types.CLEAR_NOTIFICATION }),
 };

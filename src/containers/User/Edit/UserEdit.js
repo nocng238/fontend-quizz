@@ -121,8 +121,12 @@ export default function UserEdit() {
 
           <Form.Item name='status' label='Status'>
             <Select>
-              <Option value='active'>Active</Option>
-              <Option value='inactive'>Inactive</Option>
+              <Option value='active'>
+                <IntlMessages id='commons.active' />
+              </Option>
+              <Option value='inactive'>
+                <IntlMessages id='commons.inactive' />
+              </Option>
             </Select>
           </Form.Item>
 

@@ -1,6 +1,13 @@
 import { all, call, put, takeEvery } from 'redux-saga/effects';
 
-import { getUsersApi, createUserApi, getUserApi, updateUserApi } from './api';
+import {
+  getUsersApi,
+  createUserApi,
+  getUserApi,
+  updateUserApi,
+  deleteUserApi,
+  resetPasswordApi,
+} from './api';
 
 import types from './types';
 
@@ -86,7 +93,57 @@ export function* updateUserSaga({ payload }) {
   }
 }
 
-export function* deleteUserSaga() {}
+export function* deleteUserSaga({ payload: { userId } }) {
+  try {
+    const { data } = yield call(deleteUserApi, userId);
+
+    yield put({
+      type: types.DELETE_USER_SUCCESS,
+      payload: {
+        message: data.message,
+      },
+    });
+
+    yield put({
+      type: types.GET_USERS,
+      payload: {
+        options: {},
+      },
+    });
+  } catch (error) {
+    const { data } = error.response;
+    yield put({
+      type: types.DELETE_USER_ERROR,
+      payload: { message: data.message },
+    });
+  }
+}
+
+export function* resetPasswordSaga({ payload: { userId } }) {
+  try {
+    const { data } = yield call(resetPasswordApi, userId);
+
+    yield put({
+      type: types.RESET_PASSWORD_SUCCESS,
+      payload: {
+        message: data.message,
+      },
+    });
+
+    yield put({
+      type: types.GET_USERS,
+      payload: {
+        options: {},
+      },
+    });
+  } catch (error) {
+    const { data } = error.response;
+    yield put({
+      type: types.RESET_PASSWORD_ERROR,
+      payload: { message: data.message },
+    });
+  }
+}
 
 export default function* rootSaga() {
   yield all([
@@ -95,5 +152,6 @@ export default function* rootSaga() {
     yield takeEvery(types.CREATE_USER, createUserSaga),
     yield takeEvery(types.UPDATE_USER, updateUserSaga),
     yield takeEvery(types.DELETE_USER, deleteUserSaga),
+    yield takeEvery(types.RESET_PASSWORD, resetPasswordSaga),
   ]);
 }

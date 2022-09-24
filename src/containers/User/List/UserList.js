@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory, useRouteMatch } from 'react-router-dom';
-import { Button, Menu, Dropdown } from 'antd';
+import { Button, Menu, Dropdown, notification } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 
 import HelperText from '@iso/components/utility/helper-text';
@@ -19,7 +19,13 @@ import CardWrapper, {
 } from '../User.styles';
 import UserFilter from './UserFilter';
 
-const { getUsersAction, getUserAction } = userActions;
+const {
+  getUsersAction,
+  getUserAction,
+  clearNotificationAction,
+  resetPasswordAction,
+  deleteUserAction,
+} = userActions;
 
 const columns = [
   {
@@ -55,7 +61,9 @@ export default function UserList() {
   const history = useHistory();
 
   const [selected, setSelected] = useState([]);
-  const { users, total, page, limit } = useSelector((state) => state.User);
+  const { users, total, page, limit, message, isSuccess } = useSelector(
+    (state) => state.User
+  );
   const dispatch = useDispatch();
   const match = useRouteMatch();
 
@@ -66,6 +74,19 @@ export default function UserList() {
       dispatch(getUsersAction());
     }
   }, [dispatch, users]);
+
+  useEffect(() => {
+    if (message) {
+      const notiType = isSuccess ? 'success' : 'error';
+      const messageType = isSuccess ? 'Success' : 'Error';
+
+      notification[notiType]({
+        message: messageType,
+        description: message,
+      });
+      dispatch(clearNotificationAction());
+    }
+  }, [message]);
 
   const rowSelection = {
     hideDefaultSelections: true,
@@ -84,8 +105,12 @@ export default function UserList() {
         dispatch(getUserAction(selected[0]));
         break;
       case 'reset':
+        dispatch(resetPasswordAction(selected[0]));
+        dispatch(clearNotificationAction());
         break;
       case 'delete':
+        dispatch(deleteUserAction(selected[0]));
+        dispatch(clearNotificationAction());
         break;
 
       default:
@@ -95,16 +120,22 @@ export default function UserList() {
 
   const actions = (
     <Menu onClick={handleActions}>
-      <Menu.Item key='detail'>
+      <Menu.Item
+        key='detail'
+        disabled={selected.length > 1 || !selected.length}
+      >
         <IntlMessages id='commons.detail' />
       </Menu.Item>
-      <Menu.Item key='edit'>
+      <Menu.Item key='edit' disabled={selected.length > 1 || !selected.length}>
         <IntlMessages id='commons.edit' />
       </Menu.Item>
-      <Menu.Item key='reset'>
+      <Menu.Item key='reset' disabled={selected.length > 1 || !selected.length}>
         <IntlMessages id='user.resetPassword' />
       </Menu.Item>
-      <Menu.Item key='delete'>
+      <Menu.Item
+        key='delete'
+        disabled={selected.length > 1 || !selected.length}
+      >
         <IntlMessages id='commons.delete' />
       </Menu.Item>
     </Menu>

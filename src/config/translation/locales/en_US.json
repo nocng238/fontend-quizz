@@ -21,6 +21,8 @@
   "commons.back": "Back",
   "commons.save": "Save",
   "commons.filter": "Filter",
+  "commons.active": "Active",
+  "commons.inactive": "Inactive",
 
   "languageSwitcher.label": "Change Language",
   "themeSwitcher": "Theme Switcher",
