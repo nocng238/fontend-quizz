@@ -44,6 +44,7 @@ export default function UserEdit() {
   const { message, isSuccess, user } = useSelector((state) => state.User);
 
   useEffect(() => {
+    console.log(1111);
     if (!Object.keys(user).length) {
       dispatch(getUserAction(userId));
     }
@@ -70,7 +71,7 @@ export default function UserEdit() {
     if (isSuccess) {
       history.push('/users');
     }
-  }, [message]);
+  }, [dispatch, history, isSuccess, message]);
 
   const onFinish = async (values) => {
     dispatch(updateUserAction(userId, values));

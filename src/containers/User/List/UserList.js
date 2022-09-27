@@ -9,7 +9,6 @@ import LayoutWrapper from '@iso/components/utility/layoutWrapper';
 import PageHeader from '@iso/components/utility/pageHeader';
 import IntlMessages from '@iso/components/utility/intlMessages';
 import userActions from '@iso/redux/user/actions';
-import TableWrapper from '@iso/components/Table/Table.styles';
 import SearchInput from '@iso/components/SearchInput/SearchInput';
 import CardWrapper, {
   BoxWrapper,
@@ -34,6 +33,9 @@ const columns = [
     dataIndex: 'name',
     rowKey: 'name',
     sorter: true,
+    render: (text, record) => {
+      return <Link to={`/users/${record._id}`}>{text}</Link>;
+    },
   },
   {
     title: 'Email',

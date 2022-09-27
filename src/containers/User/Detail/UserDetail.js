@@ -34,17 +34,17 @@ export default function UserDetail() {
   const { user } = useSelector((state) => state.User);
 
   useEffect(() => {
-    if (!Object.keys(user).length) {
-      dispatch(getUserAction(userId));
-    }
+    dispatch(getUserAction(userId));
+  }, [userId]);
 
+  useEffect(() => {
     form.setFieldsValue({
       name: user?.name,
       email: user?.email,
       phone: user?.phone,
       status: user?.status,
     });
-  }, [userId, user]);
+  });
 
   return (
     <LayoutWrapper>

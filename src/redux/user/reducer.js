@@ -7,7 +7,7 @@ export const initState = {
   limit: 10,
   sort: '-createdAt',
   total: 0,
-  status: 'all',
+  status: [],
   isSuccess: false,
   message: null,
 };
