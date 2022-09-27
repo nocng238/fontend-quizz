@@ -13,6 +13,7 @@
   "user.createUser": "Create User",
   "user.resetPassword": "Reset Password",
   "user.updateUser": "Update User",
+  "user.detailUser": "Detail User",
 
   "commons.actions": "Actions",
   "commons.detail": "Detail",

@@ -44,7 +44,6 @@ export default function UserEdit() {
   const { message, isSuccess, user } = useSelector((state) => state.User);
 
   useEffect(() => {
-    console.log(1111);
     if (!Object.keys(user).length) {
       dispatch(getUserAction(userId));
     }

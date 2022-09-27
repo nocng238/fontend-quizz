@@ -49,7 +49,7 @@ export default function UserDetail() {
   return (
     <LayoutWrapper>
       <PageHeader>
-        <IntlMessages id='user.updateUser' />
+        <IntlMessages id='user.detailUser' />
       </PageHeader>
 
       <BoxWrapper>
