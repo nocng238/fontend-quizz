@@ -1,7 +1,7 @@
 import axios from '../../library/helpers/axios';
 
 export const getUsersApi = async (options) => {
-  return await axios.get('/users/', options);
+  return await axios.get('/users', { params: options });
 };
 
 export const getUserApi = async (userId) => {

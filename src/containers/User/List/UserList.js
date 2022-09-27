@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory, useRouteMatch } from 'react-router-dom';
-import { Button, Menu, Dropdown, notification } from 'antd';
+import { Button, Menu, Dropdown, notification, Table } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 
 import HelperText from '@iso/components/utility/helper-text';
@@ -10,7 +10,7 @@ import PageHeader from '@iso/components/utility/pageHeader';
 import IntlMessages from '@iso/components/utility/intlMessages';
 import userActions from '@iso/redux/user/actions';
 import TableWrapper from '@iso/components/Table/Table.styles';
-import SearchInput from '@iso/components/ScrumBoard/SearchInput/SearchInput';
+import SearchInput from '@iso/components/SearchInput/SearchInput';
 import CardWrapper, {
   BoxWrapper,
   BoxHeader,
@@ -21,6 +21,7 @@ import UserFilter from './UserFilter';
 
 const {
   getUsersAction,
+  setParamsUserListAction,
   getUserAction,
   clearNotificationAction,
   resetPasswordAction,
@@ -61,19 +62,24 @@ export default function UserList() {
   const history = useHistory();
 
   const [selected, setSelected] = useState([]);
-  const { users, total, page, limit, message, isSuccess } = useSelector(
-    (state) => state.User
-  );
+  let { users, total, page, limit, sort, status, message, isSuccess } =
+    useSelector((state) => state.User);
   const dispatch = useDispatch();
   const match = useRouteMatch();
 
   const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
-    if (!users.length) {
-      dispatch(getUsersAction());
-    }
-  }, [dispatch, users]);
+    dispatch(
+      getUsersAction({
+        search: searchText,
+        page,
+        limit,
+        sort,
+        status,
+      })
+    );
+  }, [searchText, page, sort, limit, status]);
 
   useEffect(() => {
     if (message) {
@@ -92,6 +98,28 @@ export default function UserList() {
     hideDefaultSelections: true,
     selectedRowKeys: selected,
     onChange: (selected) => setSelected(selected),
+  };
+
+  const handleTableChange = (pagination, filters, sorter) => {
+    if (Object.keys(sorter).length) {
+      sort = sorter.order === 'ascend' ? sorter.field : `-${sorter.field}`;
+    }
+
+    dispatch(
+      setParamsUserListAction({
+        page: pagination.current,
+        limit: limit,
+        sort,
+      })
+    );
+  };
+
+  const handleFilter = (value) => {
+    dispatch(
+      setParamsUserListAction({
+        status: value,
+      })
+    );
   };
 
   const handleActions = ({ key }) => {
@@ -156,7 +184,7 @@ export default function UserList() {
         <BoxHeader>
           <FiltersBar>
             <SearchInput onChange={(value) => setSearchText(value)} />
-            <UserFilter />
+            <UserFilter onHandleFilter={handleFilter} />
           </FiltersBar>
           <Dropdown overlay={actions}>
             <Button>
@@ -169,18 +197,19 @@ export default function UserList() {
           {users.length === 0 ? (
             <HelperText text='No User' />
           ) : (
-            <TableWrapper
+            <Table
               columns={columns}
               dataSource={users}
               rowSelection={rowSelection}
               showSorterTooltip={false}
               rowKey='_id'
+              onChange={handleTableChange}
               pagination={{
                 pageSize: limit,
+                showSizeChanger: true,
+                pageSizeOptions: [10, 20, 50, 100],
                 page: page,
                 total: total,
-                defaultPageSize: 20,
-                defaultCurrent: 1,
                 showTotal: (total) => `Total ${total} items`,
               }}
               scroll={{ y: 'calc(100vh - 435px)' }}

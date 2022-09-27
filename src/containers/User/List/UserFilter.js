@@ -9,7 +9,7 @@ const style = {
 
 const { Option } = Select;
 
-const UserFilter = () => {
+const UserFilter = ({ onHandleFilter }) => {
   const [form] = Form.useForm();
 
   const [open, setOpen] = useState(false);
@@ -23,7 +23,7 @@ const UserFilter = () => {
   };
 
   const handleChange = (value) => {
-    console.log(`selected ${value}`);
+    onHandleFilter(value);
   };
 
   return (
@@ -54,12 +54,13 @@ const UserFilter = () => {
               placeholder='Please select'
               onChange={handleChange}
             >
-              <Option value='active'>Active</Option>
-              <Option value='inactive'>Inactive</Option>
+              <Option value='active'>
+                <IntlMessages id='commons.active' />
+              </Option>
+              <Option value='inactive'>
+                <IntlMessages id='commons.inactive' />
+              </Option>
             </Select>
-          </Form.Item>
-          <Form.Item>
-            <Button type='primary'>Filter</Button>
           </Form.Item>
         </Form>
       </Drawer>

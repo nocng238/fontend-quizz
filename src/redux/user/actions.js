@@ -5,6 +5,10 @@ export default {
     type: types.GET_USERS,
     payload: { options },
   }),
+  setParamsUserListAction: (options) => ({
+    type: types.SET_PARAMS_USER_LIST,
+    payload: { options },
+  }),
   getUserAction: (userId) => ({ type: types.GET_USER, payload: { userId } }),
   createUserAction: (user) => ({ type: types.CREATE_USER, payload: { user } }),
   updateUserAction: (userId, user) => ({

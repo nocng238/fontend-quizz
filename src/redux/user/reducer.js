@@ -1,10 +1,11 @@
 import types from './types';
 
-const initState = {
+export const initState = {
   users: [],
   user: {},
   page: 1,
   limit: 10,
+  sort: '-createdAt',
   total: 0,
   status: 'all',
   isSuccess: false,
@@ -13,15 +14,29 @@ const initState = {
 
 export default function userReducer(state = initState, { type, payload }) {
   switch (type) {
+    case types.GET_USERS:
+      return {
+        ...state,
+      };
+
     case types.GET_USERS_SUCCESS:
-      const { users, status, page, total, limit } = payload.data;
+      const response = payload.data;
 
       return {
         ...state,
-        users,
-        total,
+        users: response.users,
+        total: response.total,
+        page: response.page,
+      };
+
+    case types.SET_PARAMS_USER_LIST:
+      const { page, limit, sort, status } = payload.options;
+
+      return {
+        ...state,
         page,
         limit,
+        sort,
         status,
       };
 

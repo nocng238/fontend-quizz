@@ -1,5 +1,7 @@
 import { all, call, put, takeEvery } from 'redux-saga/effects';
 
+import types from './types';
+import { initState } from './reducer';
 import {
   getUsersApi,
   createUserApi,
@@ -8,8 +10,6 @@ import {
   deleteUserApi,
   resetPasswordApi,
 } from './api';
-
-import types from './types';
 
 export function* getUsersSaga({ payload: { options } }) {
   try {
@@ -81,7 +81,9 @@ export function* updateUserSaga({ payload }) {
     yield put({
       type: types.GET_USERS,
       payload: {
-        options: {},
+        options: {
+          sort: initState.sort,
+        },
       },
     });
   } catch (error) {
@@ -107,7 +109,9 @@ export function* deleteUserSaga({ payload: { userId } }) {
     yield put({
       type: types.GET_USERS,
       payload: {
-        options: {},
+        options: {
+          sort: initState.sort,
+        },
       },
     });
   } catch (error) {
@@ -133,7 +137,9 @@ export function* resetPasswordSaga({ payload: { userId } }) {
     yield put({
       type: types.GET_USERS,
       payload: {
-        options: {},
+        options: {
+          sort: initState.sort,
+        },
       },
     });
   } catch (error) {
