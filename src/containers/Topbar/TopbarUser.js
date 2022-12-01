@@ -7,6 +7,7 @@ import IntlMessages from '@iso/components/utility/intlMessages';
 import userpic from '@iso/assets/images/user1.png';
 import authAction from '@iso/redux/auth/actions';
 import TopbarDropdownWrapper from './TopbarDropdown.styles';
+import { useSelector } from 'react-redux';
 
 const { logout } = authAction;
 
@@ -41,13 +42,13 @@ export default function TopbarUser() {
     <Popover
       content={content}
       trigger='click'
-      visible={visible}
-      onVisibleChange={handleVisibleChange}
+      open={visible}
+      onOpenChange={handleVisibleChange}
       arrowPointAtCenter={true}
       placement='bottomLeft'
     >
       <div className='isoImgWrapper'>
-        <img alt='user' src={userpic} />
+        <img alt='user' src={localStorage.getItem('avatar') || null} />
         <span className='userActivity online' />
       </div>
     </Popover>

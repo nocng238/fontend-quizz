@@ -5,13 +5,13 @@ import {
   BrowserRouter as Router,
   Switch,
 } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import Loader from '@iso/components/utility/loader';
 import ErrorBoundary from './ErrorBoundary';
+import { useEffect } from 'react';
 
 const AdminLayout = lazy(() => import('./components/AdminLayout/AdminLayout'));
-
 const publicRoutes = [
   {
     path: '/404',
@@ -43,10 +43,14 @@ const publicRoutes = [
       import('@iso/containers/Authentication/Auth0/Auth0Callback')
     ),
   },
+  {
+    path: '/test',
+    component: lazy(() => import('@iso/containers/Assignment/View/Assignment')),
+    exact: true,
+  },
 ];
 function PrivateRoute({ children, ...rest }) {
   const isLoggedIn = useSelector((state) => state.Auth.idToken);
-
   return (
     <Route
       {...rest}
@@ -78,6 +82,7 @@ export default function Routes() {
               </Route>
             ))}
             <PrivateRoute>
+              {/* role routes */}
               <AdminLayout />
             </PrivateRoute>
           </Switch>

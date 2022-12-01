@@ -37,6 +37,25 @@ const routes = [
     path: 'profile',
     component: lazy(() => import('@iso/containers/Profile/Profile')),
   },
+  {
+    path: 'assignments',
+    component: lazy(() =>
+      import('@iso/containers/Assignment/List/AssignmentList')
+    ),
+    exact: true,
+  },
+  {
+    path: 'assignments/create',
+    component: lazy(() =>
+      import('@iso/containers/Assignment/Create/AssignmentCreate')
+    ),
+    exact: true,
+  },
+  // {
+  //   path: 'test',
+  //   component: lazy(() => import('@iso/containers/Assignment/View/Assignment')),
+  //   exact: true,
+  // },
 ];
 
 export default function AdminRouter() {

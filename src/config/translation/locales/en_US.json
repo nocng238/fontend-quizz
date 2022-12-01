@@ -1,7 +1,7 @@
 {
-  "sidebar.hr": "HR",
+  "sidebar.management": "Management",
   "sidebar.user": "User",
-  "sidebar.campaign": "Campaign",
+  "sidebar.assignment": "Assignment",
   "sidebar.settings": "Settings",
 
   "topbar.notification": "Notification",
@@ -14,6 +14,10 @@
   "user.resetPassword": "Reset Password",
   "user.updateUser": "Update User",
   "user.detailUser": "Detail User",
+
+  "assignment.listAssignments" : "List Assignments",
+  "assignment.btnCreateAssignment": "Create assignment",
+  "assignment.createAssignment" : "Create assignment",
 
   "commons.actions": "Actions",
   "commons.detail": "Detail",
