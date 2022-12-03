@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory, useRouteMatch } from 'react-router-dom';
 import { Button, Menu, Dropdown, notification, Table } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
+import { DownOutlined, EyeFilled } from '@ant-design/icons';
 import Switch from '@iso/components/uielements/switch.js';
 import HelperText from '@iso/components/utility/helper-text';
 import LayoutWrapper from '@iso/components/utility/layoutWrapper';
@@ -18,6 +18,7 @@ import CardWrapper, {
   StatusTag,
   ActionWrapper,
 } from '../Assignment.styles';
+import axios from '../../../library/helpers/axios';
 // import UserFilter from './UserFilter';
 //Redux actions
 // const {
@@ -28,107 +29,46 @@ import CardWrapper, {
 //   resetPasswordAction,
 //   deleteUserAction,
 // } = userActions;
-
-const columns = [
-  {
-    title: 'Title',
-    dataIndex: 'title',
-    rowKey: 'title',
-    width: '30%',
-    sorter: true,
-    render: (text, record) => {
-      console.log('title', text);
-      //   return <Link to={`/assignments/${record._id}`}>{text}</Link>;
-      return <span>{text}</span>;
-    },
-  },
-  {
-    title: 'Time',
-    dataIndex: 'time',
-    rowKey: 'time',
-    sorter: true,
-    width: '10%',
-    render: (text) => <span>{text}</span>,
-  },
-  {
-    title: 'Questions',
-    dataIndex: 'questions',
-    rowKey: 'questions',
-    sorter: true,
-    width: '15%',
-    render: (text) => <span style={{ marginLeft: '20px' }}>{text}</span>,
-  },
-  {
-    title: 'Status',
-    dataIndex: 'status',
-    rowKey: 'status',
-    width: '20%',
-    sorter: true,
-    render: (text) => {
-      console.log('Status', text);
-      //   return <StatusTag className={text}>{text}</StatusTag>;
-      return (
-        <Switch
-          checkedChildren='Active'
-          unCheckedChildren='Unactive'
-          defaultChecked={text === 'active'}
-        ></Switch>
-      );
-    },
-  },
-  {
-    title: 'Actions',
-    width: '60px',
-    rowKey: 'action',
-    render: (text, row) => {
-      return (
-        <ActionWrapper>
-          <a href='# '>
-            <i className='ion-android-create' />
-          </a>
-
-          <Popconfirms
-            title='Are you sure to delete this record?'
-            okText='Yes'
-            cancelText='No'
-            placement='topRight'
-            // onConfirm={() => handleRecord('delete', row)}
-          >
-            <a className='deleteBtn' href='# '>
-              <i className='ion-android-delete' />
-            </a>
-          </Popconfirms>
-        </ActionWrapper>
-      );
-    },
-  },
-];
+const { privateAxios } = axios;
 
 export default function AssignmentList() {
   const history = useHistory();
+  const [count, setCount] = useState(1);
 
   const [selected, setSelected] = useState([]);
   //   let { users, total, page, limit, sort, status, message, isSuccess } =
   //     useSelector((state) => state.User);
   const dispatch = useDispatch();
+  const [assignments, setAssignments] = useState([]);
   const match = useRouteMatch();
-  const assignments = [
-    {
-      _id: 1,
-      title: 'JAVA01',
-      time: '60m',
-      questions: 30,
-      status: 'active',
-    },
-    {
-      _id: 2,
-      title: 'JAVA01',
-      time: '60m',
-      questions: 30,
-      status: 'active',
-    },
-  ];
+  // const assignments = [
+  //   {
+  //     id: '63876b8fff09385211e92041',
+  //     title: 'Bai kiem tra giua ky 16 thanh 17',
+  //     questions: 2,
+  //     duration: 0,
+  //     status: false,
+  //   },
+  //   {
+  //     id: '63876a1773624d3f9e7041c0',
+  //     title: 'Bai kiem tra giua ky 2',
+  //     questions: 0,
+  //     duration: 0,
+  //     status: false,
+  //   },
+  // ];
   const [searchText, setSearchText] = useState('');
+  const [options, setOptions] = useState({ page: 1, limit: 5 });
+  useEffect(() => {
+    const getData = async () => {
+      const res = await privateAxios.get('/assignment', {
+        params: { options },
+      });
+      console.log('use effect run');
+      setAssignments(res.data);
+    };
+    getData();
+  }, [options]);
 
   //   useEffect(() => {
   //     dispatch(
@@ -161,27 +101,28 @@ export default function AssignmentList() {
     onChange: (selected) => setSelected(selected),
   };
 
-  //   const handleTableChange = (pagination, filters, sorter) => {
-  //     if (Object.keys(sorter).length) {
-  //       sort = sorter.order === 'ascend' ? sorter.field : `-${sorter.field}`;
-  //     }
+  const handleTableChange = (pagination, filters, sorter) => {
+    let sortBy = '';
+    if (sorter.column) {
+      console.log(sorter.field);
+      sortBy = sorter.order === 'ascend' ? sorter.field : `-${sorter.field}`;
+    }
 
-  //     dispatch(
-  //       setParamsUserListAction({
-  //         page: pagination.current,
-  //         limit: limit,
-  //         sort,
-  //       })
-  //     );
-  //   };
+    setOptions({
+      sort: sortBy,
+      page: pagination.current,
+      limit: pagination.pageSize,
+    });
+  };
 
-  //   const handleFilter = (value) => {
-  //     dispatch(
-  //       setParamsUserListAction({
-  //         status: value,
-  //       })
-  //     );
-  //   };
+  // const handleFilter = (value) => {
+  //   dispatch(
+  //     setParamsUserListAction({
+  //       status: value,
+  //     })
+  //   );
+  // };
+  // const handleDeleteAssignment = ()
 
   const handleActions = ({ key }) => {
     switch (
@@ -209,28 +150,108 @@ export default function AssignmentList() {
     }
   };
 
-  //   const actions = (
-  //     <Menu onClick={handleActions}>
-  //       <Menu.Item
-  //         key='detail'
-  //         disabled={selected.length > 1 || !selected.length}
-  //       >
-  //         <IntlMessages id='commons.detail' />
-  //       </Menu.Item>
-  //       <Menu.Item key='edit' disabled={selected.length > 1 || !selected.length}>
-  //         <IntlMessages id='commons.edit' />
-  //       </Menu.Item>
-  //       <Menu.Item key='reset' disabled={selected.length > 1 || !selected.length}>
-  //         <IntlMessages id='user.resetPassword' />
-  //       </Menu.Item>
-  //       <Menu.Item
-  //         key='delete'
-  //         disabled={selected.length > 1 || !selected.length}
-  //       >
-  //         <IntlMessages id='commons.delete' />
-  //       </Menu.Item>
-  //     </Menu>
-  //   );
+  const actions = (
+    <Menu onClick={handleActions}>
+      <Menu.Item
+        key='detail'
+        disabled={selected.length > 1 || !selected.length}
+      >
+        <IntlMessages id='commons.detail' />
+      </Menu.Item>
+      <Menu.Item key='edit' disabled={selected.length > 1 || !selected.length}>
+        <IntlMessages id='commons.edit' />
+      </Menu.Item>
+      <Menu.Item key='reset' disabled={selected.length > 1 || !selected.length}>
+        <IntlMessages id='user.resetPassword' />
+      </Menu.Item>
+      <Menu.Item
+        key='delete'
+        disabled={selected.length > 1 || !selected.length}
+      >
+        <IntlMessages id='commons.delete' />
+      </Menu.Item>
+    </Menu>
+  );
+  const columns = [
+    {
+      title: 'Title',
+      dataIndex: 'title',
+      rowKey: 'title',
+      width: '30%',
+      sorter: true,
+      render: (text, record) => {
+        //   return <Link to={`/assignments/${record._id}`}>{text}</Link>;
+        return <span>{text}</span>;
+      },
+    },
+    {
+      title: 'Duration',
+      dataIndex: 'duration',
+      rowKey: 'duration',
+      sorter: true,
+      width: '10%',
+      render: (text) => <span>{text}m</span>,
+    },
+    {
+      title: 'Questions',
+      dataIndex: 'questions',
+      rowKey: 'questions',
+      sorter: true,
+      width: '15%',
+      render: (text) => <span style={{ marginLeft: '20px' }}>{text}</span>,
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      rowKey: 'status',
+      width: '20%',
+      sorter: true,
+      render: (text) => {
+        return (
+          <Switch
+            checkedChildren='Active'
+            unCheckedChildren='Unactive'
+            defaultChecked={text === true}
+            onChange={() => {
+              setCount(2);
+            }}
+          ></Switch>
+        );
+      },
+    },
+    {
+      title: 'Actions',
+      width: '60px',
+      rowKey: 'action',
+      render: (text, row) => {
+        return (
+          <ActionWrapper>
+            <Link to={`/assignments/edit/${row.id}`}>
+              {/* <Link to={`/assignments/edit`}> */}
+              <i className='ion-android-create' />
+            </Link>
+
+            <Popconfirms
+              title='Are you sure to delete this record?'
+              okText='Yes'
+              cancelText='No'
+              placement='topRight'
+              onConfirm={async () => {
+                await privateAxios.delete(`/assignment/${row.id}`);
+                setAssignments(
+                  assignments.filter((assignment) => assignment.id !== row.id)
+                );
+              }}
+            >
+              <a className='deleteBtn' href='# '>
+                <i className='ion-android-delete' />
+              </a>
+            </Popconfirms>
+          </ActionWrapper>
+        );
+      },
+    },
+  ];
 
   return (
     <LayoutWrapper>
@@ -250,15 +271,15 @@ export default function AssignmentList() {
             {/* <UserFilter onHandleFilter={handleFilter} /> */}
           </FiltersBar>
           {/*overlay={actions}*/}
-          {/* <Dropdown>
+          <Dropdown overlay={actions}>
             <Button>
               <IntlMessages id='commons.actions' /> <DownOutlined />
             </Button>
-          </Dropdown> */}
+          </Dropdown>
         </BoxHeader>
 
         <CardWrapper>
-          {assignments.length === 0 ? (
+          {assignments?.length === 0 ? (
             <HelperText text='No Assignment' />
           ) : (
             <Table
@@ -267,14 +288,13 @@ export default function AssignmentList() {
               rowSelection={rowSelection}
               showSorterTooltip={false}
               rowKey='_id'
-              // onChange={handleTableChange}
+              onChange={handleTableChange}
               pagination={{
                 // pageSize: limit,
                 showSizeChanger: true,
-                pageSizeOptions: [10, 20, 50, 100],
+                pageSizeOptions: [1, 10, 20, 50, 100],
                 // page: 1,
                 // total: total,
-                showTotal: (total) => `Total ${total} items`,
               }}
               scroll={{ y: 'calc(100vh - 435px)' }}
             />

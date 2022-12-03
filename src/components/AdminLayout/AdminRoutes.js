@@ -51,6 +51,14 @@ const routes = [
     ),
     exact: true,
   },
+  {
+    path: 'assignments/edit/:assignmentId',
+    // path: 'assignments/edit',
+    component: lazy(() =>
+      import('@iso/containers/Assignment/Edit/AssignmentEdit')
+    ),
+    exact: true,
+  },
   // {
   //   path: 'test',
   //   component: lazy(() => import('@iso/containers/Assignment/View/Assignment')),
