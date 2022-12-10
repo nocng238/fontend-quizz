@@ -1,5 +1,5 @@
-# Dev Plus System
-Dev Plus System is a system developed by Dev Plus, used to manage daily activities of organization. The system includes functions of recruitment, staff management, projects management, documents management.
+# Online quizz system
+ Online quizz system is a system developed by me, used to bla bla bla
 
 ## Techniques
 - [NodeJs - v14](https://nodejs.org/en/docs/)
@@ -65,4 +65,4 @@ git commit -m "feat(user-create): make page add new user"
 
 - Reference [GIT](https://github.com/vuejs/vue/blob/dev/.github/COMMIT_CONVENTION.md)
 
-**Developed by [Dev Plus](https://devplus.edu.vn)**
+**Developed by Ngoc Nguyen**
