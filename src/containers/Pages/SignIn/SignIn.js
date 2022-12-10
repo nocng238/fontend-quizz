@@ -1,43 +1,35 @@
-import React from 'react';
-import { Link, Redirect, useHistory, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, Redirect, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { Form, Input, Checkbox, Button, notification } from 'antd';
 
-import Input from '@iso/components/uielements/input';
-import Checkbox from '@iso/components/uielements/checkbox';
-import Button from '@iso/components/uielements/button';
 import IntlMessages from '@iso/components/utility/intlMessages';
 import authAction from '@iso/redux/auth/actions';
-import appAction from '@iso/redux/app/actions';
 import SignInStyleWrapper from './SignIn.styles';
 import siteConfig from '@iso/config/site.config';
 
-const { login } = authAction;
-const { clearMenu } = appAction;
+const { login, clearNotificationAction } = authAction;
 
 export default function SignIn() {
-  let history = useHistory();
+  const [form] = Form.useForm();
   let location = useLocation();
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector((state) => state.Auth.idToken);
 
-  const [redirectToReferrer, setRedirectToReferrer] = React.useState(false);
-  React.useEffect(() => {
-    if (isLoggedIn) {
+  const { idToken } = useSelector((state) => state.Auth);
+
+  const [redirectToReferrer, setRedirectToReferrer] = useState(false);
+  useEffect(() => {
+    if (idToken) {
       setRedirectToReferrer(true);
     }
-  }, [isLoggedIn]);
+  }, [idToken]);
 
-  function handleLogin(e, token = false) {
-    e.preventDefault();
-    if (token) {
-      dispatch(login(token));
-    } else {
-      dispatch(login());
-    }
-    dispatch(clearMenu());
-    history.push('/dashboard');
-  }
-  let { from } = location.state || { from: { pathname: '/dashboard' } };
+  const handleLogin = async (values) => {
+    console.log(values);
+    await dispatch(login(values));
+  };
+
+  let { from } = location.state || { from: { pathname: '/' } };
 
   if (redirectToReferrer) {
     return <Redirect to={from} />;
@@ -47,39 +39,46 @@ export default function SignIn() {
       <div className='isoLoginContentWrapper'>
         <div className='isoLoginContent'>
           <div className='isoLogoWrapper'>
-            <Link to='/dashboard'>{siteConfig.siteName}</Link>
+            <Link to='/'>{siteConfig.siteName}</Link>
           </div>
           <div className='isoSignInForm'>
-            <form>
-              <div className='isoInputWrapper'>
-                <Input
-                  size='large'
-                  placeholder='Username'
-                  autoComplete='true'
-                />
-              </div>
-
-              <div className='isoInputWrapper'>
-                <Input
-                  size='large'
-                  type='password'
-                  placeholder='Password'
-                  autoComplete='false'
-                />
-              </div>
-
-              <div className='isoInputWrapper isoLeftRightComponent'>
+            <Form form={form} name='signin' onFinish={handleLogin}>
+              <Form.Item
+                name='userName'
+                className='isoInputWrapper'
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please input your username!',
+                  },
+                ]}
+              >
+                <Input placeholder='Username' />
+              </Form.Item>
+              <Form.Item
+                name='password'
+                className='isoInputWrapper'
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please input your password',
+                    whitespace: true,
+                  },
+                ]}
+              >
+                <Input.Password placeholder='Password' />
+              </Form.Item>
+              <Form.Item className='isoInputWrapper isoLeftRightComponent'>
                 <Checkbox>
                   <IntlMessages id='page.signInRememberMe' />
                 </Checkbox>
-              </div>
-
-              <div className='isoInputWrapper'>
-                <Button type='primary' onClick={handleLogin}>
+              </Form.Item>
+              <Form.Item className='isoInputWrapper'>
+                <Button type='primary' htmlType='submit'>
                   <IntlMessages id='page.signInButton' />
                 </Button>
-              </div>
-            </form>
+              </Form.Item>
+            </Form>
             <div className='mt-10'>
               <Link to='/forgot-password'>
                 <IntlMessages id='page.forgetPassSubTitle' />

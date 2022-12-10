@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Layout } from 'antd';
 
@@ -11,24 +11,16 @@ import SidebarWrapper from './Sidebar.styles';
 import SidebarMenu from './SidebarMenu';
 
 const { Sider } = Layout;
-
-const {
-  toggleOpenDrawer,
-  changeOpenKeys,
-  changeCurrent,
-  toggleCollapsed
-} = appActions;
-
+// const role = Math.floor(Math.random() * 2);
+const role = localStorage.getItem('role');
+console.log('Role: ', role);
+const option = options[role];
+const { toggleOpenDrawer, changeOpenKeys, changeCurrent, toggleCollapsed } =
+  appActions;
 export default function Sidebar() {
   const dispatch = useDispatch();
-  const {
-    view,
-    openKeys,
-    collapsed,
-    openDrawer,
-    current,
-    height
-  } = useSelector((state) => state.App);
+  const { view, openKeys, collapsed, openDrawer, current, height } =
+    useSelector((state) => state.App);
 
   const customizedTheme = useSelector(
     (state) => state.ThemeSwitcher.sidebarTheme
@@ -44,7 +36,7 @@ export default function Sidebar() {
       clearTimeout(timer);
     }
   }
-
+  // console.log('role is ', role);
   function onOpenChange(newOpenKeys) {
     const latestOpenKey = newOpenKeys.find(
       (key) => !(openKeys.indexOf(key) > -1)
@@ -71,7 +63,7 @@ export default function Sidebar() {
 
   const isCollapsed = collapsed && !openDrawer;
   const mode = isCollapsed === true ? 'vertical' : 'inline';
-  
+
   const onMouseEnter = (event) => {
     if (collapsed && openDrawer === false) {
       dispatch(toggleOpenDrawer());
@@ -122,7 +114,7 @@ export default function Sidebar() {
             selectedKeys={current}
             onOpenChange={onOpenChange}
           >
-            {options.map((singleOption) => (
+            {option.map((singleOption) => (
               <SidebarMenu
                 key={singleOption.key}
                 submenuStyle={submenuStyle}

@@ -1,8 +1,11 @@
 {
-  "sidebar.hr": "HR",
+  "sidebar.management": "Management",
   "sidebar.user": "User",
-  "sidebar.campaign": "Campaign",
+  "sidebar.assignment": "Assignment",
   "sidebar.settings": "Settings",
+  "sidebar.dashboard":"Dashboard",
+  "sidebar.history" : "History",
+  "sidebar.assignments": "Assignments",
 
   "topbar.notification": "Notification",
   "topbar.message": "Message",
@@ -14,6 +17,10 @@
   "user.resetPassword": "Reset Password",
   "user.updateUser": "Update User",
   "user.detailUser": "Detail User",
+
+  "assignment.listAssignments" : "List Assignments",
+  "assignment.btnCreateAssignment": "Create assignment",
+  "assignment.createAssignment" : "Create assignment",
 
   "commons.actions": "Actions",
   "commons.detail": "Detail",

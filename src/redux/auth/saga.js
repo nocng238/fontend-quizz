@@ -1,69 +1,92 @@
-import { all, takeEvery, put, fork } from 'redux-saga/effects';
+import { all, takeEvery, put, call } from 'redux-saga/effects';
 import { createBrowserHistory } from 'history';
 
 import { getToken, clearToken } from '@iso/lib/helpers/utility';
-import actions from './actions';
+import types from './types';
+import { loginApi, getTokenApi } from './api';
 
 const history = createBrowserHistory();
-const fakeApiCall = true; // auth0 or express JWT
 
-export function* loginRequest() {
-  yield takeEvery('LOGIN_REQUEST', function*({ payload }) {
-    const { token } = payload;
-    if (token) {
-      yield put({
-        type: actions.LOGIN_SUCCESS,
-        token: token,
-        profile: 'Profile',
-      });
-    } else {
-      if (fakeApiCall) {
-        yield put({
-          type: actions.LOGIN_SUCCESS,
-          token: 'secret token',
-          profile: 'Profile',
-        });
-      } else {
-        yield put({ type: actions.LOGIN_ERROR });
-      }
-    }
-  });
+export function* loginSaga({ payload }) {
+  const { creadentials } = payload;
+  console.log('creadentials from saga', creadentials);
+
+  try {
+    const { data } = yield call(loginApi, creadentials);
+    yield put({
+      type: types.LOGIN_SUCCESS,
+      payload: {
+        idToken: data.ac_token,
+        message: data.message,
+        user: data.user,
+      },
+    });
+  } catch (error) {
+    const { data } = error.response;
+    console.log('error in saga', data);
+    yield put({
+      type: types.LOGIN_ERROR,
+      payload: {
+        message: data.message,
+      },
+    });
+  }
 }
 
-export function* loginSuccess() {
-  yield takeEvery(actions.LOGIN_SUCCESS, function*(payload) {
-    yield localStorage.setItem('id_token', payload.token);
-  });
+export function* loginSuccess({ payload }) {
+  yield localStorage.setItem('id_token', payload.idToken);
+  yield localStorage.setItem('avatar', payload.user.avatar);
+  yield localStorage.setItem('role', payload.user.role);
 }
 
-export function* loginError() {
-  yield takeEvery(actions.LOGIN_ERROR, function*() {});
+export function* logoutSaga() {
+  yield clearToken();
+  yield localStorage.removeItem('avatar');
+  yield localStorage.removeItem('role');
+  yield history.push('/signin');
+  yield window.location.reload(false);
 }
 
-export function* logout() {
-  yield takeEvery(actions.LOGOUT, function*() {
-    yield clearToken();
-    history.push('/');
-  });
-}
 export function* checkAuthorization() {
-  yield takeEvery(actions.CHECK_AUTHORIZATION, function*() {
-    const token = getToken().get('idToken');
-    if (token) {
-      yield put({
-        type: actions.LOGIN_SUCCESS,
+  const token = getToken().get('id_token');
+
+  if (token) {
+    yield put({
+      type: types.LOGIN_SUCCESS,
+      payload: {
         token,
-        profile: 'Profile',
-      });
-    }
-  });
+      },
+    });
+  }
 }
+
+// export function* forgotPasswordSaga({ payload }) {
+//   try {
+//     const { data } = yield call(forgotPasswordApi, payload.email);
+
+//     yield put({
+//       type: types.FORGOT_PASSWORD_SUCCESS,
+//       payload: {
+//         message: data.message,
+//       },
+//     });
+//   } catch (error) {
+//     const { data } = error.response;
+//     yield put({
+//       type: types.FORGOT_PASSWORD_ERROR,
+//       payload: {
+//         message: data.message,
+//       },
+//     });
+//   }
+// }
+
 export default function* rootSaga() {
   yield all([
-    fork(checkAuthorization),
-    fork(loginRequest),
-    fork(loginSuccess),
-    fork(loginError),
-    fork(logout),
+    yield takeEvery(types.LOGIN_REQUEST, loginSaga),
+    yield takeEvery(types.LOGIN_SUCCESS, loginSuccess),
+    yield takeEvery(types.LOGOUT, logoutSaga),
+    yield takeEvery(types.CHECK_AUTHORIZATION, checkAuthorization),
+    // yield takeEvery(types.FORGOT_PASSWORD, forgotPasswordSaga),
   ]);
 }
