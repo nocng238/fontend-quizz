@@ -65,4 +65,4 @@ git commit -m "feat(user-create): make page add new user"
 
 - Reference [GIT](https://github.com/vuejs/vue/blob/dev/.github/COMMIT_CONVENTION.md)
 
-**Developed by [Dev Plus](https://devplus.edu.vn)**
+**Developed by Ngoc Nguyen**
