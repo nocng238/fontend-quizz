@@ -1,7 +1,8 @@
 const options = [
+  [],
   [
     {
-      key: 'hr',
+      key: 'teacher',
       label: 'sidebar.management',
       leftIcon: 'ion-ios-people',
       items: [
@@ -23,24 +24,24 @@ const options = [
   ],
   [
     {
-      key: 'teacher',
-      label: 'sidebar.teacher',
-      leftIcon: 'ion-ios-people',
-      items: [
-        {
-          key: 'users',
-          label: 'sidebar.user',
-        },
-        {
-          key: 'campaigns',
-          label: 'sidebar.campaign',
-        },
-      ],
+      key: 'dashboard',
+      label: 'sidebar.dashboard',
+      leftIcon: 'ion-ios-home',
     },
     {
-      key: 'teacher settings',
-      label: 'sidebar.settings',
-      leftIcon: 'ion-ios-cog',
+      key: 'student assignments',
+      label: 'sidebar.assignment',
+      leftIcon: 'ion-android-checkbox',
+      items: [
+        {
+          key: 'assignments',
+          label: 'sidebar.assignments',
+        },
+        {
+          key: 'history',
+          label: 'sidebar.history',
+        },
+      ],
     },
   ],
 ];

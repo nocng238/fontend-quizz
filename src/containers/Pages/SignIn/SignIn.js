@@ -15,7 +15,7 @@ export default function SignIn() {
   let location = useLocation();
   const dispatch = useDispatch();
 
-  const { idToken, message, isSuccess } = useSelector((state) => state.Auth);
+  const { idToken } = useSelector((state) => state.Auth);
 
   const [redirectToReferrer, setRedirectToReferrer] = useState(false);
   useEffect(() => {
@@ -24,26 +24,12 @@ export default function SignIn() {
     }
   }, [idToken]);
 
-  // useEffect(() => {
-  //   if (message) {
-  //     const notiType = isSuccess ? 'success' : 'error';
-  //     const messageType = isSuccess ? 'Success' : 'Error';
-
-  //     notification[notiType]({
-  //       message: messageType,
-  //       description: message,
-  //     });
-  //   }
-
-  //   dispatch(clearNotificationAction());
-  // }, [dispatch, message]);
-
   const handleLogin = async (values) => {
     console.log(values);
     await dispatch(login(values));
   };
 
-  let { from } = location.state || { from: { pathname: '/dashboard' } };
+  let { from } = location.state || { from: { pathname: '/' } };
 
   if (redirectToReferrer) {
     return <Redirect to={from} />;
@@ -53,7 +39,7 @@ export default function SignIn() {
       <div className='isoLoginContentWrapper'>
         <div className='isoLoginContent'>
           <div className='isoLogoWrapper'>
-            <Link to='/dashboard'>{siteConfig.siteName}</Link>
+            <Link to='/'>{siteConfig.siteName}</Link>
           </div>
           <div className='isoSignInForm'>
             <Form form={form} name='signin' onFinish={handleLogin}>

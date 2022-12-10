@@ -23,8 +23,6 @@ import Setting from './Setting';
 const { privateAxios } = axios;
 export default function () {
   const history = useHistory();
-  const dispatch = useDispatch();
-
   const tabs = [
     {
       label: 'TEST',

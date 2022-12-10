@@ -12,7 +12,9 @@ import SidebarMenu from './SidebarMenu';
 
 const { Sider } = Layout;
 // const role = Math.floor(Math.random() * 2);
-const option = options[0];
+const role = localStorage.getItem('role');
+console.log('Role: ', role);
+const option = options[role];
 const { toggleOpenDrawer, changeOpenKeys, changeCurrent, toggleCollapsed } =
   appActions;
 export default function Sidebar() {

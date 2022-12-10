@@ -4,46 +4,66 @@ import IntlMessages from '@iso/components/utility/intlMessages';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import LayoutWrapper from '@iso/components/utility/layoutWrapper';
 import Question from './Question/Question';
-import { Pagination, Row, Statistic, Affix } from 'antd';
+import { Pagination, Row, Statistic, Affix, notification } from 'antd';
 import { useState } from 'react';
 import basicStyle from '@iso/assets/styles/constants';
-import axios from '../../../library/helpers/axios';
+import axios from '../../../../library/helpers/axios';
 const { Countdown } = Statistic;
 export default function () {
   const { privateAxios } = axios;
+  const history = useHistory();
   const { assignmentId } = useParams();
   const [assignment, setAssignment] = useState({});
   const [questions, setQuestions] = useState([]);
   const [userAnswer, setUserAnswers] = useState({});
   const [page, setPage] = useState(0);
-  const deadline = Date.now() + assignment?.duration * 60 * 1000;
-
+  const [deadline, SetDeadline] = useState(null);
+  const startTime = new Date();
   useEffect(() => {
     const getAssignment = async () => {
       const { data } = await privateAxios.get(`/assignment/${assignmentId}`);
-      console.log('data from database: ', data);
-      data.assignment.questions.forEach((question) => {
+      data.questions.forEach((question) => {
         userAnswer[question._id] = [];
       });
-      setAssignment(data.assignment);
-      setQuestions(data.assignment.questions.slice(0, 5));
+      setAssignment(data);
+      setQuestions(data.questions.slice(0, 5));
+      SetDeadline(Date.now() + data?.duration * 60 * 1000);
     };
     getAssignment();
-  }, [assignmentId]);
+  }, []);
 
   const onChange = (page) => {
     setQuestions(assignment.questions.slice((page - 1) * 5, page * 5));
     setPage(page - 1);
   };
-  const onSubmit = () => {
-    // const { title, questions } = values;
-    // await privateAxios.post('/assignment', { title, questions });
-    console.log('values: ', userAnswer);
+  const onSubmit = async () => {
+    try {
+      const endTime = new Date();
+      await privateAxios.post('/quizz', {
+        answers: userAnswer,
+        assignmentId,
+        timeStart: startTime.toLocaleString(),
+        timeEnd: endTime.toLocaleString(),
+      });
+      //navigate to history
+      history.push('/history');
+    } catch (error) {
+      notification.error({ message: error.message, duration: 2 });
+    }
   };
+
   const { rowStyle, gutter } = basicStyle;
 
   return (
-    <>
+    <div
+      style={{
+        borderColor: 'red',
+        borderStyle: 'solid',
+        boxSizing: 'border-box',
+        position: 'sticky',
+        borderCollapse: 'collapse',
+      }}
+    >
       <LayoutWrapper>
         <Row style={rowStyle} justify='space-evenly'>
           <h1 style={{ width: '90%', textAlign: 'center' }}> JAVA01</h1>
@@ -62,6 +82,7 @@ export default function () {
               questionIndex={index}
               userAnswer={userAnswer}
               page={page}
+              setUserAnswers={setUserAnswers}
             ></Question>
           );
         })}
@@ -90,6 +111,6 @@ export default function () {
           </Button>
         </Row>
       </LayoutWrapper>
-    </>
+    </div>
   );
 }

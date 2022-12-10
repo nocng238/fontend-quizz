@@ -18,27 +18,22 @@ import CardWrapper, {
   StatusTag,
   ActionWrapper,
 } from '../Assignment.styles';
-import axios from '../../../library/helpers/axios';
-// import UserFilter from './UserFilter';
-//Redux actions
-// const {
-//   getUsersAction,
-//   setParamsUserListAction,
-//   getUserAction,
-//   clearNotificationAction,
-//   resetPasswordAction,
-//   deleteUserAction,
-// } = userActions;
-const { privateAxios } = axios;
+import axios from 'axios';
 
 export default function AssignmentList() {
   const history = useHistory();
-  const [count, setCount] = useState(1);
-
+  const privateAxios2 = axios.create({
+    baseURL: 'http://localhost:8000/api/v1',
+    timeout: 1000,
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Authorization: localStorage.getItem('id_token') || undefined,
+    },
+  });
   const [selected, setSelected] = useState([]);
   //   let { users, total, page, limit, sort, status, message, isSuccess } =
   //     useSelector((state) => state.User);
-  const dispatch = useDispatch();
   const [assignments, setAssignments] = useState([]);
   const match = useRouteMatch();
   // const assignments = [
@@ -61,7 +56,7 @@ export default function AssignmentList() {
   const [options, setOptions] = useState({ page: 1, limit: 5 });
   useEffect(() => {
     const getData = async () => {
-      const res = await privateAxios.get('/assignment', {
+      const res = await privateAxios2.get('/assignment', {
         params: { options },
       });
       console.log('use effect run');
@@ -69,31 +64,6 @@ export default function AssignmentList() {
     };
     getData();
   }, [options]);
-
-  //   useEffect(() => {
-  //     dispatch(
-  //       getUsersAction({
-  //         search: searchText,
-  //         page,
-  //         limit,
-  //         sort,
-  //         status,
-  //       })
-  //     );
-  //   }, [searchText, page, sort, limit, status]);
-
-  //   useEffect(() => {
-  //     if (message) {
-  //       const notiType = isSuccess ? 'success' : 'error';
-  //       const messageType = isSuccess ? 'Success' : 'Error';
-
-  //       notification[notiType]({
-  //         message: messageType,
-  //         description: message,
-  //       });
-  //       dispatch(clearNotificationAction());
-  //     }
-  //   }, [message]);
 
   const rowSelection = {
     hideDefaultSelections: true,
@@ -114,15 +84,6 @@ export default function AssignmentList() {
       limit: pagination.pageSize,
     });
   };
-
-  // const handleFilter = (value) => {
-  //   dispatch(
-  //     setParamsUserListAction({
-  //       status: value,
-  //     })
-  //   );
-  // };
-  // const handleDeleteAssignment = ()
 
   const handleActions = ({ key }) => {
     switch (
@@ -179,9 +140,9 @@ export default function AssignmentList() {
       rowKey: 'title',
       width: '30%',
       sorter: true,
-      render: (text, record) => {
-        //   return <Link to={`/assignments/${record._id}`}>{text}</Link>;
-        return <span>{text}</span>;
+      render: (text, row) => {
+        return <Link to={`/test/${row.id}`}>{text}</Link>;
+        // return <span>{text}</span>;
       },
     },
     {
@@ -212,9 +173,6 @@ export default function AssignmentList() {
             checkedChildren='Active'
             unCheckedChildren='Unactive'
             defaultChecked={text === true}
-            onChange={() => {
-              setCount(2);
-            }}
           ></Switch>
         );
       },
@@ -237,7 +195,7 @@ export default function AssignmentList() {
               cancelText='No'
               placement='topRight'
               onConfirm={async () => {
-                await privateAxios.delete(`/assignment/${row.id}`);
+                await privateAxios2.delete(`/assignment/${row.id}`);
                 setAssignments(
                   assignments.filter((assignment) => assignment.id !== row.id)
                 );
@@ -296,7 +254,7 @@ export default function AssignmentList() {
                 // page: 1,
                 // total: total,
               }}
-              scroll={{ y: 'calc(100vh - 435px)' }}
+              // scroll={{ y: 'calc(100vh - 435px)' }}
             />
           )}
         </CardWrapper>

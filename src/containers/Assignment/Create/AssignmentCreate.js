@@ -29,16 +29,22 @@ export default function AssignmentCreate() {
   const [form] = useForm();
   const history = useHistory();
   const { privateAxios } = axios;
-  // const onFinish = async (values) => {
-  //   const { title, questions } = values;
-  //   await privateAxios.post('/assignment', { title, questions });
+  const onFinish = async (values) => {
+    console.log('onFinish run');
+    try {
+      const { title, questions } = values;
+      await privateAxios.post('/assignment', { title, questions });
+      notification.success({ message: 'Create Successfully', duration: 2 });
+      history.push('/assignments');
+    } catch (error) {
+      notification.error({ message: error.message, duration: 2 });
+    }
+  };
+  // const onFinish = (values) => {
+  //   // const { title, questions } = values;
+  //   // await privateAxios.post('/assignment', { title, questions });
   //   console.log('values: ', values);
   // };
-  const onFinish = (values) => {
-    // const { title, questions } = values;
-    // await privateAxios.post('/assignment', { title, questions });
-    console.log('values: ', values);
-  };
 
   // const initalValue = {
   //   questions: [

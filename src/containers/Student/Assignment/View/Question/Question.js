@@ -1,6 +1,6 @@
 import React from 'react';
-import { Row, Col, Checkbox, Divider } from 'antd';
-import Radio, { RadioGroup } from '@iso/components/uielements/radio';
+import { Row, Col, Checkbox, Divider, Radio } from 'antd';
+// import Radio, from '@iso/components/uielements/radio';
 import CheckBox, { CheckboxGroup } from '@iso/components/uielements/checkbox';
 import Box from '@iso/components/utility/box';
 import LayoutWrapper from '@iso/components/utility/layoutWrapper.js';
@@ -9,21 +9,28 @@ import IntlMessages from '@iso/components/utility/intlMessages';
 import basicStyle from '@iso/assets/styles/constants';
 import { useDispatch, useSelector } from 'react-redux';
 
-export default function ({ question, questionIndex, userAnswer, page }) {
+export default function ({
+  question,
+  questionIndex,
+  userAnswer,
+  page,
+  setUserAnswers,
+}) {
   const [state, setState] = React.useState({
     value: 1,
   });
-  console.log(userAnswer);
   const onRadioChange = (e) => {
     const { name, value } = e.target;
-    userAnswer[question._id] = value;
-    // setState({
-    //   ...state,
-    //   [name]: value,
-    // });
+    userAnswer[question._id] = [value];
+    setUserAnswers(userAnswer);
+    setState({
+      ...state,
+      [name]: value,
+    });
   };
   const onCheckBoxChange = (value) => {
     userAnswer[question._id] = value;
+    setUserAnswers(userAnswer);
   };
 
   const radioStyle = {
@@ -49,7 +56,11 @@ export default function ({ question, questionIndex, userAnswer, page }) {
         >
           <ContentHolder>
             {question.type === 'singleAnswer' ? (
-              <RadioGroup onChange={onRadioChange} name='value'>
+              <Radio.Group
+                onChange={onRadioChange}
+                name='value'
+                defaultValue={userAnswer[question._id][0]}
+              >
                 {question?.answers.map((answer, index) => {
                   return (
                     <Radio
@@ -61,18 +72,12 @@ export default function ({ question, questionIndex, userAnswer, page }) {
                     </Radio>
                   );
                 })}
-              </RadioGroup>
+              </Radio.Group>
             ) : (
               <Checkbox.Group
                 name='value'
                 onChange={onCheckBoxChange}
-                defaultValue={() => {
-                  const arr = question?.answers.filter((answer) => {
-                    return answer.isTrue === true;
-                  });
-                  return arr.map((answer) => answer._id);
-                }}
-                disabled
+                defaultValue={userAnswer[question._id]}
               >
                 {question?.answers.map((answer, index) => {
                   return (

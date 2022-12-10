@@ -24,6 +24,13 @@ const formItemLayout = {
     sm: { span: 20 },
   },
 };
+const tailFormItemLayout = {
+  wrapperCol: {
+    xs: { span: 24, offset: 0 },
+    sm: { span: 16, offset: 8 },
+    lg: { span: 14, offset: 6 },
+  },
+};
 export default function Assignment({ assignment }) {
   const [isChange, setIsChange] = useState(false);
   const [form] = useForm();
@@ -47,18 +54,10 @@ export default function Assignment({ assignment }) {
     }
     // console.log('values: ', values);
   };
-  // console.log('inital4', typeof initalValue4);
-  // const onFinish = (values) => {
-  //   // const { title, questions } = values;
-  //   // await privateAxios.post('/assignment', { title, questions });
-  //   console.log('values: ', values);
-  // };
-  // const [assignment, setAssignment] = useState({});
   useEffect(() => {
     const getAssignment = async () => {
       const assignment = await privateAxios.get(`/assignment/${assignmentId}`);
       const realAssignment = assignment.data.assignment;
-      // setAssignment(assignment.data.assignment);
       form.setFieldsValue({
         title: realAssignment.title,
         questions: realAssignment.questions,
@@ -192,7 +191,7 @@ export default function Assignment({ assignment }) {
             }}
           </Form.List>
 
-          <Form.Item>
+          <Form.Item {...tailFormItemLayout}>
             <Button type='primary' htmlType='submit'>
               Submit
             </Button>

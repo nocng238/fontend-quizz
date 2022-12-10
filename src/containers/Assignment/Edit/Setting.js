@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Form,
@@ -10,13 +10,15 @@ import {
   Switch,
   InputNumber,
 } from 'antd';
+import moment from 'moment';
 import { Link, useHistory, useParams } from 'react-router-dom';
-
 import LayoutWrapper from '@iso/components/utility/layoutWrapper';
 import PageHeader from '@iso/components/utility/pageHeader';
 import IntlMessages from '@iso/components/utility/intlMessages';
 import { BoxWrapper, BoxHeader } from '../Assignment.styles';
 import userActions from '@iso/redux/user/actions';
+import axios from '../../../library/helpers/axios';
+const { privateAxios } = axios;
 const { RangePicker } = DatePicker;
 const formItemLayout = {
   labelCol: {
@@ -40,13 +42,48 @@ const tailFormItemLayout = {
 };
 
 const { Option } = Select;
+// const dateFormat = 'YYYY/MM/DD';
 
 export default function Setting() {
   const [form] = Form.useForm();
-  const dispatch = useDispatch();
   const history = useHistory();
-  const onFinish = (values) => {
-    console.log(values);
+  const { assignmentId } = useParams();
+  const [isChange, setIsChange] = useState(false);
+  const onFinish = async (values) => {
+    try {
+      const { range, duration } = values;
+      const timeStart = JSON.stringify(range[0]._d);
+      const timeEnd = JSON.stringify(range[1]._d);
+      if (isChange) {
+        await privateAxios.patch(`/assignment/${assignmentId}`, {
+          timeEnd,
+          timeStart,
+          duration,
+        });
+      }
+      setIsChange(false);
+      notification.success({ message: 'Edit Successfully', duration: 2 });
+    } catch (error) {
+      notification.error({ message: error.message, duration: 2 });
+    }
+  };
+
+  useEffect(() => {
+    const getAssignment = async () => {
+      const assignment = await privateAxios.get(`/assignment/${assignmentId}`);
+      const realAssignment = assignment.data.assignment;
+      const { duration, timeStart, timeEnd } = realAssignment;
+      const startTime = moment(timeStart, 'YYYY-MM-DD HH:mm');
+      const endTime = moment(`${timeEnd}`, 'YYYY-MM-DD HH:mm');
+      form.setFieldsValue({
+        duration: duration,
+        range: [startTime, endTime],
+      });
+    };
+    getAssignment();
+  }, [assignmentId]);
+  const onChange = () => {
+    setIsChange(true);
   };
   return (
     <LayoutWrapper>
@@ -56,6 +93,7 @@ export default function Setting() {
           form={form}
           name='setting'
           onFinish={onFinish}
+          onChange={onChange}
         >
           <Form.Item
             name='duration'
@@ -70,16 +108,11 @@ export default function Setting() {
           >
             <InputNumber />
           </Form.Item>
-
-          {/* <Form.Item name='email' label='E-mail'>
-            <Input />
-          </Form.Item>
-
-          <Form.Item name='phone' label='Phone Number'>
-            <Input />
-          </Form.Item> */}
-          <Form.Item label='RangePicker' name='Range'>
-            <RangePicker />
+          <Form.Item label='RangePicker' name='range'>
+            <RangePicker
+              format='YYYY-MM-DD HH:mm'
+              showTime={{ format: 'HH:mm' }}
+            />
           </Form.Item>
           <Form.Item label='Status' name='status' valuePropName='checked'>
             <Switch />

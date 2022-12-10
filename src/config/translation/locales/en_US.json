@@ -3,6 +3,9 @@
   "sidebar.user": "User",
   "sidebar.assignment": "Assignment",
   "sidebar.settings": "Settings",
+  "sidebar.dashboard":"Dashboard",
+  "sidebar.history" : "History",
+  "sidebar.assignments": "Assignments",
 
   "topbar.notification": "Notification",
   "topbar.message": "Message",

@@ -13,8 +13,6 @@ export function* loginSaga({ payload }) {
 
   try {
     const { data } = yield call(loginApi, creadentials);
-    // const ac_token = 'assadfsaaf';
-
     yield put({
       type: types.LOGIN_SUCCESS,
       payload: {
@@ -39,14 +37,14 @@ export function* loginSuccess({ payload }) {
   yield localStorage.setItem('id_token', payload.idToken);
   yield localStorage.setItem('avatar', payload.user.avatar);
   yield localStorage.setItem('role', payload.user.role);
-  console.log('loggin  success func in saga works');
 }
 
 export function* logoutSaga() {
   yield clearToken();
   yield localStorage.removeItem('avatar');
   yield localStorage.removeItem('role');
-  history.push('/signin');
+  yield history.push('/signin');
+  yield window.location.reload(false);
 }
 
 export function* checkAuthorization() {

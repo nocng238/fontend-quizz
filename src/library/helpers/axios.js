@@ -10,7 +10,7 @@ const publicHeader = () => ({
 const privateHeader = () => ({
   'Content-Type': 'application/json',
   Accept: 'application/json',
-  Authorization: localStorage.getItem('id_token') || undefined,
+  Authorization: localStorage.getItem('id_token'),
 });
 
 const baseAxios = axios.create({
@@ -22,6 +22,15 @@ const privateAxios = axios.create({
   baseURL: siteConfig.apiUrl || 'http://localhost:8000/api/v1',
   timeout: 1000,
   headers: privateHeader(),
+});
+const privateAxios2 = axios.create({
+  baseURL: siteConfig.apiUrl || 'http://localhost:8000/api/v1',
+  timeout: 1000,
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: localStorage.getItem('id_token') || undefined,
+  },
 });
 
 export default { baseAxios, privateAxios };
