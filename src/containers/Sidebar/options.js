@@ -1,15 +1,23 @@
 const options = [
-  [],
   [
+    {
+      key: 'dashboard',
+      label: 'sidebar.dashboard',
+      leftIcon: 'ion-ios-home',
+    },
+    { key: 'users', label: 'sidebar.user', leftIcon: 'ion-ios-people' },
+  ],
+  [
+    {
+      key: 'dashboard',
+      label: 'sidebar.dashboard',
+      leftIcon: 'ion-ios-home',
+    },
     {
       key: 'teacher',
       label: 'sidebar.management',
       leftIcon: 'ion-ios-people',
       items: [
-        {
-          key: 'users',
-          label: 'sidebar.user',
-        },
         {
           key: 'assignments',
           label: 'sidebar.assignment',

@@ -1,27 +1,31 @@
 import React, { useEffect } from 'react';
-import Button from '@iso/components/uielements/button';
-import IntlMessages from '@iso/components/utility/intlMessages';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import LayoutWrapper from '@iso/components/utility/layoutWrapper';
 import Question from './Question/Question';
 import { Pagination, Row, Statistic, Affix } from 'antd';
 import { useState } from 'react';
 import basicStyle from '@iso/assets/styles/constants';
-import axios from '../../../library/helpers/axios';
+import axios from 'axios';
 const { Countdown } = Statistic;
 export default function () {
-  const { privateAxios } = axios;
   const { assignmentId } = useParams();
   const [assignment, setAssignment] = useState({});
   const [questions, setQuestions] = useState([]);
   const [userAnswer, setUserAnswers] = useState({});
   const [page, setPage] = useState(0);
   const deadline = Date.now() + assignment?.duration * 60 * 1000;
-
+  const privateAxios2 = axios.create({
+    baseURL: 'http://localhost:8000/api/v1',
+    timeout: 1000,
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Authorization: localStorage.getItem('id_token') || undefined,
+    },
+  });
   useEffect(() => {
     const getAssignment = async () => {
-      const { data } = await privateAxios.get(`/assignment/${assignmentId}`);
-      console.log('data from database: ', data);
+      const { data } = await privateAxios2.get(`/assignment/${assignmentId}`);
       data.assignment.questions.forEach((question) => {
         userAnswer[question._id] = [];
       });
@@ -35,23 +39,16 @@ export default function () {
     setQuestions(assignment.questions.slice((page - 1) * 5, page * 5));
     setPage(page - 1);
   };
-  const onSubmit = () => {
-    // const { title, questions } = values;
-    // await privateAxios.post('/assignment', { title, questions });
-    console.log('values: ', userAnswer);
-  };
   const { rowStyle, gutter } = basicStyle;
 
   return (
     <>
       <LayoutWrapper>
         <Row style={rowStyle} justify='space-evenly'>
-          <h1 style={{ width: '90%', textAlign: 'center' }}> JAVA01</h1>
-          {assignment.duration !== 0 ? (
-            <Affix offsetTop={20}>
-              <Countdown value={deadline}></Countdown>
-            </Affix>
-          ) : null}
+          <h1 style={{ width: '90%', textAlign: 'center' }}>
+            {' '}
+            {assignment.title}
+          </h1>
         </Row>
 
         {questions?.map((question, index) => {
@@ -84,11 +81,7 @@ export default function () {
           }}
           gutter={gutter}
           justify='center'
-        >
-          <Button type='primary' onClick={onSubmit}>
-            Submit
-          </Button>
-        </Row>
+        ></Row>
       </LayoutWrapper>
     </>
   );

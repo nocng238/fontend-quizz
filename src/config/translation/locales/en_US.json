@@ -19,8 +19,10 @@
   "user.detailUser": "Detail User",
 
   "assignment.listAssignments" : "List Assignments",
+  "assignment.listSubmissions":"Submissions",
   "assignment.btnCreateAssignment": "Create assignment",
   "assignment.createAssignment" : "Create assignment",
+  "assignment.history": "History",
 
   "commons.actions": "Actions",
   "commons.detail": "Detail",

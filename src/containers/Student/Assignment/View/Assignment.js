@@ -1,16 +1,24 @@
 import React, { useEffect } from 'react';
 import Button from '@iso/components/uielements/button';
 import IntlMessages from '@iso/components/utility/intlMessages';
+import siteConfig from '@iso/config/site.config';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import LayoutWrapper from '@iso/components/utility/layoutWrapper';
 import Question from './Question/Question';
 import { Pagination, Row, Statistic, Affix, notification } from 'antd';
 import { useState } from 'react';
 import basicStyle from '@iso/assets/styles/constants';
-import axios from '../../../../library/helpers/axios';
+import axios from 'axios';
 const { Countdown } = Statistic;
 export default function () {
-  const { privateAxios } = axios;
+  const privateAxios2 = axios.create({
+    baseURL: siteConfig.apiUrl || 'http://localhost:8000/api/v1',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Authorization: localStorage.getItem('id_token') || undefined,
+    },
+  });
   const history = useHistory();
   const { assignmentId } = useParams();
   const [assignment, setAssignment] = useState({});
@@ -21,7 +29,7 @@ export default function () {
   const startTime = new Date();
   useEffect(() => {
     const getAssignment = async () => {
-      const { data } = await privateAxios.get(`/assignment/${assignmentId}`);
+      const { data } = await privateAxios2.get(`/assignment/${assignmentId}`);
       data.questions.forEach((question) => {
         userAnswer[question._id] = [];
       });
@@ -39,7 +47,7 @@ export default function () {
   const onSubmit = async () => {
     try {
       const endTime = new Date();
-      await privateAxios.post('/quizz', {
+      await privateAxios2.post('/quizz', {
         answers: userAnswer,
         assignmentId,
         timeStart: startTime.toLocaleString(),
@@ -66,10 +74,12 @@ export default function () {
     >
       <LayoutWrapper>
         <Row style={rowStyle} justify='space-evenly'>
-          <h1 style={{ width: '90%', textAlign: 'center' }}> JAVA01</h1>
+          <h1 style={{ width: '90%', textAlign: 'center' }}>
+            {assignment.title}{' '}
+          </h1>
           {assignment.duration !== 0 ? (
             <Affix offsetTop={20}>
-              <Countdown value={deadline}></Countdown>
+              <Countdown value={deadline} onFinish={onSubmit}></Countdown>
             </Affix>
           ) : null}
         </Row>

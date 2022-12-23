@@ -1,16 +1,12 @@
 import { all, takeEvery, put, call } from 'redux-saga/effects';
 import { createBrowserHistory } from 'history';
-
+import { notification } from 'antd';
 import { getToken, clearToken } from '@iso/lib/helpers/utility';
 import types from './types';
-import { loginApi, getTokenApi } from './api';
-
+import { loginApi } from './api';
 const history = createBrowserHistory();
-
 export function* loginSaga({ payload }) {
   const { creadentials } = payload;
-  console.log('creadentials from saga', creadentials);
-
   try {
     const { data } = yield call(loginApi, creadentials);
     yield put({
@@ -23,13 +19,16 @@ export function* loginSaga({ payload }) {
     });
   } catch (error) {
     const { data } = error.response;
-    console.log('error in saga', data);
-    yield put({
-      type: types.LOGIN_ERROR,
-      payload: {
-        message: data.message,
-      },
+    yield notification.error({
+      message: 'Wrong username or password',
+      duration: 2,
     });
+    // yield put({
+    //   type: types.LOGIN_ERROR,
+    //   payload: {
+    //     message: data.message,
+    //   },
+    // });
   }
 }
 

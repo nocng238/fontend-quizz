@@ -1,28 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory, useRouteMatch } from 'react-router-dom';
-import { Button, Menu, Dropdown, notification, Table } from 'antd';
-import { DownOutlined, EyeFilled } from '@ant-design/icons';
-import Switch from '@iso/components/uielements/switch.js';
+// import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { Button, Table } from 'antd';
+// import { DownOutlined, EyeFilled } from '@ant-design/icons';
+// import Switch from '@iso/components/uielements/switch.js';
 import HelperText from '@iso/components/utility/helper-text';
 import LayoutWrapper from '@iso/components/utility/layoutWrapper';
 import PageHeader from '@iso/components/utility/pageHeader';
 import IntlMessages from '@iso/components/utility/intlMessages';
-import SearchInput from '@iso/components/SearchInput/SearchInput';
-import Popconfirms from '@iso/components/Feedback/Popconfirm';
+// import SearchInput from '@iso/components/SearchInput/SearchInput';
+// import Popconfirms from '@iso/components/Feedback/Popconfirm';
 import CardWrapper, {
   BoxWrapper,
-  BoxHeader,
-  FiltersBar,
-  StatusTag,
   ActionWrapper,
 } from '../../Assignment.styles';
-import axios2 from '../../../../library/helpers/axios';
 import moment from 'moment';
 import axios from 'axios';
 
 export default function AssignmentList() {
-  const { privateAxios } = axios2;
   const privateAxios2 = axios.create({
     baseURL: 'http://localhost:8000/api/v1',
     timeout: 1000,
@@ -33,7 +28,7 @@ export default function AssignmentList() {
     },
   });
   const history = useHistory();
-  const [selected, setSelected] = useState([]);
+  // const [selected, setSelected] = useState([]);
   const [assignments, setAssignments] = useState([]);
   const [options, setOptions] = useState({ page: 1, limit: 5 });
   useEffect(() => {
@@ -112,16 +107,18 @@ export default function AssignmentList() {
       rowKey: 'action',
       render: (text, row) => {
         const now = moment();
+        const isAfterStarttime = now.isAfter(moment(row.timeStart).format());
+        const isBeforeEndtime = now.isBefore(moment(row.timeEnd).format());
+        const isAble = isAfterStarttime && isBeforeEndtime;
+        console.log(row.title);
+        console.log('start : ', row.timeStart, '\nend: ', row.timeEnd);
+        console.log('isAfterStarttime: ', isAfterStarttime);
+        console.log('isBeforeEndtime', isBeforeEndtime);
         return (
           <ActionWrapper>
             <Button
               type='primary'
-              // disabled={
-              //   !(
-              //     now.isAfter(moment(row.timeStart)) &&
-              //     now.isBefore(moment(row.timeEnd))
-              //   )
-              // }
+              disabled={isAble}
               onClick={() => history.push(`/quizz/${row.id}`)}
             >
               Do assignment
@@ -135,7 +132,9 @@ export default function AssignmentList() {
   return (
     <LayoutWrapper>
       <PageHeader>
+        <div></div>
         <IntlMessages id='assignment.listAssignments' />
+        <div></div>
       </PageHeader>
 
       <BoxWrapper>

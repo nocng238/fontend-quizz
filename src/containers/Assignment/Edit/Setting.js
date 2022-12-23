@@ -1,24 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   Form,
   Input,
   Button,
   notification,
-  Select,
   DatePicker,
   Switch,
   InputNumber,
 } from 'antd';
 import moment from 'moment';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import LayoutWrapper from '@iso/components/utility/layoutWrapper';
-import PageHeader from '@iso/components/utility/pageHeader';
 import IntlMessages from '@iso/components/utility/intlMessages';
-import { BoxWrapper, BoxHeader } from '../Assignment.styles';
-import userActions from '@iso/redux/user/actions';
-import axios from '../../../library/helpers/axios';
-const { privateAxios } = axios;
+import { BoxWrapper } from '../Assignment.styles';
+import axios from 'axios';
 const { RangePicker } = DatePicker;
 const formItemLayout = {
   labelCol: {
@@ -41,21 +36,29 @@ const tailFormItemLayout = {
   },
 };
 
-const { Option } = Select;
 // const dateFormat = 'YYYY/MM/DD';
 
 export default function Setting() {
   const [form] = Form.useForm();
-  const history = useHistory();
   const { assignmentId } = useParams();
   const [isChange, setIsChange] = useState(false);
+  const privateAxios2 = axios.create({
+    baseURL: 'http://localhost:8000/api/v1',
+    timeout: 1000,
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Authorization: localStorage.getItem('id_token') || undefined,
+    },
+  });
   const onFinish = async (values) => {
     try {
       const { range, duration } = values;
       const timeStart = JSON.stringify(range[0]._d);
       const timeEnd = JSON.stringify(range[1]._d);
+      console.log('timeStart: ', timeStart, '\ntimeEnd: ', timeEnd);
       if (isChange) {
-        await privateAxios.patch(`/assignment/${assignmentId}`, {
+        await privateAxios2.patch(`/assignment/${assignmentId}`, {
           timeEnd,
           timeStart,
           duration,
@@ -70,7 +73,7 @@ export default function Setting() {
 
   useEffect(() => {
     const getAssignment = async () => {
-      const assignment = await privateAxios.get(`/assignment/${assignmentId}`);
+      const assignment = await privateAxios2.get(`/assignment/${assignmentId}`);
       const realAssignment = assignment.data.assignment;
       const { duration, timeStart, timeEnd } = realAssignment;
       const startTime = moment(timeStart, 'YYYY-MM-DD HH:mm');
@@ -112,6 +115,7 @@ export default function Setting() {
             <RangePicker
               format='YYYY-MM-DD HH:mm'
               showTime={{ format: 'HH:mm' }}
+              onChange={() => setIsChange(true)}
             />
           </Form.Item>
           <Form.Item label='Status' name='status' valuePropName='checked'>

@@ -1,7 +1,5 @@
-import React, { useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { Button, Input, Form, notification, Space, Radio } from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import { Button, Input, Form, Space, Radio } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 export default function Answer({ field, form, questionNumber }) {
   // handle when set the answer for question
