@@ -1,44 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, useRouteMatch } from 'react-router-dom';
-import { Table, Button } from 'antd';
-// import { DownOutlined, EyeFilled } from '@ant-design/icons';
-// import Switch from '@iso/components/uielements/switch.js';
+import { useParams } from 'react-router-dom';
+import { Table } from 'antd';
 import HelperText from '@iso/components/utility/helper-text';
 import LayoutWrapper from '@iso/components/utility/layoutWrapper';
 import PageHeader from '@iso/components/utility/pageHeader';
 import IntlMessages from '@iso/components/utility/intlMessages';
-// import SearchInput from '@iso/components/SearchInput/SearchInput';
-// import Popconfirms from '@iso/components/Feedback/Popconfirm';
-import CardWrapper, {
-  BoxWrapper,
-  // BoxHeader,
-  // FiltersBar,
-  // StatusTag,
-  // ActionWrapper,
-} from '../Assignment.styles';
+import CardWrapper, { BoxWrapper } from '../Assignment.styles';
 import axios from 'axios';
 
 export default function History() {
-  const history = useHistory();
+  const { assignmentId } = useParams();
   const privateAxios2 = axios.create({
     baseURL: 'http://localhost:8000/api/v1',
+    timeout: 1000,
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',
       Authorization: localStorage.getItem('id_token') || undefined,
     },
   });
-  const [assignments, setAssignments] = useState([]);
-  const [options, setOptions] = useState({ page: 1, limit: 5 });
+  const [selected, setSelected] = useState([]);
+  const [submissions, setSubmissions] = useState([]);
+  const [options, setOptions] = useState({});
   useEffect(() => {
     const getData = async () => {
-      const res = await privateAxios2.get('/quizz/history', {
-        params: { options },
-      });
-      setAssignments(res.data);
+      const res = await privateAxios2.get(
+        `/quizz/getSubmissions/${assignmentId}`,
+        { options }
+      );
+      setSubmissions(res.data);
     };
     getData();
-  }, [options]);
+  }, []);
 
   const handleTableChange = (pagination, filters, sorter) => {
     // let sortBy = '';
@@ -54,10 +47,16 @@ export default function History() {
 
   const columns = [
     {
-      title: 'Title',
-      dataIndex: ['assignmentId', 'title'],
+      title: 'Id',
+      dataIndex: ['studentId', 'userName'],
+      rowKey: 'studentId',
+      render: (text) => <span style={{}}>{text}</span>,
+    },
+    {
+      title: 'Name',
+      dataIndex: ['studentId', 'name'],
       rowKey: 'title',
-      width: '30%',
+      width: '20%',
       render: (text, row) => {
         return <span style={{}}>{text}</span>;
       },
@@ -102,27 +101,22 @@ export default function History() {
   return (
     <LayoutWrapper>
       <PageHeader>
-        <div></div>
-        <div style={{ marginRight: '50px' }}>
-          <IntlMessages id='assignment.history' />
-        </div>
-
-        <div></div>
+        <IntlMessages id='assignment.listSubmissions' />
       </PageHeader>
 
       <BoxWrapper>
         <CardWrapper>
-          {assignments?.length === 0 ? (
-            <HelperText text='No Assignment' />
+          {submissions?.length === 0 ? (
+            <HelperText text='No Submmition Yet' />
           ) : (
             <Table
               columns={columns}
-              dataSource={assignments}
+              dataSource={submissions}
               showSorterTooltip={false}
               rowKey='_id'
               onChange={handleTableChange}
               pagination={{
-                // pageSize: limit,
+                pageSize: 50,
                 showSizeChanger: true,
                 pageSizeOptions: [1, 10, 20, 50, 100],
                 // page: 1,

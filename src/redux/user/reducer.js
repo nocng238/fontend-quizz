@@ -5,7 +5,7 @@ export const initState = {
   user: {},
   page: 1,
   limit: 10,
-  sort: '-createdAt',
+  sort: '',
   total: 0,
   status: [],
   isSuccess: false,
@@ -20,13 +20,13 @@ export default function userReducer(state = initState, { type, payload }) {
       };
 
     case types.GET_USERS_SUCCESS:
-      const response = payload.data;
+      // const response = payload.data;
 
       return {
         ...state,
-        users: response.users,
-        total: response.total,
-        page: response.page,
+        users: payload.data,
+        // total: response.total,
+        // page: response.page,
       };
 
     case types.SET_PARAMS_USER_LIST:

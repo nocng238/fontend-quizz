@@ -1,19 +1,17 @@
 import React from 'react';
 import { Row, Col, Checkbox, Divider } from 'antd';
 import Radio, { RadioGroup } from '@iso/components/uielements/radio';
-import CheckBox, { CheckboxGroup } from '@iso/components/uielements/checkbox';
+// import CheckBox, { CheckboxGroup } from '@iso/components/uielements/checkbox';
 import Box from '@iso/components/utility/box';
-import LayoutWrapper from '@iso/components/utility/layoutWrapper.js';
+// import LayoutWrapper from '@iso/components/utility/layoutWrapper.js';
 import ContentHolder from '@iso/components/utility/contentHolder';
-import IntlMessages from '@iso/components/utility/intlMessages';
+// import IntlMessages from '@iso/components/utility/intlMessages';
 import basicStyle from '@iso/assets/styles/constants';
-import { useDispatch, useSelector } from 'react-redux';
 
 export default function ({ question, questionIndex, userAnswer, page }) {
   const [state, setState] = React.useState({
     value: 1,
   });
-  console.log(userAnswer);
   const onRadioChange = (e) => {
     const { name, value } = e.target;
     userAnswer[question._id] = value;

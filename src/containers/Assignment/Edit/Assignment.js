@@ -1,29 +1,19 @@
 import React, { useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { Button, Input, Form, notification, Space, Divider, Radio } from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { Button, Input, Form, notification, Divider } from 'antd';
 import Editor2 from '../Create/editor';
-import Editor from '../../../components/uielements/editor';
+// import Editor from '../../../components/uielements/editor';
 import LayoutWrapper from '@iso/components/utility/layoutWrapper';
-import PageHeader from '@iso/components/utility/pageHeader';
-import IntlMessages from '@iso/components/utility/intlMessages';
-import { BoxWrapper, BoxHeader } from '../Assignment.styles';
+// import PageHeader from '@iso/components/utility/pageHeader';
+// import IntlMessages from '@iso/components/utility/intlMessages';
+import { BoxWrapper } from '../Assignment.styles';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import Answer from '../Create/Answer';
 import { useForm } from 'antd/es/form/Form';
 import { useState } from 'react';
-import axios from '../../../library/helpers/axios';
+import axios from 'axios';
 import { useParams } from 'react-router-dom';
-const formItemLayout = {
-  labelCol: {
-    xs: { span: 24 },
-    sm: { span: 4 },
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 20 },
-  },
-};
+
 const tailFormItemLayout = {
   wrapperCol: {
     xs: { span: 24, offset: 0 },
@@ -35,18 +25,25 @@ export default function Assignment({ assignment }) {
   const [isChange, setIsChange] = useState(false);
   const [form] = useForm();
   const history = useHistory();
-  const { privateAxios } = axios;
+  const privateAxios2 = axios.create({
+    baseURL: 'http://localhost:8000/api/v1',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Authorization: localStorage.getItem('id_token') || undefined,
+    },
+  });
   const { assignmentId } = useParams();
   const onFinish = async (values) => {
     try {
       const { title, questions } = values;
-      if (isChange) {
-        await privateAxios.patch(`/assignment/${assignmentId}`, {
-          title,
-          questions,
-        });
-        console.log('call api');
-      }
+
+      await privateAxios2.patch(`/assignment/${assignmentId}`, {
+        title,
+        questions,
+      });
+      console.log('call api');
+
       notification.success({ message: 'Edit Successfully', duration: 2 });
       setIsChange(false);
     } catch (error) {
@@ -56,7 +53,7 @@ export default function Assignment({ assignment }) {
   };
   useEffect(() => {
     const getAssignment = async () => {
-      const assignment = await privateAxios.get(`/assignment/${assignmentId}`);
+      const assignment = await privateAxios2.get(`/assignment/${assignmentId}`);
       const realAssignment = assignment.data.assignment;
       form.setFieldsValue({
         title: realAssignment.title,
@@ -99,16 +96,6 @@ export default function Assignment({ assignment }) {
       </PageHeader> */}
 
       <BoxWrapper>
-        <BoxHeader>
-          {/* <Link to='/assignments'> */}
-          <Button
-            color='primary'
-            onClick={isChange === true ? openNotification : redirect}
-          >
-            <IntlMessages id='commons.back' />
-          </Button>
-          {/* </Link> */}
-        </BoxHeader>
         <Form
           form={form}
           name='dynamic_form_nest_item'

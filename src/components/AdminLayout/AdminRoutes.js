@@ -4,18 +4,15 @@ import { Route, Switch } from 'react-router-dom';
 import Loader from '@iso/components/utility/loader';
 
 const routes = [
-  [],
   [
     {
       path: '/',
-      component: lazy(() =>
-        import('@iso/containers/Assignment/List/AssignmentList')
-      ),
+      component: lazy(() => import('@iso/containers/Calendar/Calendar')),
       exact: true,
     },
     {
       path: 'dashboard',
-      component: lazy(() => import('@iso/containers/Widgets/Widgets')),
+      component: lazy(() => import('@iso/containers/Calendar/Calendar')),
       exact: true,
     },
     {
@@ -26,6 +23,18 @@ const routes = [
     {
       path: 'users/create',
       component: lazy(() => import('@iso/containers/User/Create/UserCreate')),
+      exact: true,
+    },
+  ],
+  [
+    {
+      path: '/',
+      component: lazy(() => import('@iso/containers/Calendar/Calendar')),
+      exact: true,
+    },
+    {
+      path: 'dashboard',
+      component: lazy(() => import('@iso/containers/Calendar/Calendar')),
       exact: true,
     },
     {
@@ -49,9 +58,16 @@ const routes = [
       exact: true,
     },
     {
-      path: 'assignments/create',
+      path: 'assignments/create/type',
       component: lazy(() =>
         import('@iso/containers/Assignment/Create/AssignmentCreate')
+      ),
+      exact: true,
+    },
+    {
+      path: 'assignments/create/upload',
+      component: lazy(() =>
+        import('@iso/containers/Assignment/Create/AssignmentUpload')
       ),
       exact: true,
     },
@@ -66,6 +82,11 @@ const routes = [
   [
     {
       path: '/',
+      component: lazy(() => import('@iso/containers/Calendar/Calendar')),
+      exact: true,
+    },
+    {
+      path: 'dashboard',
       component: lazy(() => import('@iso/containers/Calendar/Calendar')),
       exact: true,
     },

@@ -1,30 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory, useRouteMatch } from 'react-router-dom';
-import { Button, Menu, Dropdown, notification, Table } from 'antd';
-import { DownOutlined, EyeFilled } from '@ant-design/icons';
+import { Link, useHistory } from 'react-router-dom';
+import { Button, Menu, Dropdown, Table, Popover } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
 import Switch from '@iso/components/uielements/switch.js';
 import HelperText from '@iso/components/utility/helper-text';
 import LayoutWrapper from '@iso/components/utility/layoutWrapper';
 import PageHeader from '@iso/components/utility/pageHeader';
 import IntlMessages from '@iso/components/utility/intlMessages';
-import userActions from '@iso/redux/user/actions';
-import SearchInput from '@iso/components/SearchInput/SearchInput';
+// import SearchInput from '@iso/components/SearchInput/SearchInput';
 import Popconfirms from '@iso/components/Feedback/Popconfirm';
 import CardWrapper, {
   BoxWrapper,
   BoxHeader,
   FiltersBar,
-  StatusTag,
   ActionWrapper,
 } from '../Assignment.styles';
 import axios from 'axios';
 
 export default function AssignmentList() {
-  const history = useHistory();
+  // const history = useHistory();
   const privateAxios2 = axios.create({
     baseURL: 'http://localhost:8000/api/v1',
-    timeout: 1000,
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',
@@ -32,32 +28,14 @@ export default function AssignmentList() {
     },
   });
   const [selected, setSelected] = useState([]);
-  //   let { users, total, page, limit, sort, status, message, isSuccess } =
-  //     useSelector((state) => state.User);
   const [assignments, setAssignments] = useState([]);
-  const match = useRouteMatch();
-  // const assignments = [
-  //   {
-  //     id: '63876b8fff09385211e92041',
-  //     title: 'Bai kiem tra giua ky 16 thanh 17',
-  //     questions: 2,
-  //     duration: 0,
-  //     status: false,
-  //   },
-  //   {
-  //     id: '63876a1773624d3f9e7041c0',
-  //     title: 'Bai kiem tra giua ky 2',
-  //     questions: 0,
-  //     duration: 0,
-  //     status: false,
-  //   },
-  // ];
-  const [searchText, setSearchText] = useState('');
-  const [options, setOptions] = useState({ page: 1, limit: 5 });
+  // const match = useRouteMatch();
+  // const [searchText, setSearchText] = useState('');
+  const [options, setOptions] = useState({ page: 1, limit: 10 });
   useEffect(() => {
     const getData = async () => {
       const res = await privateAxios2.get('/assignment', {
-        params: { options },
+        params: options,
       });
       console.log('use effect run');
       setAssignments(res.data);
@@ -77,7 +55,7 @@ export default function AssignmentList() {
       console.log(sorter.field);
       sortBy = sorter.order === 'ascend' ? sorter.field : `-${sorter.field}`;
     }
-
+    console.log('pagination settings: ', pagination);
     setOptions({
       sort: sortBy,
       page: pagination.current,
@@ -110,29 +88,6 @@ export default function AssignmentList() {
     ) {
     }
   };
-
-  const actions = (
-    <Menu onClick={handleActions}>
-      <Menu.Item
-        key='detail'
-        disabled={selected.length > 1 || !selected.length}
-      >
-        <IntlMessages id='commons.detail' />
-      </Menu.Item>
-      <Menu.Item key='edit' disabled={selected.length > 1 || !selected.length}>
-        <IntlMessages id='commons.edit' />
-      </Menu.Item>
-      <Menu.Item key='reset' disabled={selected.length > 1 || !selected.length}>
-        <IntlMessages id='user.resetPassword' />
-      </Menu.Item>
-      <Menu.Item
-        key='delete'
-        disabled={selected.length > 1 || !selected.length}
-      >
-        <IntlMessages id='commons.delete' />
-      </Menu.Item>
-    </Menu>
-  );
   const columns = [
     {
       title: 'Title',
@@ -142,7 +97,6 @@ export default function AssignmentList() {
       sorter: true,
       render: (text, row) => {
         return <Link to={`/test/${row.id}`}>{text}</Link>;
-        // return <span>{text}</span>;
       },
     },
     {
@@ -210,22 +164,62 @@ export default function AssignmentList() {
       },
     },
   ];
+  const actions = (
+    <Menu onClick={handleActions}>
+      <Menu.Item
+        key='delete'
+        disabled={selected.length > 1 || !selected.length}
+      >
+        <IntlMessages id='commons.delete' />
+      </Menu.Item>
+    </Menu>
+  );
+
+  const [open, setOpen] = useState(false);
+  const hide = () => {
+    setOpen(false);
+  };
+  const handleOpenChange = (newOpen) => {
+    setOpen(newOpen);
+  };
 
   return (
     <LayoutWrapper>
       <PageHeader>
         <IntlMessages id='assignment.listAssignments' />
-        <Link to={`${match.path}/create`}>
+        <Popover
+          content={
+            <div>
+              <div>
+                <Link to={`assignments/create/type`}>
+                  <Button style={{ width: '100px' }}>Type</Button>
+                </Link>
+              </div>
+
+              <div>
+                <Link to={`assignments/create/upload`}>
+                  <Button style={{ width: '100px', marginTop: '10px' }}>
+                    File upload
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          }
+          trigger='click'
+          open={open}
+          placement='bottomRight'
+          onOpenChange={handleOpenChange}
+        >
           <Button type='primary'>
             <IntlMessages id='assignment.btnCreateAssignment' />
           </Button>
-        </Link>
+        </Popover>
       </PageHeader>
 
       <BoxWrapper>
         <BoxHeader>
           <FiltersBar>
-            <SearchInput onChange={(value) => setSearchText(value)} />
+            {/* <SearchInput onChange={(value) => setSearchText(value)} /> */}
             {/* <UserFilter onHandleFilter={handleFilter} /> */}
           </FiltersBar>
           {/*overlay={actions}*/}
@@ -254,7 +248,7 @@ export default function AssignmentList() {
                 // page: 1,
                 // total: total,
               }}
-              // scroll={{ y: 'calc(100vh - 435px)' }}
+              scroll={null}
             />
           )}
         </CardWrapper>

@@ -1,13 +1,12 @@
 import React from 'react';
 import { Row, Col, Checkbox, Divider, Radio } from 'antd';
 // import Radio, from '@iso/components/uielements/radio';
-import CheckBox, { CheckboxGroup } from '@iso/components/uielements/checkbox';
+// import CheckBox, { CheckboxGroup } from '@iso/components/uielements/checkbox';
 import Box from '@iso/components/utility/box';
-import LayoutWrapper from '@iso/components/utility/layoutWrapper.js';
+// import LayoutWrapper from '@iso/components/utility/layoutWrapper.js';
 import ContentHolder from '@iso/components/utility/contentHolder';
-import IntlMessages from '@iso/components/utility/intlMessages';
+// import IntlMessages from '@iso/components/utility/intlMessages';
 import basicStyle from '@iso/assets/styles/constants';
-import { useDispatch, useSelector } from 'react-redux';
 
 export default function ({
   question,

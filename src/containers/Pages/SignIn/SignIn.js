@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { Form, Input, Checkbox, Button, notification } from 'antd';
+import { Form, Input, Checkbox, Button, notification, message } from 'antd';
 
 import IntlMessages from '@iso/components/utility/intlMessages';
 import authAction from '@iso/redux/auth/actions';
 import SignInStyleWrapper from './SignIn.styles';
 import siteConfig from '@iso/config/site.config';
 
-const { login, clearNotificationAction } = authAction;
+const { login } = authAction;
 
 export default function SignIn() {
   const [form] = Form.useForm();
@@ -26,10 +26,12 @@ export default function SignIn() {
 
   const handleLogin = async (values) => {
     console.log(values);
-    await dispatch(login(values));
+    try {
+      await dispatch(login(values));
+    } catch (error) {}
   };
 
-  let { from } = location.state || { from: { pathname: '/' } };
+  let { from } = location.state || { from: { pathname: '/dashboard' } };
 
   if (redirectToReferrer) {
     return <Redirect to={from} />;

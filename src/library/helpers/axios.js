@@ -15,17 +15,15 @@ const privateHeader = () => ({
 
 const baseAxios = axios.create({
   baseURL: siteConfig.apiUrl || 'http://localhost:8000/api/v1',
-  timeout: 1000,
   headers: publicHeader(),
 });
 const privateAxios = axios.create({
   baseURL: siteConfig.apiUrl || 'http://localhost:8000/api/v1',
-  timeout: 1000,
   headers: privateHeader(),
 });
+
 const privateAxios2 = axios.create({
   baseURL: siteConfig.apiUrl || 'http://localhost:8000/api/v1',
-  timeout: 1000,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
@@ -33,4 +31,4 @@ const privateAxios2 = axios.create({
   },
 });
 
-export default { baseAxios, privateAxios };
+export default { baseAxios, privateAxios, privateAxios2 };
