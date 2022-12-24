@@ -5,10 +5,15 @@ import Loader from '@iso/components/utility/loader';
 
 const routes = [
   [
+    //admin routes
     {
       path: '/',
       component: lazy(() => import('@iso/containers/Calendar/Calendar')),
       exact: true,
+    },
+    {
+      path: 'profile',
+      component: lazy(() => import('@iso/containers/User/Edit/UserEdit')),
     },
     {
       path: 'dashboard',
@@ -26,6 +31,7 @@ const routes = [
       exact: true,
     },
   ],
+  //teacher routes
   [
     {
       path: '/',
@@ -48,7 +54,7 @@ const routes = [
     },
     {
       path: 'profile',
-      component: lazy(() => import('@iso/containers/Profile/Profile')),
+      component: lazy(() => import('@iso/containers/User/Edit/UserEdit')),
     },
     {
       path: 'assignments',
@@ -79,6 +85,7 @@ const routes = [
       exact: true,
     },
   ],
+  //student routes
   [
     {
       path: '/',
@@ -89,6 +96,10 @@ const routes = [
       path: 'dashboard',
       component: lazy(() => import('@iso/containers/Calendar/Calendar')),
       exact: true,
+    },
+    {
+      path: 'profile',
+      component: lazy(() => import('@iso/containers/User/Edit/UserEdit')),
     },
     {
       path: 'assignments',

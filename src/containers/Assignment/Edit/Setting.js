@@ -14,6 +14,7 @@ import LayoutWrapper from '@iso/components/utility/layoutWrapper';
 import IntlMessages from '@iso/components/utility/intlMessages';
 import { BoxWrapper } from '../Assignment.styles';
 import axios from 'axios';
+import customAxios from '../../../library/helpers/axios';
 const { RangePicker } = DatePicker;
 const formItemLayout = {
   labelCol: {
@@ -42,6 +43,7 @@ export default function Setting() {
   const [form] = Form.useForm();
   const { assignmentId } = useParams();
   const [isChange, setIsChange] = useState(false);
+  const { privateAxios } = customAxios;
   const privateAxios2 = axios.create({
     baseURL: 'http://localhost:8000/api/v1',
     timeout: 1000,
@@ -58,7 +60,7 @@ export default function Setting() {
       const timeEnd = JSON.stringify(range[1]._d);
       console.log('timeStart: ', timeStart, '\ntimeEnd: ', timeEnd);
       if (isChange) {
-        await privateAxios2.patch(`/assignment/${assignmentId}`, {
+        await privateAxios.patch(`/assignment/${assignmentId}`, {
           timeEnd,
           timeStart,
           duration,
@@ -73,7 +75,7 @@ export default function Setting() {
 
   useEffect(() => {
     const getAssignment = async () => {
-      const assignment = await privateAxios2.get(`/assignment/${assignmentId}`);
+      const assignment = await privateAxios.get(`/assignment/${assignmentId}`);
       const realAssignment = assignment.data.assignment;
       const { duration, timeStart, timeEnd } = realAssignment;
       const startTime = moment(timeStart, 'YYYY-MM-DD HH:mm');

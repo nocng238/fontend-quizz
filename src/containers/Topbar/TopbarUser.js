@@ -4,10 +4,8 @@ import { useDispatch } from 'react-redux';
 
 import Popover from '@iso/components/uielements/popover';
 import IntlMessages from '@iso/components/utility/intlMessages';
-import userpic from '@iso/assets/images/user1.png';
 import authAction from '@iso/redux/auth/actions';
 import TopbarDropdownWrapper from './TopbarDropdown.styles';
-import { useSelector } from 'react-redux';
 
 const { logout } = authAction;
 
@@ -17,7 +15,6 @@ export default function TopbarUser() {
   function handleVisibleChange() {
     setVisibility((visible) => !visible);
   }
-
   const content = (
     <TopbarDropdownWrapper className='isoUserDropdown'>
       <Link className='isoDropdownLink' to={'/profile'}>

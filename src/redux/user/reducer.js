@@ -24,7 +24,8 @@ export default function userReducer(state = initState, { type, payload }) {
 
       return {
         ...state,
-        users: payload.data,
+        users: payload.data.users,
+        total: payload.data.total,
         // total: response.total,
         // page: response.page,
       };

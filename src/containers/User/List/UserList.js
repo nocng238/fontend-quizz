@@ -81,9 +81,7 @@ export default function UserList() {
   const history = useHistory();
 
   const [selected, setSelected] = useState([]);
-  let { users, total, page, limit, sort, status } = useSelector(
-    (state) => state.User
-  );
+  let { users, total, page, limit, sort } = useSelector((state) => state.User);
   const dispatch = useDispatch();
   // const match = useRouteMatch();
 

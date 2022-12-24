@@ -19,7 +19,10 @@ const baseAxios = axios.create({
 });
 const privateAxios = axios.create({
   baseURL: siteConfig.apiUrl || 'http://localhost:8000/api/v1',
-  headers: privateHeader(),
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+  },
 });
 
 const privateAxios2 = axios.create({
@@ -27,8 +30,15 @@ const privateAxios2 = axios.create({
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    Authorization: localStorage.getItem('id_token') || undefined,
+    // Authorization: localStorage.getItem('id_token') || undefined,
   },
+});
+privateAxios.interceptors.request.use((config) => {
+  const token = localStorage.getItem('id_token');
+  if (token) {
+    config.headers['Authorization'] = token;
+  }
+  return config;
 });
 
 export default { baseAxios, privateAxios, privateAxios2 };

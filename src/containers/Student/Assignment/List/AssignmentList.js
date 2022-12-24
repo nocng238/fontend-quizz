@@ -15,25 +15,16 @@ import CardWrapper, {
   ActionWrapper,
 } from '../../Assignment.styles';
 import moment from 'moment';
-import axios from 'axios';
-
+import customAxios from '../../../../library/helpers/axios';
 export default function AssignmentList() {
-  const privateAxios2 = axios.create({
-    baseURL: 'http://localhost:8000/api/v1',
-    timeout: 1000,
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      Authorization: localStorage.getItem('id_token') || undefined,
-    },
-  });
+  const { privateAxios } = customAxios;
   const history = useHistory();
   // const [selected, setSelected] = useState([]);
   const [assignments, setAssignments] = useState([]);
   const [options, setOptions] = useState({ page: 1, limit: 5 });
   useEffect(() => {
     const getData = async () => {
-      const res = await privateAxios2.get('/quizz', {
+      const res = await privateAxios.get('/quizz', {
         params: { options },
       });
       setAssignments(res.data);
