@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import siteConfig from '@iso/config/site.config';
-import logo from '@iso/assets/images/logo.png';
+import logo from '@iso/assets/images/Logodhbk.jpg';
 
 const style = { width: '80%', marginTop: '5px' };
 

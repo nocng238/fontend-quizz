@@ -11,11 +11,11 @@ import Loader from '@iso/components/utility/loader';
 import ErrorBoundary from './ErrorBoundary';
 
 const AdminLayout = lazy(() => import('./components/AdminLayout/AdminLayout'));
-
 const publicRoutes = [
   {
     path: '/404',
     component: lazy(() => import('@iso/containers/Pages/404/404')),
+    exact: true,
   },
   {
     path: '/500',
@@ -24,6 +24,7 @@ const publicRoutes = [
   {
     path: '/signin',
     component: lazy(() => import('@iso/containers/Pages/SignIn/SignIn')),
+    exact: true,
   },
   {
     path: '/forgot-password',
@@ -43,10 +44,14 @@ const publicRoutes = [
       import('@iso/containers/Authentication/Auth0/Auth0Callback')
     ),
   },
+  // {
+  //   path: '/test/:assignmentId',
+  //   component: lazy(() => import('@iso/containers/Assignment/View/Assignment')),
+  //   exact: true,
+  // },
 ];
 function PrivateRoute({ children, ...rest }) {
   const isLoggedIn = useSelector((state) => state.Auth.idToken);
-
   return (
     <Route
       {...rest}
@@ -77,9 +82,23 @@ export default function Routes() {
                 <route.component />
               </Route>
             ))}
+            <Route
+              path='/test/:assignmentId'
+              component={lazy(() =>
+                import('@iso/containers/Assignment/View/Assignment')
+              )}
+            ></Route>
+            <Route
+              path='/quizz/:assignmentId'
+              component={lazy(() =>
+                import('@iso/containers/Student/Assignment/View/Assignment')
+              )}
+            ></Route>
             <PrivateRoute>
+              {/* role routes */}
               <AdminLayout />
             </PrivateRoute>
+            <Redirect to='/404' />
           </Switch>
         </Router>
       </Suspense>

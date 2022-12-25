@@ -7,16 +7,24 @@ const publicHeader = () => ({
   Accept: 'application/json',
 });
 
-const privateHeader = () => ({
-  'Content-Type': 'application/json',
-  Accept: 'application/json',
-  Authorization: 'Bearer ' + localStorage.getItem('id_token') || undefined,
-});
-
 const baseAxios = axios.create({
-  baseURL: siteConfig.apiUrl || 'http://localhost:9000/api/v1',
-  timeout: 1000,
+  baseURL: siteConfig.apiUrl || 'http://localhost:8000/api/v1',
   headers: publicHeader(),
 });
+const privateAxios = axios.create({
+  baseURL: siteConfig.apiUrl || 'http://localhost:8000/api/v1',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+  },
+});
 
-export default baseAxios;
+privateAxios.interceptors.request.use((config) => {
+  const token = localStorage.getItem('id_token');
+  if (token) {
+    config.headers['Authorization'] = token;
+  }
+  return config;
+});
+
+export default { baseAxios, privateAxios };

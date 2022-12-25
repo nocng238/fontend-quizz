@@ -2,10 +2,11 @@ import types from './types';
 
 export const initState = {
   users: [],
+  avatar: localStorage.getItem('avatar'),
   user: {},
   page: 1,
   limit: 10,
-  sort: '-createdAt',
+  sort: '',
   total: 0,
   status: [],
   isSuccess: false,
@@ -20,13 +21,14 @@ export default function userReducer(state = initState, { type, payload }) {
       };
 
     case types.GET_USERS_SUCCESS:
-      const response = payload.data;
-
+      // const response = payload.data;
+      // console.log('payload from reducer', payload);
       return {
         ...state,
-        users: response.users,
-        total: response.total,
-        page: response.page,
+        users: payload.data.users,
+        total: payload.data.total,
+        // total: response.total,
+        // page: response.page,
       };
 
     case types.SET_PARAMS_USER_LIST:
@@ -54,6 +56,10 @@ export default function userReducer(state = initState, { type, payload }) {
 
     case types.CREATE_USER_SUCCESS:
     case types.UPDATE_USER_SUCCESS:
+      return {
+        ...state,
+        user: payload,
+      };
     case types.DELETE_USER_SUCCESS:
     case types.RESET_PASSWORD_SUCCESS:
       return {

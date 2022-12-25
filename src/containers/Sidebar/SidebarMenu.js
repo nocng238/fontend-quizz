@@ -21,10 +21,10 @@ export default React.memo(function SidebarMenu({
 }) {
   let match = useRouteMatch();
 
-  const { key, label, leftIcon, children } = singleOption;
+  const { key, label, leftIcon, items } = singleOption;
   const url = stripTrailingSlash(match.url);
 
-  if (children) {
+  if (items) {
     return (
       <SubMenu
         key={key}
@@ -38,7 +38,7 @@ export default React.memo(function SidebarMenu({
         }
         {...rest}
       >
-        {children.map((child) => {
+        {items.map((child) => {
           const linkTo = child.withoutDashboard
             ? `/${child.key}`
             : `${url}/${child.key}`;

@@ -1,25 +1,25 @@
 import axios from '../../library/helpers/axios';
-
+const { privateAxios } = axios;
 export const getUsersApi = async (options) => {
-  return await axios.get('/users', { params: options });
+  return await privateAxios.get('/user', { params: options });
 };
 
-export const getUserApi = async (userId) => {
-  return await axios.get(`/users/${userId}`);
+export const getUserApi = async () => {
+  return await privateAxios.get(`/user/profile`);
 };
 
 export const createUserApi = async (user) => {
-  return await axios.post(`/users`, user);
+  return await privateAxios.post(`/user`, user);
 };
 
-export const updateUserApi = async ({ userId, user }) => {
-  return await axios.put(`/users/${userId}`, user);
+export const updateUserApi = async ({ user }) => {
+  return await privateAxios.patch(`/user/profile`, user);
 };
 
-export const deleteUserApi = async (userId) => {
-  return await axios.delete(`/users/${userId}`);
-};
+// export const deleteUserApi = async (userId) => {
+//   return await privateAxios.delete(`/user/${userId}`);
+// };
 
-export const resetPasswordApi = async (userId) => {
-  return await axios.post(`/users/reset-password/${userId}`);
-};
+// export const resetPasswordApi = async (userId) => {
+//   return await privateAxios.post(`/user/reset-password/${userId}`);
+// };

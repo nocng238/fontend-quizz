@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Button, Input, Form, notification } from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
+import { Button, Input, Form, notification, Select } from 'antd';
 
 import LayoutWrapper from '@iso/components/utility/layoutWrapper';
 import PageHeader from '@iso/components/utility/pageHeader';
 import IntlMessages from '@iso/components/utility/intlMessages';
-import userActions from '@iso/redux/user/actions';
 import { BoxWrapper, BoxHeader } from '../User.styles';
-
+import { UserOutlined } from '@ant-design/icons';
+import axios from '../../../library/helpers/axios';
+const { Option } = Select;
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -30,34 +30,24 @@ const tailFormItemLayout = {
   },
 };
 
-const { createUserAction, clearNotificationAction } = userActions;
-
 export default function UserCreate() {
   const [form] = Form.useForm();
-
+  const { privateAxios } = axios;
   const history = useHistory();
-  const dispatch = useDispatch();
-  const { message, isSuccess } = useSelector((state) => state.User);
 
   const onFinish = async (values) => {
-    dispatch(createUserAction(values));
-  };
-
-  useEffect(() => {
-    if (message) {
-      const notiType = isSuccess ? 'success' : 'error';
-      const messageType = isSuccess ? 'Success' : 'Error';
-
-      notification[notiType]({
-        message: messageType,
-        description: message,
+    try {
+      const { role, userName, name } = values;
+      await privateAxios.post('/user', { role, userName, name });
+      notification.success({
+        message: 'User was created successfully',
+        duration: 2,
       });
-      dispatch(clearNotificationAction());
-    }
-    if (isSuccess) {
       history.push('/users');
+    } catch (error) {
+      notification.error({ message: error.response.data.message, duration: 2 });
     }
-  }, [message]);
+  };
 
   return (
     <LayoutWrapper>
@@ -81,12 +71,25 @@ export default function UserCreate() {
           onFinish={onFinish}
         >
           <Form.Item
+            name='userName'
+            label='Username'
+            rules={[
+              {
+                required: true,
+                message: 'Please enter username!',
+                whitespace: true,
+              },
+            ]}
+          >
+            <Input prefix={<UserOutlined className='site-form-item-icon' />} />
+          </Form.Item>
+          <Form.Item
             name='name'
             label='Name'
             rules={[
               {
                 required: true,
-                message: 'Please input your name!',
+                message: `Please input User's name!`,
                 whitespace: true,
               },
             ]}
@@ -94,25 +97,18 @@ export default function UserCreate() {
             <Input />
           </Form.Item>
 
-          <Form.Item
-            name='email'
-            label='E-mail'
-            rules={[
-              {
-                type: 'email',
-                message: 'The input is not valid E-mail!',
-              },
-              {
-                required: true,
-                message: 'Please input your E-mail!',
-              },
-            ]}
-          >
-            <Input autoComplete='true' />
-          </Form.Item>
-
-          <Form.Item name='phone' label='Phone Number' default=''>
-            <Input autoComplete='true' />
+          <Form.Item name='role' label='Role'>
+            <Select
+              // onChange={(value) => {
+              //   alert(value);
+              // }}
+              name='category'
+              placeholder='Please select a category'
+            >
+              <Option value={0}>Admin</Option>
+              <Option value={1}>Teacher</Option>
+              <Option value={2}>Student</Option>
+            </Select>
           </Form.Item>
           <Form.Item {...tailFormItemLayout}>
             <Button type='primary' htmlType='submit'>

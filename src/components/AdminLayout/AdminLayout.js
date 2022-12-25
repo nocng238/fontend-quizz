@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, lazy } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Layout } from 'antd';
 
@@ -13,6 +13,7 @@ import {
   AdminLayoutContainer,
   AdminLayoutGlobalStyles,
 } from './AdminLayout.styles';
+import { Route } from 'react-router';
 
 const { Content, Footer } = Layout;
 const { toggleAll } = appActions;

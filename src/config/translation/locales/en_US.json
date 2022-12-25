@@ -1,8 +1,11 @@
 {
-  "sidebar.hr": "HR",
+  "sidebar.management": "Management",
   "sidebar.user": "User",
-  "sidebar.campaign": "Campaign",
+  "sidebar.assignment": "Assignment",
   "sidebar.settings": "Settings",
+  "sidebar.dashboard":"Dashboard",
+  "sidebar.history" : "History",
+  "sidebar.assignments": "Assignments",
 
   "topbar.notification": "Notification",
   "topbar.message": "Message",
@@ -15,6 +18,12 @@
   "user.updateUser": "Update User",
   "user.detailUser": "Detail User",
 
+  "assignment.listAssignments" : "List Assignments",
+  "assignment.listSubmissions":"Submissions",
+  "assignment.btnCreateAssignment": "Create assignment",
+  "assignment.createAssignment" : "Create assignment",
+  "assignment.history": "History",
+
   "commons.actions": "Actions",
   "commons.detail": "Detail",
   "commons.edit": "Edit",
@@ -24,6 +33,8 @@
   "commons.filter": "Filter",
   "commons.active": "Active",
   "commons.inactive": "Inactive",
+  "commons.changePassword": "Change Password",
+  "commons.welcome" : "Welcome",
 
   "languageSwitcher.label": "Change Language",
   "themeSwitcher": "Theme Switcher",

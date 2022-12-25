@@ -1,10 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Layout } from 'antd';
-
 import appActions from '@iso/redux/app/actions';
-import TopbarNotification from './TopbarNotification';
-import TopbarMessage from './TopbarMessage';
 import TopbarUser from './TopbarUser';
 import TopbarWrapper from './Topbar.styles';
 
@@ -13,12 +10,15 @@ const { toggleCollapsed } = appActions;
 
 export default function Topbar() {
   const [selectedItem, setSelectedItem] = React.useState('');
-  const customizedTheme = useSelector(state => state.ThemeSwitcher.topbarTheme);
-  const { collapsed, openDrawer } = useSelector(state => state.App);
+  const customizedTheme = useSelector(
+    (state) => state.ThemeSwitcher.topbarTheme
+  );
+  const { collapsed, openDrawer } = useSelector((state) => state.App);
   const dispatch = useDispatch();
-  const handleToggle = React.useCallback(() => dispatch(toggleCollapsed()), [
-    dispatch,
-  ]);
+  const handleToggle = React.useCallback(
+    () => dispatch(toggleCollapsed()),
+    [dispatch]
+  );
   const isCollapsed = collapsed && !openDrawer;
   const styling = {
     background: customizedTheme.backgroundColor,
@@ -34,7 +34,7 @@ export default function Topbar() {
           isCollapsed ? 'isomorphicTopbar collapsed' : 'isomorphicTopbar'
         }
       >
-        <div className="isoLeft">
+        <div className='isoLeft'>
           <button
             className={
               isCollapsed ? 'triggerBtn menuCollapsed' : 'triggerBtn menuOpen'
@@ -44,19 +44,14 @@ export default function Topbar() {
           />
         </div>
 
-        <ul className="isoRight">
-          <li
-            onClick={() => setSelectedItem('notification')}
-            className={selectedItem ? 'isoNotify active' : 'isoNotify'}
-          >
-            <TopbarNotification />
+        <ul className='isoRight'>
+          <li>
+            <h1 style={{ fontSize: '20px' }}>
+              {' '}
+              {`Welcome ${localStorage.getItem('name')}`}
+            </h1>
           </li>
-
-          <li onClick={() => setSelectedItem('message')} className="isoMsg">
-            <TopbarMessage />
-          </li>
-
-          <li onClick={() => setSelectedItem('user')} className="isoUser">
+          <li onClick={() => setSelectedItem('user')} className='isoUser'>
             <TopbarUser />
           </li>
         </ul>
