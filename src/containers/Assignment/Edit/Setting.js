@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   Form,
-  Input,
   Button,
   notification,
   DatePicker,
@@ -13,8 +12,8 @@ import { useParams } from 'react-router-dom';
 import LayoutWrapper from '@iso/components/utility/layoutWrapper';
 import IntlMessages from '@iso/components/utility/intlMessages';
 import { BoxWrapper } from '../Assignment.styles';
-import axios from 'axios';
 import customAxios from '../../../library/helpers/axios';
+import { number } from 'prop-types';
 const { RangePicker } = DatePicker;
 const formItemLayout = {
   labelCol: {
@@ -44,26 +43,19 @@ export default function Setting() {
   const { assignmentId } = useParams();
   const [isChange, setIsChange] = useState(false);
   const { privateAxios } = customAxios;
-  const privateAxios2 = axios.create({
-    baseURL: 'http://localhost:8000/api/v1',
-    timeout: 1000,
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      Authorization: localStorage.getItem('id_token') || undefined,
-    },
-  });
   const onFinish = async (values) => {
     try {
-      const { range, duration } = values;
+      const { range, duration, status, shuffleQuestion } = values;
       const timeStart = JSON.stringify(range[0]._d);
       const timeEnd = JSON.stringify(range[1]._d);
-      console.log('timeStart: ', timeStart, '\ntimeEnd: ', timeEnd);
+      // console.log('timeStart: ', timeStart, '\ntimeEnd: ', timeEnd);
       if (isChange) {
         await privateAxios.patch(`/assignment/${assignmentId}`, {
           timeEnd,
           timeStart,
           duration,
+          status,
+          shuffleQuestion,
         });
       }
       setIsChange(false);
@@ -77,12 +69,13 @@ export default function Setting() {
     const getAssignment = async () => {
       const assignment = await privateAxios.get(`/assignment/${assignmentId}`);
       const realAssignment = assignment.data.assignment;
-      const { duration, timeStart, timeEnd } = realAssignment;
+      const { duration, timeStart, timeEnd, status } = realAssignment;
       const startTime = moment(timeStart, 'YYYY-MM-DD HH:mm');
       const endTime = moment(`${timeEnd}`, 'YYYY-MM-DD HH:mm');
       form.setFieldsValue({
         duration: duration,
         range: [startTime, endTime],
+        status: status,
       });
     };
     getAssignment();
@@ -103,15 +96,16 @@ export default function Setting() {
           <Form.Item
             name='duration'
             label='Duration'
-            // rules={[
-            //   {
-            //     required: true,
-            //     message: 'Please input your name!',
-            //     whitespace: true,
-            //   },
-            // ]}
+            rules={[
+              {
+                required: true,
+                message: 'Please input duration for the test!',
+                type: number,
+                default: 1,
+              },
+            ]}
           >
-            <InputNumber />
+            <InputNumber min={1} />
           </Form.Item>
           <Form.Item label='RangePicker' name='range'>
             <RangePicker
@@ -119,6 +113,13 @@ export default function Setting() {
               showTime={{ format: 'HH:mm' }}
               onChange={() => setIsChange(true)}
             />
+          </Form.Item>
+          <Form.Item
+            label='Shuffle Question'
+            name='shuffleQuestion'
+            valuePropName='checked'
+          >
+            <Switch />
           </Form.Item>
           <Form.Item label='Status' name='status' valuePropName='checked'>
             <Switch />

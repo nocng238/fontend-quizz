@@ -17,7 +17,6 @@ export default function AssignmentCreate() {
   const history = useHistory();
   const { privateAxios } = axios;
   const onFinish = async (values) => {
-    console.log('onFinish run');
     try {
       const { title, questions } = values;
       await privateAxios.post('/assignment', { title, questions });

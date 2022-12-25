@@ -1,41 +1,25 @@
-import axios from 'axios';
-import siteConfig from '@iso/config/site.config';
+import axios from '../../library/helpers/axios';
+const { privateAxios } = axios;
 export const getUsersApi = async (options) => {
-  const privateAxios2 = axios.create({
-    baseURL: siteConfig.apiUrl || 'http://localhost:8000/api/v1',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      Authorization: localStorage.getItem('id_token') || undefined,
-    },
-  });
-  return await privateAxios2.get('/user', { params: options });
+  return await privateAxios.get('/user', { params: options });
 };
 
-// export const getUserApi = async (userId) => {
-//   return await privateAxios2.get(`/user/${userId}`);
-// };
+export const getUserApi = async () => {
+  return await privateAxios.get(`/user/profile`);
+};
 
 export const createUserApi = async (user) => {
-  const privateAxios2 = axios.create({
-    baseURL: siteConfig.apiUrl || 'http://localhost:8000/api/v1',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      Authorization: localStorage.getItem('id_token') || undefined,
-    },
-  });
-  return await privateAxios2.post(`/user`, user);
+  return await privateAxios.post(`/user`, user);
 };
 
-// export const updateUserApi = async ({ userId, user }) => {
-//   return await privateAxios2.put(`/user/${userId}`, user);
-// };
+export const updateUserApi = async ({ user }) => {
+  return await privateAxios.patch(`/user/profile`, user);
+};
 
 // export const deleteUserApi = async (userId) => {
-//   return await privateAxios2.delete(`/user/${userId}`);
+//   return await privateAxios.delete(`/user/${userId}`);
 // };
 
 // export const resetPasswordApi = async (userId) => {
-//   return await privateAxios2.post(`/user/reset-password/${userId}`);
+//   return await privateAxios.post(`/user/reset-password/${userId}`);
 // };

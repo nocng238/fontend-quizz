@@ -6,25 +6,17 @@ import LayoutWrapper from '@iso/components/utility/layoutWrapper';
 import PageHeader from '@iso/components/utility/pageHeader';
 import IntlMessages from '@iso/components/utility/intlMessages';
 import CardWrapper, { BoxWrapper } from '../Assignment.styles';
-import axios from 'axios';
+import axios from '../../../library/helpers/axios';
 
 export default function History() {
   const { assignmentId } = useParams();
-  const privateAxios2 = axios.create({
-    baseURL: 'http://localhost:8000/api/v1',
-    timeout: 1000,
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      Authorization: localStorage.getItem('id_token') || undefined,
-    },
-  });
-  const [selected, setSelected] = useState([]);
+  const { privateAxios } = axios;
+  // const [selected, setSelected] = useState([]);
   const [submissions, setSubmissions] = useState([]);
   const [options, setOptions] = useState({});
   useEffect(() => {
     const getData = async () => {
-      const res = await privateAxios2.get(
+      const res = await privateAxios.get(
         `/quizz/getSubmissions/${assignmentId}`,
         { options }
       );
@@ -94,7 +86,7 @@ export default function History() {
       // width: '20%',
       dataIndex: 'score',
       rowKey: 'score',
-      render: (text, row) => <span>{text}</span>,
+      render: (text, row) => <span>{Math.floor(text * 100) / 100}</span>,
     },
   ];
 

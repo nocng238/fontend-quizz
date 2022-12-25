@@ -4,14 +4,14 @@ import moment from 'moment';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import ModalEvents from './ModalEvents';
-import notification from '@iso/components/Notification';
-import calendarActions from '@iso/redux/calendar/actions';
+// import notification from '@iso/components/Notification';
+// import calendarActions from '@iso/redux/calendar/actions';
 import DemoEvents from './DemoEvents';
 import { CalendarStyleWrapper } from './Calendar.styles';
 
 const Localizer = momentLocalizer(moment);
 const DragAndDropCalendar = withDragAndDrop(Calendar);
-const { changeView, changeEvents } = calendarActions;
+// const { changeView, changeEvents } = calendarActions;
 
 const mapToRBCFormat = (e) =>
   Object.assign({}, e, {
@@ -19,13 +19,13 @@ const mapToRBCFormat = (e) =>
     end: new Date(e.end),
   });
 
-const getIndex = (events, selectedEvent) =>
-  events.findIndex((event) => event.id === selectedEvent.id);
+// const getIndex = (events, selectedEvent) =>
+//   events.findIndex((event) => event.id === selectedEvent.id);
 
 export default function DndCalendar() {
   // const { events, view } = useSelector(state => state.Calendar);
   const events = DemoEvents;
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const [state, setState] = React.useState({
     // view: view,
     modalVisible: false,

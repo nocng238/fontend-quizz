@@ -9,12 +9,11 @@ export default {
     type: types.SET_PARAMS_USER_LIST,
     payload: { options },
   }),
-  getUserAction: (userId) => ({ type: types.GET_USER, payload: { userId } }),
+  getUserAction: () => ({ type: types.GET_USER }),
   createUserAction: (user) => ({ type: types.CREATE_USER, payload: { user } }),
-  updateUserAction: (userId, user) => ({
+  updateUserAction: (user) => ({
     type: types.UPDATE_USER,
     payload: {
-      userId,
       user,
     },
   }),

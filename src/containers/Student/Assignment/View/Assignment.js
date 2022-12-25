@@ -1,24 +1,17 @@
 import React, { useEffect } from 'react';
 import Button from '@iso/components/uielements/button';
-import IntlMessages from '@iso/components/utility/intlMessages';
-import siteConfig from '@iso/config/site.config';
-import { Link, useHistory, useParams } from 'react-router-dom';
+// import IntlMessages from '@iso/components/utility/intlMessages';
+// import siteConfig from '@iso/config/site.config';
+import { useHistory, useParams } from 'react-router-dom';
 import LayoutWrapper from '@iso/components/utility/layoutWrapper';
 import Question from './Question/Question';
 import { Pagination, Row, Statistic, Affix, notification } from 'antd';
 import { useState } from 'react';
 import basicStyle from '@iso/assets/styles/constants';
-import axios from 'axios';
+import axios from '../../../../library/helpers/axios';
 const { Countdown } = Statistic;
 export default function () {
-  const privateAxios2 = axios.create({
-    baseURL: siteConfig.apiUrl || 'http://localhost:8000/api/v1',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      Authorization: localStorage.getItem('id_token') || undefined,
-    },
-  });
+  const { privateAxios } = axios;
   const history = useHistory();
   const { assignmentId } = useParams();
   const [assignment, setAssignment] = useState({});
@@ -29,7 +22,7 @@ export default function () {
   const startTime = new Date();
   useEffect(() => {
     const getAssignment = async () => {
-      const { data } = await privateAxios2.get(`/assignment/${assignmentId}`);
+      const { data } = await privateAxios.get(`/assignment/${assignmentId}`);
       data.questions.forEach((question) => {
         userAnswer[question._id] = [];
       });
@@ -47,7 +40,7 @@ export default function () {
   const onSubmit = async () => {
     try {
       const endTime = new Date();
-      await privateAxios2.post('/quizz', {
+      await privateAxios.post('/quizz', {
         answers: userAnswer,
         assignmentId,
         timeStart: startTime.toLocaleString(),

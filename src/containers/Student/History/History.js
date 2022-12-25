@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, useRouteMatch } from 'react-router-dom';
-import { Table, Button } from 'antd';
+import { useHistory } from 'react-router-dom';
+import { Table } from 'antd';
 // import { DownOutlined, EyeFilled } from '@ant-design/icons';
 // import Switch from '@iso/components/uielements/switch.js';
 import HelperText from '@iso/components/utility/helper-text';
@@ -19,7 +19,7 @@ import CardWrapper, {
 import axios from 'axios';
 
 export default function History() {
-  const history = useHistory();
+  // const history = useHistory();
   const privateAxios2 = axios.create({
     baseURL: 'http://localhost:8000/api/v1',
     headers: {

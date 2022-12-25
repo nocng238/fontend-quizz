@@ -18,7 +18,6 @@ export function* loginSaga({ payload }) {
       },
     });
   } catch (error) {
-    const { data } = error.response;
     yield notification.error({
       message: 'Wrong username or password',
       duration: 2,
@@ -36,12 +35,14 @@ export function* loginSuccess({ payload }) {
   yield localStorage.setItem('id_token', payload.idToken);
   yield localStorage.setItem('avatar', payload.user.avatar);
   yield localStorage.setItem('role', payload.user.role);
+  yield localStorage.setItem('name', payload.user.name);
 }
 
 export function* logoutSaga() {
   yield clearToken();
   yield localStorage.removeItem('avatar');
   yield localStorage.removeItem('role');
+  yield localStorage.removeItem('name');
   yield history.push('/signin');
   yield window.location.reload(false);
 }

@@ -1,10 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Layout } from 'antd';
-
 import appActions from '@iso/redux/app/actions';
-import TopbarNotification from './TopbarNotification';
-import TopbarMessage from './TopbarMessage';
 import TopbarUser from './TopbarUser';
 import TopbarWrapper from './Topbar.styles';
 
@@ -48,6 +45,12 @@ export default function Topbar() {
         </div>
 
         <ul className='isoRight'>
+          <li>
+            <h1 style={{ fontSize: '20px' }}>
+              {' '}
+              {`Welcome ${localStorage.getItem('name')}`}
+            </h1>
+          </li>
           <li onClick={() => setSelectedItem('user')} className='isoUser'>
             <TopbarUser />
           </li>

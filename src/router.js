@@ -5,11 +5,10 @@ import {
   BrowserRouter as Router,
   Switch,
 } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import Loader from '@iso/components/utility/loader';
 import ErrorBoundary from './ErrorBoundary';
-import { useEffect } from 'react';
 
 const AdminLayout = lazy(() => import('./components/AdminLayout/AdminLayout'));
 const publicRoutes = [

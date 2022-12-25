@@ -101,10 +101,10 @@ export default function AssignmentList() {
         const isAfterStarttime = now.isAfter(moment(row.timeStart).format());
         const isBeforeEndtime = now.isBefore(moment(row.timeEnd).format());
         const isAble = isAfterStarttime && isBeforeEndtime;
-        console.log(row.title);
-        console.log('start : ', row.timeStart, '\nend: ', row.timeEnd);
-        console.log('isAfterStarttime: ', isAfterStarttime);
-        console.log('isBeforeEndtime', isBeforeEndtime);
+        // console.log(row.title);
+        // console.log('start : ', row.timeStart, '\nend: ', row.timeEnd);
+        // console.log('isAfterStarttime: ', isAfterStarttime);
+        // console.log('isBeforeEndtime', isBeforeEndtime);
         return (
           <ActionWrapper>
             <Button

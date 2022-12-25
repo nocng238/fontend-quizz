@@ -34,6 +34,7 @@
   "commons.active": "Active",
   "commons.inactive": "Inactive",
   "commons.changePassword": "Change Password",
+  "commons.welcome" : "Welcome",
 
   "languageSwitcher.label": "Change Language",
   "themeSwitcher": "Theme Switcher",

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Layout } from 'antd';
 
@@ -13,7 +13,6 @@ import SidebarMenu from './SidebarMenu';
 const { Sider } = Layout;
 // const role = Math.floor(Math.random() * 2);
 const role = localStorage.getItem('role');
-console.log('Role: ', role);
 const option = options[role];
 const { toggleOpenDrawer, changeOpenKeys, changeCurrent, toggleCollapsed } =
   appActions;

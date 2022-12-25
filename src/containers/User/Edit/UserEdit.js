@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   Form,
   Input,
   Button,
   notification,
-  Select,
   Col,
   Row,
   Upload,
@@ -15,17 +14,16 @@ import {
   InputNumber,
   Divider,
 } from 'antd';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import siteConfig from '@iso/config/site.config';
 
 import LayoutWrapper from '@iso/components/utility/layoutWrapper';
-import PageHeader from '@iso/components/utility/pageHeader';
 import IntlMessages from '@iso/components/utility/intlMessages';
 import { BoxWrapper, BoxHeader } from '../User.styles';
 import axios from 'axios';
 import customAxios from '../../../library/helpers/axios';
-import { duration } from 'moment';
-
+import userActions from '@iso/redux/user/actions';
+const { updateUserAction } = userActions;
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -60,12 +58,10 @@ export default function UserEdit() {
   const [form1] = Form.useForm();
   const [form2] = Form.useForm();
   const dispatch = useDispatch();
-  const history = useHistory();
   const [fileList, setFileList] = useState([]);
   const [image, setImage] = useState(null);
-  // const [userProfile,setUserProfile] = useState({})
   useEffect(() => {
-    //get user profile
+    // get user profile
     const getUserProfile = async () => {
       const userProfile = await privateAxios.get('/user/profile');
       const user = userProfile.data;
@@ -122,26 +118,25 @@ export default function UserEdit() {
   const updateProfile = async (values) => {
     try {
       const { name, email, phone } = values;
-      await privateAxios.patch('/user/profile', {
-        name,
-        email,
-        phone,
-        avatar: image,
-      });
+      // await privateAxios.patch('/user/profile', {
+      //   name,
+      //   email,
+      //   phone,
+      //   avatar: image,
+      // });
+      dispatch(updateUserAction({ name, email, phone, avatar: image }));
       localStorage.setItem('avatar', image);
       notification.success({ message: 'Update successfully', duration: 2 });
     } catch (error) {
       console.log(error);
       notification.error({ message: error.message, duration: 2 });
     }
-    // dispatch(updateUserAction(userId, values));
   };
   const updatePassword = async (values) => {
     try {
       const { oldPassword, newPassword, confirmPassword } = values;
       const isMatch = newPassword === confirmPassword;
       if (!isMatch) {
-        console.log('Not match');
         notification.error({ message: "Password doesn't match", duration: 2 });
         return;
       }

@@ -2,30 +2,22 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import LayoutWrapper from '@iso/components/utility/layoutWrapper';
 import Question from './Question/Question';
-import { Pagination, Row, Statistic, Affix } from 'antd';
+import { Pagination, Row } from 'antd';
 import { useState } from 'react';
 import basicStyle from '@iso/assets/styles/constants';
-import axios from 'axios';
-const { Countdown } = Statistic;
+import axios from '../../../library/helpers/axios';
+// const { Countdown } = Statistic;
 export default function () {
   const { assignmentId } = useParams();
   const [assignment, setAssignment] = useState({});
   const [questions, setQuestions] = useState([]);
   const [userAnswer, setUserAnswers] = useState({});
   const [page, setPage] = useState(0);
-  const deadline = Date.now() + assignment?.duration * 60 * 1000;
-  const privateAxios2 = axios.create({
-    baseURL: 'http://localhost:8000/api/v1',
-    timeout: 1000,
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      Authorization: localStorage.getItem('id_token') || undefined,
-    },
-  });
+  // const deadline = Date.now() + assignment?.duration * 60 * 1000;
+  const { privateAxios } = axios;
   useEffect(() => {
     const getAssignment = async () => {
-      const { data } = await privateAxios2.get(`/assignment/${assignmentId}`);
+      const { data } = await privateAxios.get(`/assignment/${assignmentId}`);
       data.assignment.questions.forEach((question) => {
         userAnswer[question._id] = [];
       });

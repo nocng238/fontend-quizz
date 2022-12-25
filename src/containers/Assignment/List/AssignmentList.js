@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Button, Menu, Dropdown, Table, Popover } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import Switch from '@iso/components/uielements/switch.js';
@@ -15,18 +15,10 @@ import CardWrapper, {
   FiltersBar,
   ActionWrapper,
 } from '../Assignment.styles';
-import axios from 'axios';
-
+// import axios from 'axios';
+import axios from '../../../library/helpers/axios';
 export default function AssignmentList() {
-  // const history = useHistory();
-  const privateAxios2 = axios.create({
-    baseURL: 'http://localhost:8000/api/v1',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      Authorization: localStorage.getItem('id_token') || undefined,
-    },
-  });
+  const { privateAxios } = axios;
   const [selected, setSelected] = useState([]);
   const [assignments, setAssignments] = useState([]);
   // const match = useRouteMatch();
@@ -34,10 +26,9 @@ export default function AssignmentList() {
   const [options, setOptions] = useState({ page: 1, limit: 10 });
   useEffect(() => {
     const getData = async () => {
-      const res = await privateAxios2.get('/assignment', {
+      const res = await privateAxios.get('/assignment', {
         params: options,
       });
-      console.log('use effect run');
       setAssignments(res.data);
     };
     getData();
@@ -121,12 +112,19 @@ export default function AssignmentList() {
       rowKey: 'status',
       width: '20%',
       sorter: true,
-      render: (text) => {
+      render: (text, row) => {
         return (
           <Switch
             checkedChildren='Active'
             unCheckedChildren='Unactive'
             defaultChecked={text === true}
+            // disabled={true}
+            // onChange={(value) => console.log(row)}
+            onChange={async (value) =>
+              await privateAxios.patch(`/assignment/${row.id}`, {
+                status: value,
+              })
+            }
           ></Switch>
         );
       },
@@ -149,7 +147,7 @@ export default function AssignmentList() {
               cancelText='No'
               placement='topRight'
               onConfirm={async () => {
-                await privateAxios2.delete(`/assignment/${row.id}`);
+                await privateAxios.delete(`/assignment/${row.id}`);
                 setAssignments(
                   assignments.filter((assignment) => assignment.id !== row.id)
                 );
@@ -176,9 +174,6 @@ export default function AssignmentList() {
   );
 
   const [open, setOpen] = useState(false);
-  const hide = () => {
-    setOpen(false);
-  };
   const handleOpenChange = (newOpen) => {
     setOpen(newOpen);
   };

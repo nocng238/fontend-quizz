@@ -9,11 +9,11 @@ import ContentHolder from '@iso/components/utility/contentHolder';
 import basicStyle from '@iso/assets/styles/constants';
 
 export default function ({ question, questionIndex, userAnswer, page }) {
-  const [state, setState] = React.useState({
-    value: 1,
-  });
+  // const [state, setState] = React.useState({
+  //   value: 1,
+  // });
   const onRadioChange = (e) => {
-    const { name, value } = e.target;
+    const { value } = e.target;
     userAnswer[question._id] = value;
     // setState({
     //   ...state,
