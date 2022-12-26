@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import { Table } from 'antd';
 // import { DownOutlined, EyeFilled } from '@ant-design/icons';
 // import Switch from '@iso/components/uielements/switch.js';
@@ -16,23 +15,16 @@ import CardWrapper, {
   // StatusTag,
   // ActionWrapper,
 } from '../Assignment.styles';
-import axios from 'axios';
+import axios from '../../../library/helpers/axios';
 
 export default function History() {
   // const history = useHistory();
-  const privateAxios2 = axios.create({
-    baseURL: 'http://localhost:8000/api/v1',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      Authorization: localStorage.getItem('id_token') || undefined,
-    },
-  });
+  const { privateAxios } = axios;
   const [assignments, setAssignments] = useState([]);
   const [options, setOptions] = useState({ page: 1, limit: 5 });
   useEffect(() => {
     const getData = async () => {
-      const res = await privateAxios2.get('/quizz/history', {
+      const res = await privateAxios.get('/quizz/history', {
         params: { options },
       });
       setAssignments(res.data);
