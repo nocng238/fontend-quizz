@@ -1,6 +1,7 @@
 {
   "sidebar.management": "Management",
   "sidebar.user": "User",
+  "sidebar.class": "Class",
   "sidebar.assignment": "Assignment",
   "sidebar.settings": "Settings",
   "sidebar.dashboard":"Dashboard",
@@ -23,6 +24,10 @@
   "assignment.btnCreateAssignment": "Create assignment",
   "assignment.createAssignment" : "Create assignment",
   "assignment.history": "History",
+
+  "class.listClasses": "List Classes",
+  "class.btnCreateClass": "Create class",
+  "class.createClass" : "Create class",
 
   "commons.actions": "Actions",
   "commons.detail": "Detail",

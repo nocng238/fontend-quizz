@@ -6,6 +6,7 @@ const options = [
       leftIcon: 'ion-ios-home',
     },
     { key: 'users', label: 'sidebar.user', leftIcon: 'ion-ios-people' },
+    { key: 'classes', label: 'sidebar.class', leftIcon: 'ion-ios-albums' },
   ],
   [
     {

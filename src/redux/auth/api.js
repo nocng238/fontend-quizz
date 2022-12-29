@@ -1,7 +1,6 @@
 import axios from '../../library/helpers/axios';
 const { baseAxios, privateAxios } = axios;
 export const loginApi = async (creadentials) => {
-  console.log('in api', creadentials);
   const { userName, password } = creadentials;
   return await baseAxios.post('/auth/signing', { userName, password });
 };

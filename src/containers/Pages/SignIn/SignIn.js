@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { Form, Input, Checkbox, Button, notification, message } from 'antd';
+import { Form, Input, Checkbox, Button } from 'antd';
 
 import IntlMessages from '@iso/components/utility/intlMessages';
 import authAction from '@iso/redux/auth/actions';
@@ -25,7 +25,6 @@ export default function SignIn() {
   }, [idToken]);
 
   const handleLogin = async (values) => {
-    console.log(values);
     try {
       await dispatch(login(values));
     } catch (error) {}
@@ -81,11 +80,6 @@ export default function SignIn() {
                 </Button>
               </Form.Item>
             </Form>
-            <div className='mt-10'>
-              <Link to='/forgot-password'>
-                <IntlMessages id='page.forgetPassSubTitle' />
-              </Link>
-            </div>
           </div>
         </div>
       </div>

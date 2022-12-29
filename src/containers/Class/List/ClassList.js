@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Menu, Dropdown, Table, Popover } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
-import Switch from '@iso/components/uielements/switch.js';
 import HelperText from '@iso/components/utility/helper-text';
 import LayoutWrapper from '@iso/components/utility/layoutWrapper';
 import PageHeader from '@iso/components/utility/pageHeader';
@@ -14,23 +13,23 @@ import CardWrapper, {
   BoxHeader,
   FiltersBar,
   ActionWrapper,
-} from '../Assignment.styles';
+} from '@iso/containers/Styles/Common.styles';
 // import axios from 'axios';
-import axios from '../../../library/helpers/axios';
+import axios from '@iso/lib/helpers/axios';
 export default function AssignmentList() {
   const { privateAxios } = axios;
   const [selected, setSelected] = useState([]);
-  const [assignments, setAssignments] = useState([]);
+  const [classes, setClasses] = useState([]);
   const [reload, setReload] = useState(false);
   // const match = useRouteMatch();
   // const [searchText, setSearchText] = useState('');
   const [options, setOptions] = useState({ page: 1, limit: 10 });
   useEffect(() => {
     const getData = async () => {
-      const res = await privateAxios.get('/assignment', {
+      const res = await privateAxios.get('/class', {
         params: options,
       });
-      setAssignments(res.data);
+      setClasses(res.data);
     };
     getData();
   }, [options]);
@@ -82,9 +81,9 @@ export default function AssignmentList() {
   };
   const columns = [
     {
-      title: 'Title',
-      dataIndex: 'title',
-      rowKey: 'title',
+      title: 'Class Name',
+      dataIndex: 'className',
+      rowKey: 'className',
       width: '30%',
       sorter: true,
       render: (text, row) => {
@@ -92,43 +91,20 @@ export default function AssignmentList() {
       },
     },
     {
-      title: 'Duration',
-      dataIndex: 'duration',
-      rowKey: 'duration',
+      title: 'Lecture',
+      dataIndex: ['teacher', 'name'],
+      rowKey: 'teacher',
       sorter: true,
-      width: '10%',
-      render: (text) => <span>{text}m</span>,
+      width: '25%',
+      render: (text) => <span>{text}</span>,
     },
     {
-      title: 'Questions',
-      dataIndex: 'questions',
-      rowKey: 'questions',
+      title: 'Number of students',
+      dataIndex: 'students',
+      rowKey: 'students',
       sorter: true,
       width: '15%',
       render: (text) => <span style={{ marginLeft: '20px' }}>{text}</span>,
-    },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      rowKey: 'status',
-      width: '20%',
-      sorter: true,
-      render: (text, row) => {
-        return (
-          <Switch
-            checkedChildren='Active'
-            unCheckedChildren='Unactive'
-            defaultChecked={text === true}
-            // disabled={true}
-            // onChange={(value) => console.log(row)}
-            onChange={async (value) =>
-              await privateAxios.patch(`/assignment/${row.id}`, {
-                status: value,
-              })
-            }
-          ></Switch>
-        );
-      },
     },
     {
       title: 'Actions',
@@ -183,34 +159,12 @@ export default function AssignmentList() {
   return (
     <LayoutWrapper>
       <PageHeader>
-        <IntlMessages id='assignment.listAssignments' />
-        <Popover
-          content={
-            <div>
-              <div>
-                <Link to={`assignments/create/type`}>
-                  <Button style={{ width: '100px' }}>Type</Button>
-                </Link>
-              </div>
-
-              <div>
-                <Link to={`assignments/create/upload`}>
-                  <Button style={{ width: '100px', marginTop: '10px' }}>
-                    File upload
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          }
-          trigger='click'
-          open={open}
-          placement='bottomRight'
-          onOpenChange={handleOpenChange}
-        >
+        <IntlMessages id='class.listClasses' />
+        <Link to={`/classes/create`}>
           <Button type='primary'>
-            <IntlMessages id='assignment.btnCreateAssignment' />
+            <IntlMessages id='class.btnCreateClass' />
           </Button>
-        </Popover>
+        </Link>
       </PageHeader>
 
       <BoxWrapper>
@@ -228,12 +182,12 @@ export default function AssignmentList() {
         </BoxHeader>
 
         <CardWrapper>
-          {assignments?.length === 0 ? (
+          {classes?.length === 0 ? (
             <HelperText text='No Assignment' />
           ) : (
             <Table
               columns={columns}
-              dataSource={assignments}
+              dataSource={classes}
               rowSelection={rowSelection}
               showSorterTooltip={false}
               rowKey='_id'

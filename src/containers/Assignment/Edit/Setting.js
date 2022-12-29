@@ -69,13 +69,15 @@ export default function Setting() {
     const getAssignment = async () => {
       const assignment = await privateAxios.get(`/assignment/${assignmentId}`);
       const realAssignment = assignment.data.assignment;
-      const { duration, timeStart, timeEnd, status } = realAssignment;
+      const { duration, timeStart, timeEnd, status, shuffleQuestion } =
+        realAssignment;
       const startTime = moment(timeStart, 'YYYY-MM-DD HH:mm');
       const endTime = moment(`${timeEnd}`, 'YYYY-MM-DD HH:mm');
       form.setFieldsValue({
         duration: duration,
         range: [startTime, endTime],
         status: status,
+        shuffleQuestion: shuffleQuestion,
       });
     };
     getAssignment();

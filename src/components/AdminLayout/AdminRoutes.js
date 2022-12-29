@@ -30,6 +30,16 @@ const routes = [
       component: lazy(() => import('@iso/containers/User/Create/UserCreate')),
       exact: true,
     },
+    {
+      path: 'classes',
+      component: lazy(() => import('@iso/containers/Class/List/ClassList')),
+      exact: true,
+    },
+    {
+      path: 'classes/create',
+      component: lazy(() => import('@iso/containers/Class/Create/ClassCreate')),
+      exact: true,
+    },
   ],
   //teacher routes
   [
